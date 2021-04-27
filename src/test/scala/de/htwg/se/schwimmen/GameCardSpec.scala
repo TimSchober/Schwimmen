@@ -5,9 +5,9 @@ import org.scalatest.wordspec.AnyWordSpec
 
 class GameCardSpec extends AnyWordSpec with Matchers {
   "A GameCard" when {
-    "set to a wert and typ" should {
+    "set to a number and colour" should {
       val card = GameCard("7", "heart")
-      "return a wert and type of Card" in {
+      "return a number and colour of Card" in {
         card.number should be("7")
         card.colour should be("heart")
       }
