@@ -8,8 +8,8 @@ class GameCardSpec extends AnyWordSpec with Matchers {
     "set to a number and colour" should {
       val card = GameCard("7", "heart")
       "return a number and colour of Card" in {
-        card.number should be("7")
-        card.colour should be("heart")
+        assert(card.number === "7")
+        assert(card.colour === "heart")
       }
       "return is a valid Card" in {
         card.isCard should be(true)

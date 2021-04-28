@@ -5,6 +5,11 @@ case class GameCard(number: String, colour: String) {
   val cardsNumber: List[String] = List("7", "8", "9", "10", "jack", "queen", "king", "ace")
   val cardsColour: List[String] = List("heart", "diamond", "spade", "club")
 
+  val cards = for {
+    n <- cardsNumber
+    c <- cardsColour
+  } yield (n, c)
+
   def isCard: Boolean = {
     for (n <- cardsNumber) {
       if (number == n) {
