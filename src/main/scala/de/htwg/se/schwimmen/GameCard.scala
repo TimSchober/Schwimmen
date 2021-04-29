@@ -11,7 +11,7 @@ case class GameCard(wert: String, typ: String) {
         return true
       }
     }
-    return false
+    false
   }
 
 }
