@@ -2,6 +2,15 @@ package de.htwg.se.schwimmen.model
 
 case class PlayingField(stack: CardStack) {
 
+  override def toString: String = {
+    val builder = new StringBuilder
+    builder.append("These are the cards on the field:\t")
+    for (x<-cardsOnField) {
+      builder.append(x._1).append(" of ").append(x._2).append("s\t")
+    }
+    builder.toString()
+  }
+
   var cardsOnField: List[(String, String)] = stack.getThreeCards
 
   def swapCard(playerCards: List[(String, String)], indexPlayer: Int, indexField: Int): List[(String, String)] = {
