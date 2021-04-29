@@ -2,18 +2,20 @@ package de.htwg.se.schwimmen
 
 import scala.util.Random
 
-case class CardStack(rndCards: List[(String, String)]) {
+case class CardStack() {
 
   val cardsNumber: List[String] = List("7", "8", "9", "10", "jack", "queen", "king", "ace")
   val cardsColour: List[String] = List("heart", "diamond", "spade", "club")
 
-  def getFullCardStack: List[(String, String)] = for {
-    n <- cardsNumber
-    c <- cardsColour
-  } yield (n, c)
+  def getRndCardStack: List[(String, String)] = {
+    val fullCardStack: List[(String, String)] = for {
+      n <- cardsNumber
+      c <- cardsColour
+    } yield (n, c)
+    Random.shuffle(fullCardStack)
+  }
 
 
-  //var rndCards = Random.shuffle(getFullCardStack)
 //
 //  def myCard: Unit = {
 //    val myCards = randomCards.take(3)
