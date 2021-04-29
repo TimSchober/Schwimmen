@@ -1,14 +1,16 @@
 package de.htwg.se.schwimmen
 
-case class GameCard(wert: String, typ: String) {
+case class GameCard(number: String, colour: String) {
 
-  val wertList: List[String] = List("7", "8", "9", "10", "jack", "queen", "king", "ace")
-  val typList: List[String] = List("heart", "diamond", "spade", "club")
+  val cardsNumber: List[String] = List("7", "8", "9", "10", "jack", "queen", "king", "ace")
+  val cardsColour: List[String] = List("heart", "diamond", "spade", "club")
 
   def isCard: Boolean = {
-    for (e <- wertList) {
-      if (wert == e) {
-        return true
+    for (n <- cardsNumber) {
+      if (number == n) {
+        for (c <- cardsColour)
+          if (colour == c)
+            return true
       }
     }
     false
