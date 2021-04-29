@@ -5,10 +5,13 @@ import org.scalatest.wordspec.AnyWordSpec
 
 class PlayerSpec extends AnyWordSpec with Matchers {
 
-  "A Player" when {
-    "the Player's name and the cards what he should have" in {
-      val player1 = Player("player1")
+  "A Player" should {
+    val player1 = Player("player1")
+    "have a name" in {
       player1.name should be("player1")
+    }
+    "have a lifecount" in {
+      player1.life should be(3)
     }
   }
 }
