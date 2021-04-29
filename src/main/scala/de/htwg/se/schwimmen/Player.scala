@@ -4,4 +4,5 @@ case class Player(name: String, hasWon: Boolean) {
 
   override def toString: String = name
 
+
 }

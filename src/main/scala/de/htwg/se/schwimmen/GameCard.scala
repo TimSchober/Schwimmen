@@ -13,7 +13,7 @@ case class GameCard(number: String, colour: String) {
             return true
       }
     }
-    false
+    return false
   }
 
 }
