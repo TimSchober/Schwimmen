@@ -11,7 +11,7 @@ case class Player(name: String, stack: CardStack) {
     builder.append("\t\t").append(name).append(" has ").append(life).append(" lives left").toString()
   }
 
-  val hasKnocked = false
+  var hasKnocked = false
 
   var life = 3
 

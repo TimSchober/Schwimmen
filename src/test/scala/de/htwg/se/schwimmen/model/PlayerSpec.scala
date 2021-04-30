@@ -17,5 +17,8 @@ class PlayerSpec extends AnyWordSpec with Matchers {
     "have three random cards" in {
       player1.cardsOnHand.length should be(3)
     }
+    "have a bool which says whether a player knocked or not" in {
+      player1.hasKnocked should be(false)
+    }
   }
 }
