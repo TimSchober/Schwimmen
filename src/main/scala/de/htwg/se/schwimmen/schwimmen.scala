@@ -18,8 +18,9 @@ object schwimmen {
     }
     while(true) {
       for(player <- players) {
-        println(s"These are the cards on the field: ${field.cardsOnField}")
-        println(s"These are the cards in your Hand: ${player.cardsOnHand}")
+
+        println(field.toString)
+        println(player.toString)
         val answer = readLine(s"${player.name}, its your turn! Do you want to change a card?(y/n) or all cards?(all) or quit?(q)")
         if (answer == "y") {
           val playerCardNr = readLine("which one of yours?(1/2/3)").toInt
@@ -28,8 +29,8 @@ object schwimmen {
         } else if (answer == "all") {
           player.cardsOnHand = field.swapAllCards(player.cardsOnHand)
         }
-        println(s"These are the cards on the field: ${field.cardsOnField}")
-        println(s"These are the cards in your Hand: ${player.cardsOnHand}")
+        println(field.toString)
+        println(player.toString)
       }
     }
 
