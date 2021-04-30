@@ -33,4 +33,11 @@ case class PlayingField(stack: CardStack) {
     cardsOnField = playerCards
     returnList
   }
+
+  def processPlayerAmount(amount: Int): Boolean = {
+    amount match {
+      case 2|3|4|5|6|7|8|9 => true
+      case _ => false
+    }
+  }
 }

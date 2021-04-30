@@ -21,13 +21,4 @@ case class CardStack() {
     rndCardStack = rndCardStack.drop(3)
     i
   }
-
-  override def toString: String = {
-    val builder = new StringBuilder
-    for (string <- rndCardStack) {
-      builder.append(string._1).append(" of ").append(string._2).append("s\t")
-    }
-    builder.toString()
-  }
-
 }

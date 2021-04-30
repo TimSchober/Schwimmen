@@ -6,13 +6,13 @@ import org.scalatest.wordspec.AnyWordSpec
 
 class TUISpec extends AnyWordSpec with Matchers{
 
-  "A schwimmen TUI" should {
-    val tui = new TUI
-    "create a new shuffled stack of cards" in {
-      tui.stack should be(new CardStack)
-    }
-    "check the input of the player amount" in {
-      tui.processPlayerAmount(2) should be(true)
-    }
-  }
+//  "A schwimmen TUI" should {
+//    val tui = new TUI()
+//    "create a new shuffled stack of cards" in {
+//      tui.stack should be(new CardStack)
+//    }
+//    "check the input of the player amount" in {
+//      tui.processPlayerAmount(2) should be(true)
+//    }
+//  }
 }
