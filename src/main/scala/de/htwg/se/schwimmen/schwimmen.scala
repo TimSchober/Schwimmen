@@ -18,6 +18,7 @@ object schwimmen {
     }
     while(true) {
       for(player <- players) {
+
         println(field.toString)
         println(player.toString)
         val answer = readLine(s"${player.name}, its your turn! Do you want to change a card?(y/n) or all cards?(all) or quit?(q)")
