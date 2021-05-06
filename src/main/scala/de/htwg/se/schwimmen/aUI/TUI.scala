@@ -6,17 +6,23 @@ import de.htwg.se.schwimmen.util.Observable
 
 import scala.io.StdIn.readLine
 
-class TUI(controller: Controller) extends Observable{
+class TUI(var controller: Controller) extends Observable{
 
   def gamestart(): Unit = {
     sayWelcome()
+    controller.createCardStack()
     controller.playerAmount = readLine().toInt
     controller.createField()
-    controller.field.processPlayerAmount(controller.playerAmount)
+    if (controller.field.processPlayerAmount(controller.playerAmount))
+      return
+    readPlayers()
+    rounds(controller.players)
+  }
+
+  def readPlayers(): Unit = {
     controller.createPlayers(List.tabulate(controller.playerAmount){
       n => readLine(s"Player ${n + 1}, type your name: ")
     })
-    rounds(controller.players)
   }
 
   def sayWelcome(): Unit = {
