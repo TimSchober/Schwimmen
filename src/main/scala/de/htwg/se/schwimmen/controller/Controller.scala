@@ -26,19 +26,9 @@ class Controller(
     notifyObservers()
   }
 
-  def sayWelcome(): Unit = {
-    println(
-      """Welcome to Schwimmen!
-        |How many players want to play?
-        |Possible player amount is 2-9.
-        |""".stripMargin)
-    notifyObservers()
-  }
-
   def printPlayer(): Unit = {
     for (player<-players) {
       player.toString
     }
-    notifyObservers()
   }
 }
