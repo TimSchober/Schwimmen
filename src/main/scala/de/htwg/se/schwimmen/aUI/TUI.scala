@@ -9,7 +9,7 @@ import scala.io.StdIn.readLine
 class TUI(controller: Controller) extends Observable{
 
   def gamestart(): Unit = {
-    controller.sayWelcome()
+    sayWelcome()
     controller.playerAmount = readLine().toInt
     controller.createField()
     controller.field.processPlayerAmount(controller.playerAmount)
@@ -17,6 +17,14 @@ class TUI(controller: Controller) extends Observable{
       n => readLine(s"Player ${n + 1}, type your name: ")
     })
     rounds(controller.players)
+  }
+
+  def sayWelcome(): Unit = {
+    println(
+      """Welcome to Schwimmen!
+        |How many players want to play?
+        |Possible player amount is 2-9.
+        |""".stripMargin)
   }
 
   def processInput(currentPlayer: Player): Unit = {
@@ -30,6 +38,7 @@ class TUI(controller: Controller) extends Observable{
         currentPlayer.cardsOnHand = controller.field.swapAllCards(currentPlayer.cardsOnHand)
       case "k" =>
         currentPlayer.hasKnocked = true
+      case "n" =>
       case _ =>
         println("illegal input, try again")
         processInput(currentPlayer)
@@ -54,5 +63,4 @@ class TUI(controller: Controller) extends Observable{
       }
     }
   }
-
 }
