@@ -11,11 +11,11 @@ class TUISpec extends AnyWordSpec with Matchers{
     val players: List[String] = List("Tim")
     val controller = new Controller(null, Nil, null, 0)
     val tui = new TUI(controller)
-    "build the game til playable" in {
-      tui.gamestart()
-      controller.stack should be(new CardStack)
-      controller.field.cardsOnField.length should be(3)
-      controller.playerAmount should be(1)
-    }
+//    "build the game til playable" in {
+//      tui.gamestart()
+//      controller.stack should be(new CardStack)
+//      controller.field.cardsOnField.length should be(3)
+//      controller.playerAmount should be(1)
+//    }
   }
 }
