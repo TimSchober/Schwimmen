@@ -23,6 +23,10 @@ class PlayingFieldSpec extends AnyWordSpec with Matchers {
     "have three cards in cardsOnField" in {
       field.cardsOnField.length should be(3)
     }
+    "have 2-9 player" in {
+      field.processPlayerAmount(2) should be(true)
+      field.processPlayerAmount(1) should be(false)
+    }
 
   }
 
