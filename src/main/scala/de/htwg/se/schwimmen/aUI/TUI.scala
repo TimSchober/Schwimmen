@@ -2,11 +2,11 @@ package de.htwg.se.schwimmen.aUI
 
 import de.htwg.se.schwimmen.controller.Controller
 import de.htwg.se.schwimmen.model.Player
-import de.htwg.se.schwimmen.util.Observable
+import de.htwg.se.schwimmen.util.{Observable, Observer}
 
 import scala.io.StdIn.readLine
 
-class TUI(var controller: Controller) extends Observable {
+class TUI(var controller: Controller) extends Observer {
 
   def gamestart(plAmount: Int, plList: List[String]): Int = {
     controller.createCardStack()
@@ -41,4 +41,6 @@ class TUI(var controller: Controller) extends Observable {
   def processInput2(currentPlayer: Player, playerCardNr: Int, fieldCardNr: Int): Unit = {
     currentPlayer.cardsOnHand = controller.field.swapCard(currentPlayer.cardsOnHand, playerCardNr - 1, fieldCardNr - 1)
   }
+
+  override def update: Boolean = ???
 }
