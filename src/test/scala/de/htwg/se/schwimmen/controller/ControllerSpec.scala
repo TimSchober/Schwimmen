@@ -13,7 +13,10 @@ class ControllerSpec extends AnyWordSpec with Matchers{
     val observer = new Observer {
       var updated: Boolean = false
       def isUpdated: Boolean = updated
-      override def update: Boolean = updated
+      override def update: Boolean = {
+        updated = true
+        updated
+      }
     }
     controller.add(observer)
     "notify its observer after creating a stack of cards" in {
