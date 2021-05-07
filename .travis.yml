@@ -3,4 +3,4 @@ scala:
   - 2.13.5
 
 script:
-  - sbt clean coverage test
+  - sbt clean test
