@@ -6,67 +6,39 @@ import de.htwg.se.schwimmen.util.Observable
 
 import scala.io.StdIn.readLine
 
-class TUI(var controller: Controller) extends Observable{
+class TUI(var controller: Controller) extends Observable {
 
-  def gamestart(): Unit = {
-    sayWelcome()
+  def gamestart(plAmount: Int, plList: List[String]): Int = {
     controller.createCardStack()
-    controller.playerAmount = readLine().toInt
     controller.createField()
-    if (controller.field.processPlayerAmount(controller.playerAmount))
-      return
-    readPlayers()
-    rounds(controller.players)
+    if (!controller.field.processPlayerAmount(plAmount))
+      return -1
+    controller.playerAmount = plAmount
+    controller.createPlayers(plList)
+    0
   }
 
-  def readPlayers(): Unit = {
-    controller.createPlayers(List.tabulate(controller.playerAmount){
-      n => readLine(s"Player ${n + 1}, type your name: ")
-    })
+  def sayWelcome(): String = {
+    """Welcome to Schwimmen!
+      |How many players want to play?
+      |Possible player amount is 2-9.
+      |""".stripMargin
   }
 
-  def sayWelcome(): Unit = {
-    println(
-      """Welcome to Schwimmen!
-        |How many players want to play?
-        |Possible player amount is 2-9.
-        |""".stripMargin)
-  }
-
-  def processInput(currentPlayer: Player): Unit = {
-    val answer = readLine(s"${currentPlayer.name}, its your turn! Do you want to change a card?(y/n) or all cards?(all) or knock?(k)")
+  def processInput(currentPlayer: Player, answer: String): String = {
     answer match {
-      case "y" =>
-        val playerCardNr = readLine("which one of yours?(1/2/3)").toInt
-        val fieldCardNr = readLine("which one of the field?(1/2/3)").toInt
-        currentPlayer.cardsOnHand = controller.field.swapCard(currentPlayer.cardsOnHand, playerCardNr - 1, fieldCardNr - 1)
+      case "y" => "which one of yours?(1/2/3)"
       case "all" =>
         currentPlayer.cardsOnHand = controller.field.swapAllCards(currentPlayer.cardsOnHand)
+        "nextTurn"
       case "k" =>
         currentPlayer.hasKnocked = true
-      case "n" =>
-      case _ =>
-        println("illegal input, try again")
-        processInput(currentPlayer)
+        "nextTurn"
+      case "n" => "nextTurn"
+      case _ => "illegal input, try again"
     }
   }
-
-  def rounds(players: List[Player]): Unit = {
-    while(true) {
-      for(player <- players) {
-        if(player.hasKnocked) {
-          return //count the end result
-        }
-        println()
-        println(controller.field.toString)
-        println(player.toString)
-        println()
-        processInput(player)
-        println()
-        println(controller.field.toString)
-        println(player.toString)
-        println()
-      }
-    }
+  def processInput2(currentPlayer: Player, playerCardNr: Int, fieldCardNr: Int): Unit = {
+    currentPlayer.cardsOnHand = controller.field.swapCard(currentPlayer.cardsOnHand, playerCardNr - 1, fieldCardNr - 1)
   }
 }
