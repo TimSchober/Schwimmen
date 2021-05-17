@@ -9,7 +9,7 @@ class ControllerSpec extends AnyWordSpec with Matchers{
 
   "A controller observed by an Observer" should {
     val players: List[String] = List("Tim")
-    val controller = new Controller(null, Nil, null, 0)
+    val controller = new Controller(null, Nil, null, null, 0)
     val observer = new Observer {
       var updated: Boolean = false
       def isUpdated: Boolean = updated
@@ -19,24 +19,31 @@ class ControllerSpec extends AnyWordSpec with Matchers{
       }
     }
     controller.add(observer)
-    "notify its observer after creating a stack of cards" in {
+    "create a stack of cards" in {
       controller.createCardStack()
-      observer.updated should be(true)
+      //observer.updated should be(true)
       controller.stack should be(new CardStack)
     }
-    "notify its observer after creating all players" in {
+    "create all players" in {
       controller.playerAmount = players.length
       controller.createPlayers(players)
-      observer.updated should be(true)
+      //observer.updated should be(true)
       controller.players.head.name should be("Tim")
     }
-    "notify its observer after creating a field" in {
+    "create a field" in {
       controller.createField()
-      observer.updated should be(true)
+      //observer.updated should be(true)
       controller.field.cardsOnField.length should be(3)
     }
-    "print all players" in {
-      controller.printPlayer()
+    "add a single player" in {
+      controller.playerAmount = 2
+      controller.addPlayer("Ayaz")
+      controller.players.last.name should equal("Ayaz")
+      controller.currentPlayer.name should equal("Tim")
+    }
+    "get the next player" in {
+      controller.nextPlayer()
+      controller.currentPlayer.name should equal("Ayaz")
     }
   }
 }

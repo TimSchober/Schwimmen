@@ -7,28 +7,30 @@ class Controller(
                   var stack: CardStack,
                   var players: List[Player],
                   var field: PlayingField,
+                  var currentPlayer: Player,
                   var playerAmount: Int) extends Observable {
 
   def createCardStack(): Unit = {
     stack = new CardStack
-    notifyObservers()
   }
 
   def createPlayers(names: List[String]): Unit = {
     players = List.tabulate(playerAmount) {
       n => Player(names(n), stack)
     }
-    notifyObservers()
+    currentPlayer = players.head
+  }
+
+  def addPlayer(name: String): Unit = {
+    players = players :+ Player(name, stack)
+    currentPlayer = players.head
   }
 
   def createField(): Unit = {
     field = PlayingField(stack)
-    notifyObservers()
   }
 
-  def printPlayer(): Unit = {
-    for (player<-players) {
-      player.toString
-    }
+  def nextPlayer(): Unit = {
+    currentPlayer = players((players.indexOf(currentPlayer) + 1) % playerAmount)
   }
 }
