@@ -1,22 +1,13 @@
 package de.htwg.se.schwimmen.aUI
 
 import de.htwg.se.schwimmen.controller.Controller
-import de.htwg.se.schwimmen.model.Player
-import de.htwg.se.schwimmen.util.{Observable, Observer}
-
-import scala.io.StdIn.readLine
+import de.htwg.se.schwimmen.util.Observer
 
 class TUI(var controller: Controller) extends Observer {
 
-  def gamestart(plAmount: Int, plList: List[String]): Int = {
-    controller.createCardStack()
-    controller.createField()
-    if (!controller.field.processPlayerAmount(plAmount))
-      return -1
-    controller.playerAmount = plAmount
-    controller.createPlayers(plList)
-    0
-  }
+  controller.add(this)
+  controller.createCardStack()
+  controller.createField()
 
   def sayWelcome(): String = {
     """Welcome to Schwimmen!
@@ -25,22 +16,99 @@ class TUI(var controller: Controller) extends Observer {
       |""".stripMargin
   }
 
-  def processInput(currentPlayer: Player, answer: String): String = {
-    answer match {
-      case "y" => "which one of yours?(1/2/3)"
+  def currentPlayerStats(): String = {
+    "\n" + controller.field.toString + "\n" + controller.currentPlayer.toString() + "\n"
+  }
+
+  def processPlayerAmountInput(): String = {
+    if (!controller.field.processPlayerAmount(input.toInt))
+      return "\nillegal input, try again"
+    controller.playerAmount = input.toInt
+    turn += 1
+    "\nPlayer 1, type your name:"
+  }
+
+  var n = 1
+  def processPlayerNameInput(): String = {
+    controller.addPlayer(input)//---
+    if (controller.playerAmount <= n) {
+      turn += 1
+      currentPlayerStats() + firstOutput()
+    } else {
+      n += 1
+      s"\nPlayer $n, type your name:"
+    }
+  }
+
+  def firstOutput(): String = {
+    if(controller.currentPlayer.hasKnocked) {
+      turn = -2
+      return "end"
+    }
+    s"\n${controller.currentPlayer.name}, its your turn! " +
+      s"Do you want to change a card?(y/n) or all cards?(all) or knock?(k)"
+  }
+
+  def processFirstInput(): String = {
+    input match {
+      case "y" =>
+        turn += 1
+        "which one of yours?(1/2/3)"
       case "all" =>
-        currentPlayer.cardsOnHand = controller.field.swapAllCards(currentPlayer.cardsOnHand)
-        "nextTurn"
+        controller.currentPlayer.cardsOnHand = controller.field.swapAllCards(controller.currentPlayer.cardsOnHand)
+        turn = 0
+        next()
       case "k" =>
-        currentPlayer.hasKnocked = true
-        "nextTurn"
-      case "n" => "nextTurn"
+        controller.currentPlayer.hasKnocked = true
+        turn = 0
+        next()
+      case "n" =>
+        turn = 0
+        next()
       case _ => "illegal input, try again"
     }
   }
-  def processInput2(currentPlayer: Player, playerCardNr: Int, fieldCardNr: Int): Unit = {
-    currentPlayer.cardsOnHand = controller.field.swapCard(currentPlayer.cardsOnHand, playerCardNr - 1, fieldCardNr - 1)
+
+  def next(): String = {
+    val ret = currentPlayerStats()
+    controller.nextPlayer()//---
+    ret + currentPlayerStats() + firstOutput()
   }
 
-  override def update: Boolean = ???
+  var playerCardInt = 0
+  def processSecondInput(): String = {
+    playerCardInt = input.toInt
+    turn += 1
+    "which one of the field?(1/2/3)"
+  }
+
+  def processThirdInput(): String = {
+    controller.currentPlayer.cardsOnHand = controller.field.swapCard(
+      controller.currentPlayer.cardsOnHand, playerCardInt - 1, input.toInt - 1)
+    turn = 0
+    next()
+  }
+
+  var turn: Int = -2
+  var input: String = "sayWelcome"
+  def matchInput(): String = {
+    if (input == "sayWelcome") {
+      return sayWelcome()
+    }
+    if (input == "") {
+      return ""
+    }
+    turn match {
+      case -2 => processPlayerAmountInput()
+      case -1 => processPlayerNameInput()
+      case 0 => processFirstInput()
+      case 1 => processSecondInput()
+      case 2 => processThirdInput()
+    }
+  }
+
+  override def update: Boolean = {
+    println(matchInput())
+    true
+  }
 }
