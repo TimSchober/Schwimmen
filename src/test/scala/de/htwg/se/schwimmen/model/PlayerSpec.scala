@@ -23,7 +23,7 @@ class PlayerSpec extends AnyWordSpec with Matchers {
     }
     "have a toString method" in {
       val builder = new StringBuilder
-      builder.append("These are the cards in your Hand:    ")
+      builder.append("These are the cards in your hand:    ")
         .append(threeCards.head._1).append(" of ").append(threeCards.head._2).append("s    ")
         .append(threeCards(1)._1).append(" of ").append(threeCards(1)._2).append("s    ")
         .append(threeCards.last._1).append(" of ").append(threeCards.last._2).append("s    ")
