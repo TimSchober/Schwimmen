@@ -6,9 +6,8 @@ case class CardStack() {
 
   val cardsNumber: List[String] = List("7", "8", "9", "10", "jack", "queen", "king", "ace")
   val cardsColour: List[String] = List("heart", "diamond", "spade", "club")
-  var rndCardStack: List[(String, String)] = getRndCardStack
 
-  def getRndCardStack: List[(String, String)] = {
+  var rndCardStack: List[(String, String)] = {
     val fullCardStack: List[(String, String)] = for {
       n <- cardsNumber
       c <- cardsColour
