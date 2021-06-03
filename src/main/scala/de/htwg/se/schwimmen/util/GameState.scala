@@ -3,7 +3,7 @@ package de.htwg.se.schwimmen.util
 trait GameState
 
 case class nextPlayer() extends GameState {
-  def nextPlayer:String = State.state match {
+  def nextPlayer: String = State.state match {
     case "Player1" => "Player2"
     case "Player2" => "Player1"
   }

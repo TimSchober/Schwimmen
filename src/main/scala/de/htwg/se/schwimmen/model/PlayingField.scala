@@ -1,6 +1,6 @@
 package de.htwg.se.schwimmen.model
 
-case class PlayingField(stack: CardStack) extends AbstractPlayingField(stack: CardStack) {
+case class PlayingField(stack: CardStack) extends AbstractPlayingFieldTemplate(stack: CardStack) {
 
   override def processPlayerAmount(amount: Int): Boolean = {
     amount match {
