@@ -1,36 +1,82 @@
 package de.htwg.se.schwimmen.controller
 
 import de.htwg.se.schwimmen.model.{CardStack, Player, PlayingField}
-import de.htwg.se.schwimmen.util.Observable
+import de.htwg.se.schwimmen.util.{Observable, UndoManager}
 
 class Controller(
                   var stack: CardStack,
                   var players: List[Player],
                   var field: PlayingField,
-                  var currentPlayer: Player,
                   var playerAmount: Int) extends Observable {
+
+  val undoManager = new UndoManager
+  var playerStack: List[Player] = List[Player]()
+  var fieldStack: List[PlayingField] = List[PlayingField]()
+  var states: List[String] = List[String]("")
 
   def createCardStack(): Unit = {
     stack = new CardStack
   }
 
-  def createPlayers(names: List[String]): Unit = {
-    players = List.tabulate(playerAmount) {
-      n => Player(names(n), stack)
-    }
-    currentPlayer = players.head
+  def createField(): Unit = {
+    field = PlayingField()
+    field = field.setCardsOnField(stack.getThreeCards)
+    stack = stack.delThreeCards
+    fieldStack = fieldStack.::(field)
   }
 
   def addPlayer(name: String): Unit = {
-    players = players :+ Player(name, stack)
-    currentPlayer = players.head
+    var pl = Player(name)
+    pl = pl.setCardsOnHand(stack.getThreeCards)
+    stack = stack.delThreeCards
+    players = players :+ pl
   }
 
-  def createField(): Unit = {
-    field = PlayingField(stack)
+  var indexStack: List[Int] = List[Int]()
+  def swapCards(indexplayer: Int, indexfield: Int): Unit = {
+    indexStack = indexStack.::(indexplayer)
+    indexStack = indexStack.::(indexfield)
+    playerStack = playerStack.::(players.head)
+    fieldStack = fieldStack.::(field)
+    undoManager.doStep(new SwapCommand(indexplayer, indexfield, this))
+  }
+
+  def swapAllCards(): Unit = {
+    playerStack = playerStack.::(players.head)
+    fieldStack = fieldStack.::(field)
+    undoManager.doStep(new SwapAllCommand( this))
   }
 
   def nextPlayer(): Unit = {
-    currentPlayer = players((players.indexOf(currentPlayer) + 1) % playerAmount)
+    players = players :+ players.head
+    players = players.drop(1)
+  }
+
+  def setKnocked(): Unit = {
+    playerStack = playerStack.::(players.head)
+    fieldStack = fieldStack.::(field)
+    undoManager.doStep(new KnockCommand( this))
+  }
+
+  def doNothing(): Unit = {
+    playerStack = playerStack.::(players.head)
+    fieldStack = fieldStack.::(field)
+    undoManager.doStep(new KnockCommand( this))
+  }
+
+  def undoStep(): Unit = {
+    players = players.reverse :+ playerStack.head
+    players = players.drop(1)
+    players = players.reverse
+    playerStack = playerStack.drop(1)
+    field = fieldStack.head
+    fieldStack = fieldStack.drop(1)
+  }
+
+  def undo(): Unit = {
+    undoManager.undoStep()
+  }
+  def redo(): Unit = {
+    undoManager.redoStep()
   }
 }
