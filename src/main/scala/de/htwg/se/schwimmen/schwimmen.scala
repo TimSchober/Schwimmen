@@ -7,7 +7,7 @@ import scala.io.StdIn.readLine
 
 object schwimmen {
 
-  val tui = new TUI(new Controller(null, null, null, null, 0))
+  val tui = new TUI(new Controller(null, Nil, null, 0))
 
   def main(args: Array[String]): Unit = {
     while (true) {
