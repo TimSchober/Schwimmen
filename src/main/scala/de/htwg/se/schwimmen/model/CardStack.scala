@@ -11,8 +11,9 @@ case class CardStack(rndCardStack: List[(String, String)] = {
 }) {
 
   def getThreeCards: List[(String, String)] = {
-    val i = rndCardStack.take(3)
+    rndCardStack.take(3)
+  }
+  def delThreeCards: CardStack = {
     copy(rndCardStack.drop(3))
-    i
   }
 }
