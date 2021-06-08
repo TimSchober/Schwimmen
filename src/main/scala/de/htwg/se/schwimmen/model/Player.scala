@@ -1,19 +1,15 @@
 package de.htwg.se.schwimmen.model
 
-case class Player(name: String, stack: CardStack, cardsOnHand: List[(String, String)] = List(("x","x")), hasKnocked: Boolean = false, life: Int = 3) {
+case class Player(name: String, stack: CardStack, cardsOnHand: List[(String, String)] = Nil, hasKnocked: Boolean = false, life: Int = 3) {
 
-  if (cardsOnHand.equals(List(("x","x")))) {
-    setCardsOnHand()
+  def setCardsOnHand(threeCards: List[(String, String)]): Player = {
+    copy(cardsOnHand = threeCards)
   }
-
-  def setCardsOnHand(): List[(String, String)] = {
-    copy(cardsOnHand = stack.getThreeCards).cardsOnHand
+  def setLife(l: Int): Player = {
+    copy(life = l)
   }
-  def setLife(l: Int): Int = {
-    copy(life = l).life
-  }
-  def setHasKnocked(h: Boolean): Boolean = {
-    copy(hasKnocked = h).hasKnocked
+  def setHasKnocked(h: Boolean): Player = {
+    copy(hasKnocked = h)
   }
 
   override def toString: String = {
