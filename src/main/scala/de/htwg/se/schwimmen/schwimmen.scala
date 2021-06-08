@@ -7,7 +7,7 @@ import scala.io.StdIn.readLine
 
 object schwimmen {
 
-  val tui = new TUI(new Controller(null, Nil, null, null, 0))
+  val tui = new TUI(new Controller(null, null, null, null, 0))
 
   def main(args: Array[String]): Unit = {
     while (true) {
@@ -15,7 +15,11 @@ object schwimmen {
         return
       }
       tui.controller.notifyObservers()
-      tui.input = readLine()
+      if (tui.input != "z" && tui.input != "r") {
+        tui.input = readLine()
+      } else {
+        tui.input = "printStats"
+      }
     }
   }
 }
