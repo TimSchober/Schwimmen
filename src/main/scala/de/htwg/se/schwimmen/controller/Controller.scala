@@ -61,7 +61,7 @@ class Controller(
   def doNothing(): Unit = {
     playerStack = playerStack.::(players.head)
     fieldStack = fieldStack.::(field)
-    undoManager.doStep(new KnockCommand( this))
+    undoManager.doStep(new DoNothingCommand( this))
   }
 
   def undoStep(): Unit = {

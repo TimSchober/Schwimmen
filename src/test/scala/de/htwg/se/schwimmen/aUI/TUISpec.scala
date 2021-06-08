@@ -131,7 +131,7 @@ class TUISpec extends AnyWordSpec with Matchers{
       testtui.playerCardInt = 1
       testtui.turn = 2
       testtui.input = "1"
-      res = testtui.processThirdInput()
+      testtui.matchInput()
       testtui.turn should be(0)
     }
     "update" in {
