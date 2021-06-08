@@ -12,6 +12,13 @@ case class Player(name: String, cardsOnHand: List[(String, String)] = Nil, hasKn
     copy(hasKnocked = h)
   }
 
+  def swapCard(field: PlayingField, indexPlayer: Int, indexField: Int): List[(String, String)] =
+    indexPlayer match {
+      case 0 => List(field.cardsOnField(indexField), cardsOnHand(1), cardsOnHand.last)
+      case 1 => List(cardsOnHand.head, field.cardsOnField(indexField), cardsOnHand.last)
+      case 2 => List(cardsOnHand.head, cardsOnHand(1), field.cardsOnField(indexField))
+    }
+
   override def toString: String = {
     val builder = new StringBuilder
     builder.append("These are the cards in your hand:    ")

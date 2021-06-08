@@ -6,12 +6,11 @@ import org.scalatest.wordspec.AnyWordSpec
 class PlayerSpec extends AnyWordSpec with Matchers {
 
   "A Player" should {
-    val stack = CardStack()
-    val threeCards = stack.rndCardStack.take(3)
-    var player1 = Player("player1")
-    player1 = player1.setCardsOnHand(stack.getThreeCards)
+    val playerli = List(("10","spade"),("jack","spade"),("queen","spade"))
+    val fieldli = List(("7","hearts"),("8","hearts"),("9","hearts"))
+    var player1 = Player("Tim")
     "have a name" in {
-      player1.name should be("player1")
+      player1.name should be("Tim")
     }
     "have a lifecount" in {
       player1.life should be(3)
@@ -27,23 +26,29 @@ class PlayerSpec extends AnyWordSpec with Matchers {
       player1 = player1.setHasKnocked(true)
       player1.hasKnocked should be(true)
     }
-    "have three random cards" in {
-      player1.cardsOnHand.length should be(3)
-      player1.cardsOnHand should equal(threeCards)
-    }
     "be able to change all cards" in {
-      val li = List(("7","heart"), ("8","diamond"), ("9","spade"))
-      player1 = player1.setCardsOnHand(li)
-      player1.cardsOnHand should equal(li)
+      player1 = player1.setCardsOnHand(playerli)
+      player1.cardsOnHand should equal(playerli)
+    }
+    "give back a list of cards on the players hand after player has swapped" in {
+      player1 = player1.setCardsOnHand(playerli)
+      var field = PlayingField()
+      field = field.setCardsOnField(fieldli)
+      player1.swapCard(field, 0, 0) should equal(
+        List(("7","hearts"),("jack","spade"),("queen","spade")))
+      player1.swapCard(field, 1, 0) should equal(
+        List(("10","spade"),("7","hearts"),("queen","spade")))
+      player1.swapCard(field, 2, 0) should equal(
+        List(("10","spade"),("jack","spade"),("7","hearts")))
     }
     "have a toString method" in {
-      player1 = player1.setCardsOnHand(threeCards)
+      player1 = player1.setCardsOnHand(playerli)
       val builder = new StringBuilder
       builder.append("These are the cards in your hand:    ")
-        .append(threeCards.head._1).append(" of ").append(threeCards.head._2).append("s    ")
-        .append(threeCards(1)._1).append(" of ").append(threeCards(1)._2).append("s    ")
-        .append(threeCards.last._1).append(" of ").append(threeCards.last._2).append("s    ")
-        .append("        ").append(player1.name).append(" has ").append(player1.life)
+        .append("10").append(" of ").append("spade").append("s    ")
+        .append("jack").append(" of ").append("spade").append("s    ")
+        .append("queen").append(" of ").append("spade").append("s    ")
+        .append("        ").append("Tim").append(" has ").append("2")
         .append(" lives left")
       player1.toString should equal(builder.toString())
     }
