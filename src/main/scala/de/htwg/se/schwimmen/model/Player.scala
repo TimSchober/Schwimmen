@@ -1,6 +1,6 @@
 package de.htwg.se.schwimmen.model
 
-case class Player(name: String, stack: CardStack, cardsOnHand: List[(String, String)] = Nil, hasKnocked: Boolean = false, life: Int = 3) {
+case class Player(name: String, cardsOnHand: List[(String, String)] = Nil, hasKnocked: Boolean = false, life: Int = 3) {
 
   def setCardsOnHand(threeCards: List[(String, String)]): Player = {
     copy(cardsOnHand = threeCards)

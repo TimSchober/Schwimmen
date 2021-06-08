@@ -8,8 +8,8 @@ class PlayerSpec extends AnyWordSpec with Matchers {
   "A Player" should {
     val stack = CardStack()
     val threeCards = stack.rndCardStack.take(3)
-    var player1 = Player("player1", stack)
-    player1 = player1.setCardsOnHand(player1.stack.getThreeCards)
+    var player1 = Player("player1")
+    player1 = player1.setCardsOnHand(stack.getThreeCards)
     "have a name" in {
       player1.name should be("player1")
     }
