@@ -3,7 +3,7 @@ package de.htwg.se.schwimmen.aUI
 import de.htwg.se.schwimmen.controller.Controller
 import de.htwg.se.schwimmen.util.Observer
 
-class TUI(var controller: Controller) extends Observer {
+class TUI(val controller: Controller) extends Observer {
 
   controller.add(this)
   controller.createCardStack()
@@ -17,7 +17,7 @@ class TUI(var controller: Controller) extends Observer {
   }
 
   def currentPlayerStats(): String = {
-    "\n" + controller.field.toString + "\n" + controller.currentPlayer.toString() + "\n"
+    "\n" + controller.field.toString + "\n" + controller.players.head.toString() + "\n"
   }
 
   def processPlayerAmountInput(): String = {
@@ -41,25 +41,25 @@ class TUI(var controller: Controller) extends Observer {
   }
 
   def firstOutput(): String = {
-    if(controller.currentPlayer.hasKnocked) {
+    if(controller.players.head.hasKnocked) {
       turn = -2
       return "end"
     }
-    s"\n${controller.currentPlayer.name}, its your turn! " +
+    s"\n${controller.players.head.name}, its your turn! " +
       s"Do you want to change a card?(y/n) or all cards?(all) or knock?(k)"
   }
 
   def processFirstInput(): String = {
     input match {
       case "y" =>
-        turn += 1
+        turn = 1
         "which one of yours?(1/2/3)"
       case "all" =>
-        controller.currentPlayer.cardsOnHand = controller.field.swapAllCards(controller.currentPlayer.cardsOnHand)
+        controller.swapAllCards()
         turn = 0
         next()
       case "k" =>
-        controller.currentPlayer.hasKnocked = true
+        controller.setKnocked()
         turn = 0
         next()
       case "n" =>
@@ -78,13 +78,12 @@ class TUI(var controller: Controller) extends Observer {
   var playerCardInt = 0
   def processSecondInput(): String = {
     playerCardInt = input.toInt
-    turn += 1
+    turn = 2
     "which one of the field?(1/2/3)"
   }
 
   def processThirdInput(): String = {
-    controller.currentPlayer.cardsOnHand = controller.field.swapCard(
-      controller.currentPlayer.cardsOnHand, playerCardInt - 1, input.toInt - 1)
+    controller.swapCards(playerCardInt - 1, input.toInt - 1)
     turn = 0
     next()
   }
@@ -95,8 +94,20 @@ class TUI(var controller: Controller) extends Observer {
     if (input == "sayWelcome") {
       return sayWelcome()
     }
+    if (input == "printStats") {
+      turn = 0
+      return currentPlayerStats() + firstOutput()
+    }
     if (input == "") {
       return ""
+    }
+    if (input == "z") {
+      controller.undo()
+      return "undo"
+    }
+    if (input == "r") {
+      controller.redo()
+      return "redo"
     }
     turn match {
       case -2 => processPlayerAmountInput()

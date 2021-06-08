@@ -7,7 +7,7 @@ import org.scalatest.wordspec.AnyWordSpec
 class TUISpec extends AnyWordSpec with Matchers{
 
   "A TUI" should {
-    val tui = new TUI(new Controller(null, Nil, null, null, 0))
+    val tui = new TUI(new Controller(null, Nil, null, 0))
     tui.controller.playerAmount = 2
     tui.controller.addPlayer("Tim")
     tui.controller.addPlayer("Ayaz")
@@ -20,7 +20,7 @@ class TUISpec extends AnyWordSpec with Matchers{
     "print current stats of the player" in {
       tui.currentPlayerStats() should equal("\n" +
         tui.controller.field.toString + "\n" +
-        tui.controller.currentPlayer.toString() + "\n")
+        tui.controller.players.head.toString() + "\n")
     }
     "test the input for a certain player amount" in {
       tui.input = "2"
@@ -38,53 +38,37 @@ class TUISpec extends AnyWordSpec with Matchers{
     "give an output to which a player can answer" in {
       tui.firstOutput() should equal("\nTim, its your turn! " +
         "Do you want to change a card?(y/n) or all cards?(all) or knock?(k)")
-      tui.controller.players.head.hasKnocked = true
+      tui.controller.players = tui.controller.players.patch(0, Seq(tui.controller.players.head.setHasKnocked(true)), 1)
       tui.firstOutput() should equal("end")
     }
     "process the answer to the last question" in {
-      var ret = tui.currentPlayerStats()
-      tui.controller.nextPlayer()
-      ret = ret + tui.currentPlayerStats() + tui.firstOutput()
       tui.input = "y"
       tui.processFirstInput() should equal("which one of yours?(1/2/3)")
       tui.input = "all"
-      tui.controller.currentPlayer = tui.controller.players.head
-      tui.controller.currentPlayer.cardsOnHand =
-        tui.controller.field.swapAllCards(tui.controller.currentPlayer.cardsOnHand)
-      tui.processFirstInput() should equal(ret)
+      tui.processFirstInput()
+      tui.turn should equal(0)
       tui.input = "k"
-      tui.controller.currentPlayer = tui.controller.players.head
-      tui.processFirstInput() should equal(ret)
+      tui.processFirstInput()
+      tui.turn should equal(0)
       tui.input = "n"
-      tui.controller.currentPlayer = tui.controller.players.head
-      tui.processFirstInput() should equal(ret)
+      tui.processFirstInput()
+      tui.turn should equal(0)
       tui.input = "anything else"
       tui.processFirstInput() should equal("illegal input, try again")
     }
     "change players" in {
-      tui.controller.currentPlayer = tui.controller.players.head
-      var ret = tui.currentPlayerStats()
-      tui.controller.nextPlayer()
-      ret = ret + tui.currentPlayerStats() + tui.firstOutput()
-      tui.controller.currentPlayer = tui.controller.players.head
-      tui.next should equal(ret)
-      tui.controller.currentPlayer.name should equal("Ayaz")
       tui.next()
-      tui.controller.currentPlayer.name should equal("Tim")
+      tui.controller.players.head.name should equal("Tim")
+      tui.next()
+      tui.controller.players.head.name should equal("Ayaz")
     }
     "process the answer to which one of yours?(1/2/3)" in {
       tui.input = "1"
       tui.processSecondInput() should equal("which one of the field?(1/2/3)")
     }
     "process the answer to which one of the field?(1/2/3)" in {
-      tui.controller.currentPlayer = tui.controller.players.head
-      tui.controller.currentPlayer.cardsOnHand = tui.controller.field.swapCard(
-        tui.controller.currentPlayer.cardsOnHand, 0, 0)
-      val ret = tui.next()
-      tui.controller.currentPlayer = tui.controller.players.head
-      tui.controller.currentPlayer.cardsOnHand = tui.controller.field.swapCard(
-        tui.controller.currentPlayer.cardsOnHand, 0, 0)
-      tui.processThirdInput() should equal(ret)
+      tui.processSecondInput()
+      tui.turn should be(2)
     }
     "match all the inputs" in {
       tui.input = "sayWelcome"
@@ -92,7 +76,7 @@ class TUISpec extends AnyWordSpec with Matchers{
       tui.input = ""
       tui.matchInput() should equal("")
 
-      var testtui = new TUI(new Controller(null, Nil, null, null, 0))
+      var testtui = new TUI(new Controller(null, Nil, null, 0))
       testtui.controller.playerAmount = 2
       testtui.controller.addPlayer("Tim")
       testtui.controller.addPlayer("Ayaz")
@@ -103,14 +87,14 @@ class TUISpec extends AnyWordSpec with Matchers{
       testtui.input = "1"
       testtui.matchInput() should equal(res)
 
-      testtui = new TUI(new Controller(null, Nil, null, null, 0))
+      testtui = new TUI(new Controller(null, Nil, null, 0))
       testtui.controller.playerAmount = 2
       testtui.controller.addPlayer("Tim")
       testtui.controller.addPlayer("Ayaz")
       testtui.turn = -1
       testtui.input = "Tim"
       res = testtui.processPlayerNameInput()
-      testtui = new TUI(new Controller(null, Nil, null, null, 0))
+      testtui = new TUI(new Controller(null, Nil, null, 0))
       testtui.controller.playerAmount = 2
       testtui.controller.addPlayer("Tim")
       testtui.controller.addPlayer("Ayaz")
@@ -118,7 +102,7 @@ class TUISpec extends AnyWordSpec with Matchers{
       testtui.input = "Tim"
       testtui.matchInput() should equal(res)
 
-      testtui = new TUI(new Controller(null, Nil, null, null, 0))
+      testtui = new TUI(new Controller(null, Nil, null, 0))
       testtui.controller.playerAmount = 2
       testtui.controller.addPlayer("Tim")
       testtui.controller.addPlayer("Ayaz")
@@ -129,7 +113,7 @@ class TUISpec extends AnyWordSpec with Matchers{
       testtui.input = "anything"
       testtui.matchInput() should equal(res)
 
-      testtui = new TUI(new Controller(null, Nil, null, null, 0))
+      testtui = new TUI(new Controller(null, Nil, null, 0))
       testtui.controller.playerAmount = 2
       testtui.controller.addPlayer("Tim")
       testtui.controller.addPlayer("Ayaz")
@@ -140,7 +124,7 @@ class TUISpec extends AnyWordSpec with Matchers{
       testtui.input = "1"
       testtui.matchInput() should equal(res)
 
-      testtui = new TUI(new Controller(null, Nil, null, null, 0))
+      testtui = new TUI(new Controller(null, Nil, null, 0))
       testtui.controller.playerAmount = 2
       testtui.controller.addPlayer("Tim")
       testtui.controller.addPlayer("Ayaz")
@@ -148,16 +132,24 @@ class TUISpec extends AnyWordSpec with Matchers{
       testtui.turn = 2
       testtui.input = "1"
       res = testtui.processThirdInput()
-      testtui.controller.currentPlayer = testtui.controller.players.head
-      testtui.controller.currentPlayer.cardsOnHand = testtui.controller.field.swapCard(
-        testtui.controller.currentPlayer.cardsOnHand, 0, 0)
-      testtui.turn = 2
-      testtui.input = "1"
-      testtui.matchInput() should equal(res)
+      testtui.turn should be(0)
     }
     "update" in {
       tui.input = ""
       tui.update should be(true)
+    }
+    "return undo if input = z" in {
+      tui.input = "z"
+      tui.matchInput() should equal("undo")
+    }
+    "return redo if input = r" in {
+      tui.input = "r"
+      tui.matchInput() should equal("redo")
+    }
+    "print stats" in {
+      tui.input = "printStats"
+      tui.matchInput()
+      tui.turn should be(-2)
     }
   }
 }
