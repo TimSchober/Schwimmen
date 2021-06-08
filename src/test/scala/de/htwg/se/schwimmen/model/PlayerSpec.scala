@@ -15,11 +15,20 @@ class PlayerSpec extends AnyWordSpec with Matchers {
     "have a lifecount" in {
       player1.life should be(3)
     }
-    "have three random cards" in {
-      player1.cardsOnHand.length should be(3)
+    "set a lifecount" in {
+      player1.setLife(2)
+      player1.life should be(2)
     }
     "have a bool which says whether a player knocked or not" in {
       player1.hasKnocked should be(false)
+    }
+    "set this bool" in {
+      player1.setHasKnocked(true)
+      player1.hasKnocked should be(true)
+    }
+    "have three random cards" in {
+      player1.cardsOnHand.length should be(3)
+      player1.cardsOnHand should equal(threeCards)
     }
     "have a toString method" in {
       val builder = new StringBuilder

@@ -1,6 +1,10 @@
 package de.htwg.se.schwimmen.model
 
-case class Player(name: String, stack: CardStack, cardsOnHand: List[(String, String)] = List(("","")), hasKnocked: Boolean = false, life: Int = 3) {
+case class Player(name: String, stack: CardStack, cardsOnHand: List[(String, String)] = List(("x","x")), hasKnocked: Boolean = false, life: Int = 3) {
+
+  if (cardsOnHand.equals(List(("x","x")))) {
+    setCardsOnHand()
+  }
 
   def setCardsOnHand(): List[(String, String)] = {
     copy(cardsOnHand = stack.getThreeCards).cardsOnHand
