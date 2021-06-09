@@ -3,6 +3,8 @@ package de.htwg.se.schwimmen.aUI
 import de.htwg.se.schwimmen.controller.Controller
 import de.htwg.se.schwimmen.util.Observer
 
+import scala.util.{Failure, Success, Try}
+
 class TUI(val controller: Controller) extends Observer {
 
   controller.add(this)
@@ -102,12 +104,16 @@ class TUI(val controller: Controller) extends Observer {
       return ""
     }
     if (input == "z") {
-      controller.undo()
-      return "undo"
+      Try {controller.undo()} match {
+        case Failure(e) => return e.getMessage + "\ninvalid"
+        case Success(e) => return "undo"
+      }
     }
     if (input == "r") {
-      controller.redo()
-      return "redo"
+      Try {controller.redo()} match {
+        case Failure(e) => return e.getMessage + "\ninvalid"
+        case Success(e) => return "redo"
+      }
     }
     turn match {
       case -2 => processPlayerAmountInput()
