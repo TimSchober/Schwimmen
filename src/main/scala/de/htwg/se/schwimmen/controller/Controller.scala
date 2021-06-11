@@ -1,28 +1,32 @@
 package de.htwg.se.schwimmen.controller
 
 import de.htwg.se.schwimmen.model.{CardStack, Player, PlayingField}
-import de.htwg.se.schwimmen.util.{Observable, UndoManager}
+import de.htwg.se.schwimmen.util.UndoManager
+
+import scala.swing.Publisher
 
 class Controller(
                   var stack: CardStack,
                   var players: List[Player],
                   var field: PlayingField,
-                  var playerAmount: Int) extends Observable {
+                  var playerAmount: Int) extends Publisher {
 
   val undoManager = new UndoManager
   var playerStack: List[Player] = List[Player]()
   var fieldStack: List[PlayingField] = List[PlayingField]()
-  var states: List[String] = List[String]("")
 
-  def createCardStack(): Unit = {
+  def createNewGame(): Unit = {
     stack = new CardStack
-  }
-
-  def createField(): Unit = {
     field = PlayingField()
     field = field.setCardsOnField(stack.getThreeCards)
     stack = stack.delThreeCards
     fieldStack = fieldStack.::(field)
+    publish(new NewGame)
+  }
+
+  def setPlayerAmount(plAm: Int): Unit = {
+    playerAmount = plAm
+    publish(PlayerAmountChanged(plAm))
   }
 
   def addPlayer(name: String): Unit = {
@@ -30,6 +34,14 @@ class Controller(
     pl = pl.setCardsOnHand(stack.getThreeCards)
     stack = stack.delThreeCards
     players = players :+ pl
+    publish(new PlayerAdded)
+  }
+
+  def yesSelected(): Unit = {
+    publish(new YesSelected)
+  }
+  def cardSelected(): Unit = {
+    publish(new CardSelected)
   }
 
   var indexStack: List[Int] = List[Int]()
@@ -39,23 +51,27 @@ class Controller(
     playerStack = playerStack.::(players.head)
     fieldStack = fieldStack.::(field)
     undoManager.doStep(new SwapCommand(indexplayer, indexfield, this))
+    publish(new CardsChanged)
   }
 
   def swapAllCards(): Unit = {
     playerStack = playerStack.::(players.head)
     fieldStack = fieldStack.::(field)
     undoManager.doStep(new SwapAllCommand( this))
+    publish(new CardsChanged)
   }
 
   def nextPlayer(): Unit = {
     players = players :+ players.head
     players = players.drop(1)
+    publish(new PlayerChanged)
   }
 
   def setKnocked(): Unit = {
     playerStack = playerStack.::(players.head)
     fieldStack = fieldStack.::(field)
     undoManager.doStep(new KnockCommand( this))
+    publish(new KnockedChanged)
   }
 
   def doNothing(): Unit = {
@@ -75,8 +91,10 @@ class Controller(
 
   def undo(): Unit = {
     undoManager.undoStep()
+    publish(new PlayerChanged)
   }
   def redo(): Unit = {
     undoManager.redoStep()
+    publish(new PlayerChanged)
   }
 }
