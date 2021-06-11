@@ -52,10 +52,6 @@ class GUI(controller: Controller) extends Frame {
     contents += changeAllCardButton
     contents += knockButton
     contents += doNothingButton
-//    listenTo(changeOneCardButton)
-//    listenTo(changeAllCardButton)
-//    listenTo(knockButton)
-//    listenTo(doNothingButton)
   }
 
   reactions += {

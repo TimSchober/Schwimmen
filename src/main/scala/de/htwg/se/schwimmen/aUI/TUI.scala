@@ -57,8 +57,8 @@ class TUI(val controller: Controller) extends Reactor {
     case event: NewGame => printWelcome()
     case event: PlayerAmountChanged => println(typeYourNameString())
     case event: PlayerAdded => println(typeYourNameString())
-    case event: YesSelected => println(firstInputString())
-    case event: CardSelected => println(secondInputString())
+    case event: YesSelected => println(secondOutputString())
+    case event: CardSelected => println(thirdOutputString())
     case event: PlayerChanged => println(nextPlayerString())
   }
 
@@ -97,10 +97,10 @@ class TUI(val controller: Controller) extends Reactor {
   def nextPlayerString(): String = {
     statsString(controller.players.last) + statsString(controller.players.head) + firstOutputString()
   }
-  def firstInputString(): String = {
+  def secondOutputString(): String = {
     "which one of yours?(1/2/3)"
   }
-  def secondInputString(): String = {
+  def thirdOutputString(): String = {
     "which one of the field?(1/2/3)"
   }
 }
