@@ -1,131 +1,106 @@
 package de.htwg.se.schwimmen.aUI
 
-import de.htwg.se.schwimmen.controller.Controller
-import de.htwg.se.schwimmen.util.Observer
-
+import de.htwg.se.schwimmen.controller.{CardSelected, Controller, NewGame, PlayerAdded, PlayerAmountChanged, PlayerChanged, YesSelected}
+import de.htwg.se.schwimmen.model.Player
 import scala.util.{Failure, Success, Try}
+import scala.swing.Reactor
 
-class TUI(val controller: Controller) extends Observer {
+class TUI(val controller: Controller) extends Reactor {
 
-  controller.add(this)
-  controller.createCardStack()
-  controller.createField()
+  listenTo(controller)
+  controller.createNewGame()
 
-  def sayWelcome(): String = {
+  var playerCardInt = 0
+  var input: String = ""
+  def processInput(): Unit = {
+    Try {input.toInt} match {
+      case Success(e) =>
+        if (controller.playerAmount == 0 && controller.field.processPlayerAmount(input.toInt)) {
+          controller.setPlayerAmount(input.toInt)
+        } else if ((input.toInt == 1 | input.toInt == 2 | input.toInt == 3) && playerCardInt == 0) {
+          playerCardInt = input.toInt
+          controller.cardSelected()
+        } else if ((input.toInt == 1 | input.toInt == 2 | input.toInt == 3) && playerCardInt != 0) {
+          controller.swapCards(playerCardInt - 1, input.toInt - 1)
+          playerCardInt = 0
+          controller.nextPlayer()
+        }
+      case Failure(e) =>
+        input match {
+          case "q" =>
+          case "z" => controller.undo()
+          case "r" => controller.redo()
+          case _ =>
+            if (controller.playerAmount > controller.players.size) {
+              controller.addPlayer(input)
+            } else {
+              input match {
+                case "y" =>
+                  controller.yesSelected()
+                case "all" =>
+                  controller.swapAllCards()
+                  controller.nextPlayer()
+                case "k" =>
+                  controller.setKnocked()
+                  controller.nextPlayer()
+                case "n" =>
+                  controller.doNothing()
+                  controller.nextPlayer()
+                case _ =>
+              }
+            }
+        }
+    }
+  }
+
+  reactions += {
+    case event: NewGame => printWelcome()
+    case event: PlayerAmountChanged => println(typeYourNameString())
+    case event: PlayerAdded => println(typeYourNameString())
+    case event: YesSelected => println(firstInputString())
+    case event: CardSelected => println(secondInputString())
+    case event: PlayerChanged => println(nextPlayerString())
+  }
+
+  def printWelcome(): Unit = {
+    println(sayWelcomeString())
+  }
+
+  def sayWelcomeString(): String = {
     """Welcome to Schwimmen!
       |How many players want to play?
       |Possible player amount is 2-9.
       |""".stripMargin
   }
 
-  def currentPlayerStats(): String = {
-    "\n" + controller.field.toString + "\n" + controller.players.head.toString() + "\n"
+  def statsString(pl: Player): String = {
+    "\n" + controller.field.toString + "\n" + pl.toString() + "\n"
   }
 
-  def processPlayerAmountInput(): String = {
-    if (!controller.field.processPlayerAmount(input.toInt))
-      return "\nillegal input, try again"
-    controller.playerAmount = input.toInt
-    turn += 1
-    "\nPlayer 1, type your name:"
-  }
-
-  var n = 1
-  def processPlayerNameInput(): String = {
-    controller.addPlayer(input)//---
-    if (controller.playerAmount <= n) {
-      turn += 1
-      currentPlayerStats() + firstOutput()
+  def typeYourNameString(): String = {
+    if (controller.playerAmount <= controller.players.size) {
+      statsString(controller.players.head) + firstOutputString()
     } else {
-      n += 1
-      s"\nPlayer $n, type your name:"
+      s"\nPlayer ${controller.players.size + 1}, type your name:"
     }
   }
 
-  def firstOutput(): String = {
+  def firstOutputString(): String = {
     if(controller.players.head.hasKnocked) {
-      turn = -2
-      return "end"
+      input = "q"
+      return "end"//---> Darauf folgt ausszählen
     }
     s"\n${controller.players.head.name}, its your turn! " +
       s"Do you want to change a card?(y/n) or all cards?(all) or knock?(k)"
   }
 
-  def processFirstInput(): String = {
-    input match {
-      case "y" =>
-        turn = 1
-        "which one of yours?(1/2/3)"
-      case "all" =>
-        controller.swapAllCards()
-        turn = 0
-        next()
-      case "k" =>
-        controller.setKnocked()
-        turn = 0
-        next()
-      case "n" =>
-        turn = 0
-        next()
-      case _ => "illegal input, try again"
-    }
+  def nextPlayerString(): String = {
+    statsString(controller.players.last) + statsString(controller.players.head) + firstOutputString()
   }
-
-  def next(): String = {
-    val ret = currentPlayerStats()
-    controller.nextPlayer()//---
-    ret + currentPlayerStats() + firstOutput()
+  def firstInputString(): String = {
+    "which one of yours?(1/2/3)"
   }
-
-  var playerCardInt = 0
-  def processSecondInput(): String = {
-    playerCardInt = input.toInt
-    turn = 2
+  def secondInputString(): String = {
     "which one of the field?(1/2/3)"
-  }
-
-  def processThirdInput(): String = {
-    controller.swapCards(playerCardInt - 1, input.toInt - 1)
-    turn = 0
-    next()
-  }
-
-  var turn: Int = -2
-  var input: String = "sayWelcome"
-  def matchInput(): String = {
-    if (input == "sayWelcome") {
-      return sayWelcome()
-    }
-    if (input == "printStats") {
-      turn = 0
-      return currentPlayerStats() + firstOutput()
-    }
-    if (input == "") {
-      return ""
-    }
-    if (input == "z") {
-      Try {controller.undo()} match {
-        case Failure(e) => return e.getMessage + "\ninvalid"
-        case Success(e) => return "undo"
-      }
-    }
-    if (input == "r") {
-      Try {controller.redo()} match {
-        case Failure(e) => return e.getMessage + "\ninvalid"
-        case Success(e) => return "redo"
-      }
-    }
-    turn match {
-      case -2 => processPlayerAmountInput()
-      case -1 => processPlayerNameInput()
-      case 0 => processFirstInput()
-      case 1 => processSecondInput()
-      case 2 => processThirdInput()
-    }
-  }
-
-  override def update: Boolean = {
-    println(matchInput())
-    true
   }
 }
