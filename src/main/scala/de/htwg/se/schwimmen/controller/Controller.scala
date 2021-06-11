@@ -12,7 +12,6 @@ class Controller(
   val undoManager = new UndoManager
   var playerStack: List[Player] = List[Player]()
   var fieldStack: List[PlayingField] = List[PlayingField]()
-  var states: List[String] = List[String]("")
 
   def createCardStack(): Unit = {
     stack = new CardStack
