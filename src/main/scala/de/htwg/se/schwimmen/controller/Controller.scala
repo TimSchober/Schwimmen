@@ -37,11 +37,13 @@ class Controller(
     publish(new PlayerAdded)
   }
 
-  def yesSelected(): Unit = {
+  def yesSelected(): Boolean = {
     publish(new YesSelected)
+    true
   }
-  def cardSelected(): Unit = {
+  def cardSelected(): Boolean = {
     publish(new CardSelected)
+    true
   }
 
   var indexStack: List[Int] = List[Int]()
