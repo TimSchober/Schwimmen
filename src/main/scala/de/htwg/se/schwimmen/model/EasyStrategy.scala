@@ -1,5 +1,7 @@
 package de.htwg.se.schwimmen.model
 
+import de.htwg.se.schwimmen.model.fieldComponent.PlayerInterface
+
 class EasyStrategy extends Strategy {
-  override def checkStop(player: Player): Boolean = player.cardCount == 31
+  override def checkStop(player: PlayerInterface): Boolean = player.cardCount == 31
 }
