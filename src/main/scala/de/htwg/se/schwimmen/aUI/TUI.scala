@@ -1,7 +1,8 @@
 package de.htwg.se.schwimmen.aUI
 
 import de.htwg.se.schwimmen.controller.{CardSelected, Controller, NewGame, PlayerAdded, PlayerAmountChanged, PlayerChanged, YesSelected}
-import de.htwg.se.schwimmen.model.Player
+import de.htwg.se.schwimmen.model.{EasyStrategy, Player}
+
 import scala.util.{Failure, Success, Try}
 import scala.swing.Reactor
 
@@ -9,7 +10,7 @@ class TUI(val controller: Controller) extends Reactor {
 
   listenTo(controller)
   controller.createNewGame()
-
+  val strat = new EasyStrategy
   var playerCardInt = 0
   var input: String = ""
   def processInput(): String = {
@@ -31,6 +32,9 @@ class TUI(val controller: Controller) extends Reactor {
         "illegal input"
       case Failure(e) =>
         input match {
+          case "nr" =>
+            controller.nextRound()
+            "next round"
           case "q" => "input set to q"
           case "z" =>
             controller.undo()
@@ -96,15 +100,29 @@ class TUI(val controller: Controller) extends Reactor {
   }
 
   def firstOutputString(): String = {
-    if(controller.players.head.hasKnocked) {
-      input = "q"
-      return "end"//---> Darauf folgt ausszählen
-    }
+    if (controller.players.head.hasKnocked || strat.checkStop(controller.players.last)) return endOfGameStats()
     s"\n${controller.players.head.name}, its your turn! " +
       s"Do you want to change a card?(y/n) or all cards?(all) or knock?(k)"
   }
 
   def nextPlayerString(): String = {
     statsString(controller.players.last) + statsString(controller.players.head) + firstOutputString()
+  }
+
+  def endOfGameStats(): String = {
+    val res = controller.players.sortBy(_.cardCount).reverse
+    val builder = new StringBuilder
+    var looseList:List[Player] = Nil
+    for (pl <- res) if (pl.cardCount == res.last.cardCount) looseList = looseList.::(pl.setLife(pl.life - 1))
+    controller.players = res.dropRight(looseList.size)
+    for (pl <- looseList) {
+      if (pl.life - 1 == -1) builder.append(pl.name).append(" you're out") else
+        controller.players = controller.players.::(pl.setLife(pl.life - 1))
+    }
+    for (pl <- res) builder.append(s"\n${pl.name}:    ${pl.cardCount} points    ${pl.life} lives left")
+    builder.append("\n")
+    for (pl <- looseList) builder.append(pl.name).append(", ")
+    builder.append("lost a Life").append("\nstart next round with(nr)")
+    builder.toString()
   }
 }

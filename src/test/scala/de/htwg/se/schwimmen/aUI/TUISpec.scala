@@ -34,14 +34,20 @@ class TUISpec extends AnyWordSpec with Matchers{
       tui.typeYourNameString() should equal("\nPlayer 3, type your name:")
       tui.controller.playerAmount = 2
     }
+    "print stats of the next player" in {
+      tui.nextPlayerString() should equal(tui.statsString(pl2) + tui.statsString(pl1) + tui.firstOutputString())
+    }
     "say the player that its their turn" in {
       tui.firstOutputString() should equal("\nTim, its your turn! " +
         "Do you want to change a card?(y/n) or all cards?(all) or knock?(k)")
       tui.controller.setKnocked()
-      tui.firstOutputString() should equal("end")
-    }
-    "print stats of the next player" in {
-      tui.nextPlayerString() should equal(tui.statsString(pl2) + tui.statsString(pl1) + tui.firstOutputString())
+      val fostr = tui.firstOutputString()
+      var plList: List[Player] = List()
+      for (pl <- tui.controller.players) {
+        plList = plList :+ pl.setLife(3)
+      }
+      tui.controller.players = plList.reverse
+      fostr should equal(tui.endOfGameStats())
     }
     "process the input made by the player" in {
       val testtui = new TUI(new Controller(stack, Nil, field, 0))
@@ -72,6 +78,15 @@ class TUISpec extends AnyWordSpec with Matchers{
       testtui.processInput() should equal("player changed")
       testtui.input = "anything else"
       testtui.processInput() should equal("illegal input")
+    }
+    "get ready for next round" in {
+      var pl1 = Player("Tim")
+      var pl2 = Player("Ayaz")
+      pl1 = pl1.setCardsOnHand(List(("7", "heart"), ("8", "heart"), ("9", "heart")))
+      pl2 = pl2.setCardsOnHand(List(("7", "diamond"), ("8", "diamond"), ("10", "diamond")))
+      val tui = new TUI(new Controller(CardStack(), List(pl1, pl2), PlayingField(), 2))
+      tui.endOfGameStats() should equal("\nAyaz:    25.0 points    3 lives left" + "\nTim:    24.0 points    3 lives left"
+      + "\nTim, lost a Life\nstart next round with(nr)")
     }
   }
 }
