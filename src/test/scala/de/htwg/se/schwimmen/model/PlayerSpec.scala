@@ -52,5 +52,16 @@ class PlayerSpec extends AnyWordSpec with Matchers {
         .append(" lives left")
       player1.toString should equal(builder.toString())
     }
+    "get the value of a cards face" in {
+      player1.getValue("7") should be(7)
+      player1.getValue("8") should be(8)
+      player1.getValue("9") should be(9)
+      player1.getValue("10") should be(10)
+      player1.getValue("jack") should be(10)
+      player1.getValue("queen") should be(10)
+      player1.getValue("king") should be(10)
+      player1.getValue("ace") should be(11)
+
+    }
   }
 }

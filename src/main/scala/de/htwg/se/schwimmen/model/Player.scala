@@ -1,9 +1,13 @@
 package de.htwg.se.schwimmen.model
 
-case class Player(name: String, cardsOnHand: List[(String, String)] = Nil, hasKnocked: Boolean = false, life: Int = 3) {
+case class Player(name: String,
+                  cardsOnHand: List[(String, String)] = Nil,
+                  cardCount: Double = 0.0,
+                  hasKnocked: Boolean = false,
+                  life: Int = 3) {
 
   def setCardsOnHand(threeCards: List[(String, String)]): Player = {
-    copy(cardsOnHand = threeCards)
+    copy(cardsOnHand = threeCards, cardCount = setCardCount(threeCards))
   }
   def setLife(l: Int): Player = {
     copy(life = l)
@@ -26,5 +30,34 @@ case class Player(name: String, cardsOnHand: List[(String, String)] = Nil, hasKn
       builder.append(x._1).append(" of ").append(x._2).append("s    ")
     }
     builder.append("        ").append(name).append(" has ").append(life).append(" lives left").toString()
+  }
+
+  def getColoursOfCards(threeCards: List[(String, String)]): List[String] = {
+    List(threeCards.head._2, threeCards(1)._2, threeCards.last._2)
+  }
+  def getValuesOfCards(threeCards: List[(String, String)]): List[Int] = {
+    List(getValue(threeCards.head._1), getValue(threeCards(1)._1), getValue(threeCards.last._1))
+  }
+  def getValue(value: String): Int = value match {
+    case "7" => 7
+    case "8" => 8
+    case "9" => 9
+    case "10" => 10
+    case "jack" => 10
+    case "queen" => 10
+    case "king" => 10
+    case "ace" => 11
+  }
+  def setCardCount(threeCards: List[(String, String)]): Double = {
+    val colourList = getColoursOfCards(threeCards)
+    val valueList = getValuesOfCards(threeCards)
+    var countList = valueList
+    if (threeCards.head._1.equals(threeCards(1)._1) && threeCards.head._1.equals(threeCards.last._1)) return 30.5
+    if (colourList.head.equals(colourList.last) && colourList.head.equals(colourList(1)))
+      countList = countList.::(valueList.head + valueList(1) + valueList.last)
+    if (colourList.head.equals(colourList(1))) countList = countList.::(valueList.head + valueList(1))
+    if (colourList.head.equals(colourList.last)) countList = countList.::(valueList.head + valueList.last)
+    if (colourList.last.equals(colourList(1))) countList = countList.::(valueList.last + valueList(1))
+    countList.max
   }
 }
