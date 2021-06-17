@@ -8,9 +8,7 @@ import scala.io.StdIn.readLine
 
 object schwimmen {
 
-  val stack: CardStack = CardStack()
-  val field: PlayingField = PlayingField(stack.getThreeCards)
-  val controller = new Controller(stack, Nil, field, 0)
+  val controller = new Controller(CardStack(), Nil, PlayingField(), 0)
   val tui = new TUI(controller)
   val gui = new GUI(controller)
   controller.publish(new NewGame)
