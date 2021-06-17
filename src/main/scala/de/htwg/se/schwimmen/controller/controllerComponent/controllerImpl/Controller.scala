@@ -1,19 +1,24 @@
-package de.htwg.se.schwimmen.controller
+package de.htwg.se.schwimmen.controller.controllerComponent.controllerImpl
 
-import de.htwg.se.schwimmen.model.{CardStack, Player, PlayingField}
+import de.htwg.se.schwimmen.controller.controllerComponent._
+import de.htwg.se.schwimmen.model.cardStackComponent._
+import de.htwg.se.schwimmen.model.fieldComponent._
+
 import de.htwg.se.schwimmen.util.UndoManager
+import de.htwg.se.schwimmen.model.cardStackComponent.cardStackImpl.CardStack
+import de.htwg.se.schwimmen.model.fieldComponent.fieldImpl.{Player, PlayingField}
 
 import scala.swing.Publisher
 
 class Controller(
-                  var stack: CardStack,
-                  var players: List[Player],
-                  var field: PlayingField,
-                  var playerAmount: Int) extends Publisher {
+                  var stack: CardStackInterface,
+                  var players: List[PlayerInterface],
+                  var field: PlayingFieldInterface,
+                  var playerAmount: Int) extends ControllerInterface with Publisher {
 
   val undoManager = new UndoManager
-  var playerStack: List[Player] = List[Player]()
-  var fieldStack: List[PlayingField] = List[PlayingField]()
+  var playerStack: List[PlayerInterface] = List[PlayerInterface]()
+  var fieldStack: List[PlayingFieldInterface] = List[PlayingFieldInterface]()
 
   def createNewGame(): Unit = {
     stack = CardStack()
@@ -31,9 +36,9 @@ class Controller(
     stack = stack.delThreeCards
     fieldStack = Nil.::(field)
     playerStack = Nil
-    var newPlayers: List[Player] = Nil
+    var newPlayers: List[PlayerInterface] = Nil
     for (pl <- players) {
-      var newPlayer = Player(pl.name, life = pl.life)
+      var newPlayer:PlayerInterface = Player(pl.name, life = pl.life)
       newPlayer = newPlayer.setCardsOnHand(stack.getThreeCards)
       stack = stack.delThreeCards
       newPlayers = newPlayers :+ newPlayer
@@ -48,7 +53,7 @@ class Controller(
   }
 
   def addPlayer(name: String): Unit = {
-    var pl = Player(name)
+    var pl:PlayerInterface = Player(name)
     pl = pl.setCardsOnHand(stack.getThreeCards)
     stack = stack.delThreeCards
     players = players :+ pl

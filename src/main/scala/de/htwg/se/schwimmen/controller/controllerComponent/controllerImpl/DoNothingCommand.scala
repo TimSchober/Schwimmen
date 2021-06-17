@@ -1,4 +1,4 @@
-package de.htwg.se.schwimmen.controller
+package de.htwg.se.schwimmen.controller.controllerComponent.controllerImpl
 
 import de.htwg.se.schwimmen.util.Command
 
