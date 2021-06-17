@@ -1,4 +1,6 @@
-package de.htwg.se.schwimmen.model
+package de.htwg.se.schwimmen.model.cardStackComponent.cardStackImpl
+
+import de.htwg.se.schwimmen.model.cardStackComponent._
 
 import scala.util.Random
 
@@ -8,11 +10,12 @@ case class CardStack(rndCardStack: List[(String, String)] = {
     c <- List("heart", "diamond", "spade", "club")
   } yield (n, c)
   Random.shuffle(fullCardStack)
-}) {
+}) extends CardStackInterface{
 
   def getThreeCards: List[(String, String)] = {
     rndCardStack.take(3)
   }
+
   def delThreeCards: CardStack = {
     copy(rndCardStack.drop(3))
   }
