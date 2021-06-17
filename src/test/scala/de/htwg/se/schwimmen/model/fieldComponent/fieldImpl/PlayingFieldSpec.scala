@@ -1,4 +1,4 @@
-package de.htwg.se.schwimmen.model
+package de.htwg.se.schwimmen.model.fieldComponent.fieldImpl
 
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
@@ -6,7 +6,6 @@ import org.scalatest.wordspec.AnyWordSpec
 class PlayingFieldSpec extends AnyWordSpec with Matchers {
 
   "A PlayingField" should {
-    val stack = CardStack()
     var field = PlayingField()
     var player = Player("Tim")
     "set the given cards" in {

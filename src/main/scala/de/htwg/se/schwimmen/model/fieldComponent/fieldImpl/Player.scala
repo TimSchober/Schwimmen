@@ -1,22 +1,26 @@
-package de.htwg.se.schwimmen.model
+package de.htwg.se.schwimmen.model.fieldComponent.fieldImpl
+
+import de.htwg.se.schwimmen.model.fieldComponent._
 
 case class Player(name: String,
                   cardsOnHand: List[(String, String)] = Nil,
                   cardCount: Double = 0.0,
                   hasKnocked: Boolean = false,
-                  life: Int = 3) {
+                  life: Int = 3) extends PlayerInterface{
 
   def setCardsOnHand(threeCards: List[(String, String)]): Player = {
     copy(cardsOnHand = threeCards, cardCount = setCardCount(threeCards))
   }
+
   def setLife(l: Int): Player = {
     copy(life = l)
   }
+
   def setHasKnocked(h: Boolean): Player = {
     copy(hasKnocked = h)
   }
 
-  def swapCard(field: PlayingField, indexPlayer: Int, indexField: Int): List[(String, String)] =
+  def swapCard(field: PlayingFieldInterface, indexPlayer: Int, indexField: Int): List[(String, String)] =
     indexPlayer match {
       case 0 => List(field.cardsOnField(indexField), cardsOnHand(1), cardsOnHand.last)
       case 1 => List(cardsOnHand.head, field.cardsOnField(indexField), cardsOnHand.last)
@@ -26,7 +30,7 @@ case class Player(name: String,
   override def toString: String = {
     val builder = new StringBuilder
     builder.append("These are the cards in your hand:    ")
-    for (x<-cardsOnHand) {
+    for (x <- cardsOnHand) {
       builder.append(x._1).append(" of ").append(x._2).append("s    ")
     }
     builder.append("        ").append(name).append(" has ").append(life).append(" lives left").toString()
@@ -35,9 +39,11 @@ case class Player(name: String,
   def getColoursOfCards(threeCards: List[(String, String)]): List[String] = {
     List(threeCards.head._2, threeCards(1)._2, threeCards.last._2)
   }
+
   def getValuesOfCards(threeCards: List[(String, String)]): List[Int] = {
     List(getValue(threeCards.head._1), getValue(threeCards(1)._1), getValue(threeCards.last._1))
   }
+
   def getValue(value: String): Int = value match {
     case "7" => 7
     case "8" => 8
@@ -48,6 +54,7 @@ case class Player(name: String,
     case "king" => 10
     case "ace" => 11
   }
+
   def setCardCount(threeCards: List[(String, String)]): Double = {
     val colourList = getColoursOfCards(threeCards)
     val valueList = getValuesOfCards(threeCards)
