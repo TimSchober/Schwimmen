@@ -16,12 +16,30 @@ class Controller(
   var fieldStack: List[PlayingField] = List[PlayingField]()
 
   def createNewGame(): Unit = {
-    stack = new CardStack
+    stack = CardStack()
     field = PlayingField()
     field = field.setCardsOnField(stack.getThreeCards)
     stack = stack.delThreeCards
     fieldStack = fieldStack.::(field)
     publish(new NewGame)
+  }
+
+  def nextRound(): Unit = {
+    stack = CardStack()
+    field = PlayingField()
+    field = field.setCardsOnField(stack.getThreeCards)
+    stack = stack.delThreeCards
+    fieldStack = Nil.::(field)
+    playerStack = Nil
+    var newPlayers: List[Player] = Nil
+    for (pl <- players) {
+      var newPlayer = Player(pl.name, life = pl.life)
+      newPlayer = newPlayer.setCardsOnHand(stack.getThreeCards)
+      stack = stack.delThreeCards
+      newPlayers = newPlayers :+ newPlayer
+    }
+    players = newPlayers
+    publish(new PlayerAdded)
   }
 
   def setPlayerAmount(plAm: Int): Unit = {

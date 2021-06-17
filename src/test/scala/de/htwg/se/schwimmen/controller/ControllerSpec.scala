@@ -115,5 +115,17 @@ class ControllerSpec extends AnyWordSpec with Matchers{
       controller.redo()
       controller.players.head.name should be("Ayaz")
     }
+    "start a new round" in {
+      val oldstack = controller.stack
+      val oldfield = controller.field
+      val oldplayers = controller.players
+      controller.nextRound()
+      oldstack.equals(controller.stack) should be(false)
+      oldfield.equals(controller.field) should be(false)
+      oldplayers.equals(controller.players) should be(false)
+      controller.playerStack should be(Nil)
+      controller.fieldStack.length should be(1)
+
+    }
   }
 }
