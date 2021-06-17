@@ -1,12 +1,13 @@
 package de.htwg.se.schwimmen.aUI
 
-import de.htwg.se.schwimmen.controller.{CardSelected, Controller, NewGame, PlayerAdded, PlayerAmountChanged, PlayerChanged, YesSelected}
-import de.htwg.se.schwimmen.model.{EasyStrategy, Player}
+import de.htwg.se.schwimmen.controller.controllerComponent._
+import de.htwg.se.schwimmen.model.EasyStrategy
+import de.htwg.se.schwimmen.model.fieldComponent._
 
 import scala.util.{Failure, Success, Try}
 import scala.swing.Reactor
 
-class TUI(val controller: Controller) extends Reactor {
+class TUI(val controller: ControllerInterface) extends Reactor {
 
   listenTo(controller)
   controller.createNewGame()
@@ -87,8 +88,8 @@ class TUI(val controller: Controller) extends Reactor {
       |""".stripMargin
   }
 
-  def statsString(pl: Player): String = {
-    "\n" + controller.field.toString + "\n" + pl.toString() + "\n"
+  def statsString(pl: PlayerInterface): String = {
+    "\n" + controller.field.toString + "\n" + pl.toString + "\n"
   }
 
   def typeYourNameString(): String = {
@@ -112,7 +113,7 @@ class TUI(val controller: Controller) extends Reactor {
   def endOfGameStats(): String = {
     val res = controller.players.sortBy(_.cardCount).reverse
     val builder = new StringBuilder
-    var looseList:List[Player] = Nil
+    var looseList:List[PlayerInterface] = Nil
     for (pl <- res) if (pl.cardCount == res.last.cardCount) looseList = looseList.::(pl.setLife(pl.life - 1))
     controller.players = res.dropRight(looseList.size)
     for (pl <- looseList) {

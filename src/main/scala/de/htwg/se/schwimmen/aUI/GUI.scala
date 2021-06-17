@@ -1,12 +1,12 @@
 package de.htwg.se.schwimmen.aUI
 
-import de.htwg.se.schwimmen.controller.{Controller, PlayerAdded, PlayerChanged}
+import de.htwg.se.schwimmen.controller.controllerComponent._
 
 import java.io.File
 import javax.imageio.ImageIO
 import scala.swing._
 
-class GUI(controller: Controller) extends Frame {
+class GUI(controller: ControllerInterface) extends Frame {
 
   listenTo(controller)
   title = "Schwimmen"
