@@ -1,28 +1,31 @@
 package de.htwg.se.schwimmen.controller.controllerComponent.controllerImpl
 
+import com.google.inject.name.Named
+import com.google.inject.{Guice, Inject, Injector}
 import de.htwg.se.schwimmen.controller.controllerComponent._
 import de.htwg.se.schwimmen.model.cardStackComponent._
 import de.htwg.se.schwimmen.model.fieldComponent._
-
 import de.htwg.se.schwimmen.util.UndoManager
-import de.htwg.se.schwimmen.model.cardStackComponent.cardStackImpl.CardStack
-import de.htwg.se.schwimmen.model.fieldComponent.fieldImpl.{Player, PlayingField}
+import de.htwg.se.schwimmen.schwimmenModul
+import net.codingwell.scalaguice.InjectorExtensions._
 
 import scala.swing.Publisher
 
-class Controller(
+class Controller @Inject() (
                   var stack: CardStackInterface,
                   var players: List[PlayerInterface],
                   var field: PlayingFieldInterface,
-                  var playerAmount: Int) extends ControllerInterface with Publisher {
+                  @Named("plAm") var playerAmount: Int = 0) extends ControllerInterface with Publisher {
 
   val undoManager = new UndoManager
-  var playerStack: List[PlayerInterface] = List[PlayerInterface]()
-  var fieldStack: List[PlayingFieldInterface] = List[PlayingFieldInterface]()
+  var playerStack: List[PlayerInterface] = List()
+  var fieldStack: List[PlayingFieldInterface] = List()
+  val injector: Injector = Guice.createInjector(new schwimmenModul)
 
   def createNewGame(): Unit = {
-    stack = CardStack()
-    field = PlayingField()
+    stack = injector.instance[CardStackInterface]
+    stack = stack.setCardStack()
+    field = injector.instance[PlayingFieldInterface]
     field = field.setCardsOnField(stack.getThreeCards)
     stack = stack.delThreeCards
     fieldStack = fieldStack.::(field)
@@ -30,15 +33,18 @@ class Controller(
   }
 
   def nextRound(): Unit = {
-    stack = CardStack()
-    field = PlayingField()
+    stack = injector.instance[CardStackInterface]
+    stack = stack.setCardStack()
+    field = injector.instance[PlayingFieldInterface]
     field = field.setCardsOnField(stack.getThreeCards)
     stack = stack.delThreeCards
     fieldStack = Nil.::(field)
     playerStack = Nil
     var newPlayers: List[PlayerInterface] = Nil
     for (pl <- players) {
-      var newPlayer:PlayerInterface = Player(pl.name, life = pl.life)
+      var newPlayer:PlayerInterface = injector.instance[PlayerInterface]
+      newPlayer = newPlayer.setName(pl.name)
+      newPlayer = newPlayer.setLife(pl.life)
       newPlayer = newPlayer.setCardsOnHand(stack.getThreeCards)
       stack = stack.delThreeCards
       newPlayers = newPlayers :+ newPlayer
@@ -53,7 +59,8 @@ class Controller(
   }
 
   def addPlayer(name: String): Unit = {
-    var pl:PlayerInterface = Player(name)
+    var pl:PlayerInterface = injector.instance[PlayerInterface]
+    pl = pl.setName(name)
     pl = pl.setCardsOnHand(stack.getThreeCards)
     stack = stack.delThreeCards
     players = players :+ pl

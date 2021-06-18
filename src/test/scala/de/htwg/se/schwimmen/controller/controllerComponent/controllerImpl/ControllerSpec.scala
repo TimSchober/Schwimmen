@@ -8,7 +8,8 @@ import org.scalatest.wordspec.AnyWordSpec
 class ControllerSpec extends AnyWordSpec with Matchers{
 
   "A controller" should {
-    val stack = CardStack()
+    var stack = CardStack()
+    stack = stack.setCardStack()
     val field = PlayingField()
     val controller = new Controller(stack, Nil, field, 0)
     "create a new Game" in {

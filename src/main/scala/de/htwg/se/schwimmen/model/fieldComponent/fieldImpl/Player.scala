@@ -1,12 +1,18 @@
 package de.htwg.se.schwimmen.model.fieldComponent.fieldImpl
 
+import com.google.inject.Inject
+import com.google.inject.name.Named
 import de.htwg.se.schwimmen.model.fieldComponent._
 
-case class Player(name: String,
+case class Player @Inject() (name: String = "",
                   cardsOnHand: List[(String, String)] = Nil,
-                  cardCount: Double = 0.0,
-                  hasKnocked: Boolean = false,
-                  life: Int = 3) extends PlayerInterface{
+                  @Named("cardCount") cardCount: Double = 0.0,
+                  @Named("hasKnocked") hasKnocked: Boolean = false,
+                  @Named("life") life: Int = 3) extends PlayerInterface{
+
+  def setName(nameString: String): Player = {
+    copy(name = nameString)
+  }
 
   def setCardsOnHand(threeCards: List[(String, String)]): Player = {
     copy(cardsOnHand = threeCards, cardCount = setCardCount(threeCards))

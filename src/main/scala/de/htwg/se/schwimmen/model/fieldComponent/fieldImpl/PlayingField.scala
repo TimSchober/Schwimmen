@@ -1,8 +1,9 @@
 package de.htwg.se.schwimmen.model.fieldComponent.fieldImpl
 
+import com.google.inject.Inject
 import de.htwg.se.schwimmen.model.fieldComponent._
 
-case class PlayingField(cardsOnField: List[(String, String)] = Nil) extends PlayingFieldInterface{
+case class PlayingField @Inject() (cardsOnField: List[(String, String)] = Nil) extends PlayingFieldInterface{
 
   override def toString: String = {
     val builder = new StringBuilder

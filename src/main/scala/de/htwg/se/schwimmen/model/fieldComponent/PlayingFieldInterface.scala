@@ -16,6 +16,7 @@ trait PlayerInterface {
   def hasKnocked: Boolean
   def life: Int
 
+  def setName(nameString: String): PlayerInterface
   def setCardsOnHand(threeCards: List[(String, String)]): PlayerInterface
   def setLife(l: Int): PlayerInterface
   def setHasKnocked(h: Boolean): PlayerInterface
