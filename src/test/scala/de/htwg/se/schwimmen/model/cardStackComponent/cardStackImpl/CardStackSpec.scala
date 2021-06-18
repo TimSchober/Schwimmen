@@ -5,7 +5,8 @@ import org.scalatest.wordspec.AnyWordSpec
 
 class CardStackSpec extends AnyWordSpec with Matchers {
   "A CardStack" should {
-    val stack = CardStack()
+    var stack = CardStack()
+    stack = stack.setCardStack()
     "have a specified number of cards" in {
       stack.rndCardStack.size should be(32)
     }
