@@ -10,7 +10,8 @@ import org.scalatest.wordspec.AnyWordSpec
 class TUISpec extends AnyWordSpec with Matchers{
 
   "A TUI" should {
-    val stack = CardStack()
+    var stack = CardStack()
+    stack = stack.setCardStack()
     val pl1 = Player("Tim", cardsOnHand = List(("7", "heart"), ("8", "heart"), ("9", "heart")))
     val pl2 = Player("Ayaz", cardsOnHand = List(("7", "diamond"), ("8", "diamond"), ("9", "diamond")))
     val field = PlayingField(cardsOnField = List(("7", "spade"), ("8", "spade"), ("9", "spade")))
