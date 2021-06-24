@@ -114,7 +114,7 @@ class TUI(val controller: ControllerInterface) extends Reactor {
     val res = controller.players.sortBy(_.cardCount).reverse
     val builder = new StringBuilder
     var looseList:List[PlayerInterface] = Nil
-    for (pl <- res) if (pl.cardCount == res.last.cardCount) looseList = looseList.::(pl.setLife(pl.life - 1))
+    for (pl <- res) if (pl.cardCount == res.last.cardCount) looseList = looseList.::(pl)
     controller.players = res.dropRight(looseList.size)
     for (pl <- looseList) {
       if (pl.life - 1 == -1) builder.append(pl.name).append(" you're out") else
