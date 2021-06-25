@@ -45,13 +45,7 @@ class FileIO extends FileIOInterface{
     field
   }
 
-  override def save(players: List[PlayerInterface], field: PlayingFieldInterface): Unit = saveString(players, field)
-
-  def saveXML(players: List[PlayerInterface], field: PlayingFieldInterface): Unit = {
-    scala.xml.XML.save("field.xml", toXml(players, field))
-  }
-
-  def saveString(players: List[PlayerInterface], field: PlayingFieldInterface): Unit = {
+  override def save(players: List[PlayerInterface], field: PlayingFieldInterface): Unit = {
     import java.io._
     val pw = new PrintWriter(new File("field.xml"))
     val prettyPrinter = new PrettyPrinter(120, 4)
