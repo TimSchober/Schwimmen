@@ -7,6 +7,7 @@ import de.htwg.se.schwimmen.model.cardStackComponent._
 import de.htwg.se.schwimmen.model.cardStackComponent.cardStackImpl.CardStack
 import de.htwg.se.schwimmen.model.fieldComponent._
 import de.htwg.se.schwimmen.model.fieldComponent.fieldImpl.{Player, PlayingField}
+import de.htwg.se.schwimmen.model.fileIOComponent._
 import net.codingwell.scalaguice.ScalaModule
 
 class schwimmenModul extends  AbstractModule with ScalaModule {
@@ -24,5 +25,8 @@ class schwimmenModul extends  AbstractModule with ScalaModule {
 
     bind[List[PlayerInterface]].toInstance(List[Player]())
     bind[List[(String, String)]].toInstance(List[(String, String)]())
+
+    bind[FileIOInterface].annotatedWithName("Xml").to[fileIOXmlImpl.FileIO]
+    bind[FileIOInterface].annotatedWithName("Json").to[fileIOJsonImpl.FileIO]
   }
 }

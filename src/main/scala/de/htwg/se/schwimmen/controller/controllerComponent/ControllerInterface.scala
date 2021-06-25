@@ -25,6 +25,8 @@ trait ControllerInterface extends Publisher{
   def undoStep(): Unit
   def undo(): Unit
   def redo(): Unit
+  def saveTo(str:String): Unit
+  def loadFrom(str:String): Unit
 }
 
 import scala.swing.event.Event

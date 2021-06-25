@@ -1,10 +1,11 @@
 package de.htwg.se.schwimmen.controller.controllerComponent.controllerImpl
 
-import com.google.inject.name.Named
+import com.google.inject.name.{Named, Names}
 import com.google.inject.{Guice, Inject, Injector}
 import de.htwg.se.schwimmen.controller.controllerComponent._
 import de.htwg.se.schwimmen.model.cardStackComponent._
 import de.htwg.se.schwimmen.model.fieldComponent._
+import de.htwg.se.schwimmen.model.fileIOComponent.FileIOInterface
 import de.htwg.se.schwimmen.util.UndoManager
 import de.htwg.se.schwimmen.schwimmenModul
 import net.codingwell.scalaguice.InjectorExtensions._
@@ -127,6 +128,19 @@ class Controller @Inject() (
   }
   def redo(): Unit = {
     undoManager.redoStep()
+    publish(new PlayerChanged)
+  }
+
+  def saveTo(str:String): Unit = {
+    val fileIO = injector.instance[FileIOInterface](Names.named(str))
+    fileIO.save(players, field)
+    publish(new PlayerChanged)
+  }
+  def loadFrom(str:String): Unit = {
+    val fileIO = injector.instance[FileIOInterface](Names.named(str))
+    field = fileIO.loadField
+    players = fileIO.loadPlayers
+    playerAmount = players.size
     publish(new PlayerChanged)
   }
 }
