@@ -128,16 +128,5 @@ class ControllerSpec extends AnyWordSpec with Matchers{
       controller.playerStack should be(Nil)
       controller.fieldStack.length should be(1)
     }
-    "save and load the game" in {
-      var pl1 = Player("Tim")
-      val saveloadfield = PlayingField(List(("7","heart"),("8","heart"),("9","heart")))
-      pl1 = pl1.setCardsOnHand(List(("10","spade"),("jack","spade"),("queen","spade")))
-      val saveloadtestcontroller = new Controller(stack, List(pl1), saveloadfield, 1)
-      saveloadtestcontroller.saveTo("Xml")
-      pl1 = pl1.setCardsOnHand(List(("9","spade"),("king","spade"),("queen","heart")))
-      saveloadtestcontroller.players = List(pl1)
-      saveloadtestcontroller.loadFrom("Xml")
-      saveloadtestcontroller.players.head.cardsOnHand should be(List(("10","spade"),("jack","spade"),("queen","spade")))
-    }
   }
 }
