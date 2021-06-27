@@ -77,7 +77,7 @@ class GUI(controller: Controller) extends Frame {
   visible = true
 
   def getPath(card: (String,String)): String = {
-    "C:/Users/tims1/Desktop/SE/Schwimmen/src/main/scala/de/htwg/se/schwimmen/aUI/textures/" + {
+    "src/main/scala/de/htwg/se/schwimmen/aUI/textures/" + {
       card._2 match {
         case "club" =>
           card._1 match {
