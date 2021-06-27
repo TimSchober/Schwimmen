@@ -40,20 +40,20 @@ class ControllerSpec extends AnyWordSpec with Matchers{
     }
     "swap one card of the first player and field" in {
       val playerli = List(("10","spade"),("jack","spade"),("queen","spade"))
-      val fieldli = List(("7","hearts"),("8","hearts"),("9","hearts"))
+      val fieldli = List(("7","heart"),("8","heart"),("9","heart"))
       controller.players = controller.players.patch(0, Seq(controller.players.head.setCardsOnHand(playerli)), 1)
       controller.field = controller.field.setCardsOnField(fieldli)
       controller.swapCards(0, 0)
-      controller.players.head.cardsOnHand should equal(List(("7","hearts"),("jack","spade"),("queen","spade")))
-      controller.field.cardsOnField should equal(List(("10","spade"),("8","hearts"),("9","hearts")))
+      controller.players.head.cardsOnHand should equal(List(("7","heart"),("jack","spade"),("queen","spade")))
+      controller.field.cardsOnField should equal(List(("10","spade"),("8","heart"),("9","heart")))
     }
     "swap all cards of the first player and the field" in {
       val playerli = List(("10","spade"),("jack","spade"),("queen","spade"))
-      val fieldli = List(("7","hearts"),("8","hearts"),("9","hearts"))
+      val fieldli = List(("7","heart"),("8","heart"),("9","heart"))
       controller.players = controller.players.patch(0, Seq(controller.players.head.setCardsOnHand(playerli)), 1)
       controller.field = controller.field.setCardsOnField(fieldli)
       controller.swapAllCards()
-      controller.players.head.cardsOnHand should equal(List(("7","hearts"),("8","hearts"),("9","hearts")))
+      controller.players.head.cardsOnHand should equal(List(("7","heart"),("8","heart"),("9","heart")))
       controller.field.cardsOnField should equal(List(("10","spade"),("jack","spade"),("queen","spade")))
     }
     "get the next player" in {
@@ -74,36 +74,36 @@ class ControllerSpec extends AnyWordSpec with Matchers{
     }
     "undo the last swap round" in {
       val playerli = List(("10","spade"),("jack","spade"),("queen","spade"))
-      val fieldli = List(("7","hearts"),("8","hearts"),("9","hearts"))
+      val fieldli = List(("7","heart"),("8","heart"),("9","heart"))
       controller.players = controller.players.patch(0, Seq(controller.players.head.setCardsOnHand(playerli)), 1)
       controller.field = controller.field.setCardsOnField(fieldli)
       controller.swapCards(0, 0)
-      controller.players.head.cardsOnHand should equal(List(("7","hearts"),("jack","spade"),("queen","spade")))
-      controller.field.cardsOnField should equal(List(("10","spade"),("8","hearts"),("9","hearts")))
+      controller.players.head.cardsOnHand should equal(List(("7","heart"),("jack","spade"),("queen","spade")))
+      controller.field.cardsOnField should equal(List(("10","spade"),("8","heart"),("9","heart")))
       controller.undo()
       controller.players.head.cardsOnHand should equal(List(("10","spade"),("jack","spade"),("queen","spade")))
-      controller.field.cardsOnField should equal(List(("7","hearts"),("8","hearts"),("9","hearts")))
+      controller.field.cardsOnField should equal(List(("7","heart"),("8","heart"),("9","heart")))
     }
     "redo the last swap round" in {
       controller.redo()
-      controller.players.head.cardsOnHand should equal(List(("7","hearts"),("jack","spade"),("queen","spade")))
-      controller.field.cardsOnField should equal(List(("10","spade"),("8","hearts"),("9","hearts")))
+      controller.players.head.cardsOnHand should equal(List(("7","heart"),("jack","spade"),("queen","spade")))
+      controller.field.cardsOnField should equal(List(("10","spade"),("8","heart"),("9","heart")))
     }
     "undo the last swapAll round" in {
       val playerli = List(("10","spade"),("jack","spade"),("queen","spade"))
-      val fieldli = List(("7","hearts"),("8","hearts"),("9","hearts"))
+      val fieldli = List(("7","heart"),("8","heart"),("9","heart"))
       controller.players = controller.players.patch(0, Seq(controller.players.head.setCardsOnHand(playerli)), 1)
       controller.field = controller.field.setCardsOnField(fieldli)
       controller.swapAllCards()
-      controller.players.head.cardsOnHand should equal(List(("7","hearts"),("8","hearts"),("9","hearts")))
+      controller.players.head.cardsOnHand should equal(List(("7","heart"),("8","heart"),("9","heart")))
       controller.field.cardsOnField should equal(List(("10","spade"),("jack","spade"),("queen","spade")))
       controller.undo()
       controller.players.head.cardsOnHand should equal(List(("10","spade"),("jack","spade"),("queen","spade")))
-      controller.field.cardsOnField should equal(List(("7","hearts"),("8","hearts"),("9","hearts")))
+      controller.field.cardsOnField should equal(List(("7","heart"),("8","heart"),("9","heart")))
     }
     "redo the last swapAll round" in {
       controller.redo()
-      controller.players.head.cardsOnHand should equal(List(("7","hearts"),("8","hearts"),("9","hearts")))
+      controller.players.head.cardsOnHand should equal(List(("7","heart"),("8","heart"),("9","heart")))
       controller.field.cardsOnField should equal(List(("10","spade"),("jack","spade"),("queen","spade")))
     }
     "undo a skipped round" in {
@@ -130,7 +130,7 @@ class ControllerSpec extends AnyWordSpec with Matchers{
     }
     "save and load the game" in {
       var pl1 = Player("Tim")
-      val saveloadfield = PlayingField(List(("7","hearts"),("8","hearts"),("9","hearts")))
+      val saveloadfield = PlayingField(List(("7","heart"),("8","heart"),("9","heart")))
       pl1 = pl1.setCardsOnHand(List(("10","spade"),("jack","spade"),("queen","spade")))
       val saveloadtestcontroller = new Controller(stack, List(pl1), saveloadfield, 1)
       saveloadtestcontroller.saveTo("Xml")
