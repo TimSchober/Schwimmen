@@ -1,6 +1,6 @@
 package de.htwg.se.schwimmen.aUI
 
-import de.htwg.se.schwimmen.controller.Controller
+import de.htwg.se.schwimmen.controller.{Controller, NewGame}
 import de.htwg.se.schwimmen.model.{CardStack, Player, PlayingField}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
@@ -16,6 +16,7 @@ class TUISpec extends AnyWordSpec with Matchers{
     val tui = new TUI(controller)
     tui.controller.stack = stack
     tui.controller.field = field
+    tui.controller.publish(new NewGame)
     "say welcome" in {
       tui.sayWelcomeString() should equal("""Welcome to Schwimmen!
                                             |How many players want to play?
@@ -78,6 +79,8 @@ class TUISpec extends AnyWordSpec with Matchers{
       testtui.processInput() should equal("player changed")
       testtui.input = "anything else"
       testtui.processInput() should equal("illegal input")
+      testtui.input = "nr"
+      testtui.processInput() should equal("next round")
     }
     "get ready for next round" in {
       var pl1 = Player("Tim")
