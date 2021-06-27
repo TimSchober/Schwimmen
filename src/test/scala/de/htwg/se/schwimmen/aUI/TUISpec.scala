@@ -90,6 +90,9 @@ class TUISpec extends AnyWordSpec with Matchers{
       val tui = new TUI(new Controller(CardStack(), List(pl1, pl2), PlayingField(), 2))
       tui.endOfGameStats() should equal("\nAyaz:    25.0 points    3 lives left" + "\nTim:    24.0 points    3 lives left"
       + "\nTim, lost a Life\nstart next round with(nr)")
+      pl1 = pl1.setLife(0)
+      tui.endOfGameStats() should equal("Tim you're out" + "\nAyaz:    25.0 points    3 lives left" + "\nTim:    24.0 points    1 lives left"
+        + "\nTim, lost a Life\nstart next round with(nr)")
     }
   }
 }
