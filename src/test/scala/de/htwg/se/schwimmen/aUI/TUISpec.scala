@@ -1,5 +1,6 @@
 package de.htwg.se.schwimmen.aUI
 
+import de.htwg.se.schwimmen.controller.controllerComponent.NewGame
 import de.htwg.se.schwimmen.controller.controllerComponent.controllerImpl.Controller
 import de.htwg.se.schwimmen.model.cardStackComponent.cardStackImpl.CardStack
 import de.htwg.se.schwimmen.model.fieldComponent._
@@ -10,8 +11,7 @@ import org.scalatest.wordspec.AnyWordSpec
 class TUISpec extends AnyWordSpec with Matchers{
 
   "A TUI" should {
-    var stack = CardStack()
-    stack = stack.setCardStack()
+    val stack = CardStack()
     val pl1 = Player("Tim", cardsOnHand = List(("7", "heart"), ("8", "heart"), ("9", "heart")))
     val pl2 = Player("Ayaz", cardsOnHand = List(("7", "diamond"), ("8", "diamond"), ("9", "diamond")))
     val field = PlayingField(cardsOnField = List(("7", "spade"), ("8", "spade"), ("9", "spade")))
@@ -19,6 +19,7 @@ class TUISpec extends AnyWordSpec with Matchers{
     val tui = new TUI(controller)
     tui.controller.stack = stack
     tui.controller.field = field
+    tui.controller.publish(new NewGame)
     "say welcome" in {
       tui.sayWelcomeString() should equal("""Welcome to Schwimmen!
                                             |How many players want to play?
@@ -81,15 +82,21 @@ class TUISpec extends AnyWordSpec with Matchers{
       testtui.processInput() should equal("player changed")
       testtui.input = "anything else"
       testtui.processInput() should equal("illegal input")
+      testtui.input = "nr"
+      testtui.processInput() should equal("next round")
     }
     "get ready for next round" in {
       var pl1 = Player("Tim")
       var pl2 = Player("Ayaz")
       pl1 = pl1.setCardsOnHand(List(("7", "heart"), ("8", "heart"), ("9", "heart")))
       pl2 = pl2.setCardsOnHand(List(("7", "diamond"), ("8", "diamond"), ("10", "diamond")))
-      val tui = new TUI(new Controller(CardStack(), List(pl1, pl2), PlayingField(), 2))
+      var tui = new TUI(new Controller(CardStack(), List(pl1, pl2), PlayingField(), 2))
       tui.endOfGameStats() should equal("\nAyaz:    25.0 points    3 lives left" + "\nTim:    24.0 points    3 lives left"
-      + "\nTim, lost a Life\nstart next round with(nr)")
+        + "\nTim, lost a Life\nstart next round with(nr)")
+      pl1 = pl1.setLife(0)
+      tui = new TUI(new Controller(CardStack(), List(pl1, pl2), PlayingField(), 2))
+      tui.endOfGameStats() should equal("Tim you're out" + "\nAyaz:    25.0 points    3 lives left" + "\nTim:    24.0 points    0 lives left"
+        + "\nTim, lost a Life\nstart next round with(nr)")
     }
   }
 }
