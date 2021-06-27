@@ -1,9 +1,9 @@
 
-#Schwimmen
+# Schwimmen
 
 Aka Einunddreißig or ThirtyOne is a cardgame played with 32 cards and up to nine players.
 
-#Rules:
+# Rules:
 
 Every Player is getting three cards. The goal of the game is to not be the one with the smallest card value. To achieve this
 goal the player can swap either one or all of his cards with the three cards on the field, he is also allowed to skip a 
@@ -15,7 +15,7 @@ The Value of a card is defined as followed:
 * Every card with a number has a value of this very number
 * Three cards of the same face or number but different colour is defined as a value of 30 1/2
 
-#How to play our version:
+# How to play our version:
 
 >First of all you have to type with how many players you want to play. It is possible to play with up to nine players.
 \
@@ -44,12 +44,12 @@ The Value of a card is defined as followed:
 > If a player has no more lives left he will be removed from the game and the rest of the players can continue playing
 > til only one player is left.
 
-#Help:
+# Help:
 
 * It is possible to undo/redo a swap or knock or skip by using the edit menu in the GUI or by typing undo/redo in the TUI
 * It is possible to save/load a game by typing saveJson/loadJson in the TUI
 
-#Build and Coverage (Masterbranch):
+# Build and Coverage (Masterbranch):
 
 [![Build Status](https://travis-ci.com/TimSchober/Schwimmen.svg?branch=master)](https://travis-ci.com/TimSchober/Schwimmen)
 [![Coverage Status](https://coveralls.io/repos/github/TimSchober/Schwimmen/badge.svg?branch=master&kill_cache=1)](https://coveralls.io/github/TimSchober/Schwimmen?branch=master&kill_cache=1)
