@@ -1,7 +1,7 @@
 package de.htwg.se.schwimmen.controller.controllerComponent.controllerImpl
 
 import de.htwg.se.schwimmen.model.cardStackComponent.cardStackImpl.CardStack
-import de.htwg.se.schwimmen.model.fieldComponent.fieldImpl.PlayingField
+import de.htwg.se.schwimmen.model.fieldComponent.fieldImpl.{Player, PlayingField}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -127,7 +127,17 @@ class ControllerSpec extends AnyWordSpec with Matchers{
       oldplayers.equals(controller.players) should be(false)
       controller.playerStack should be(Nil)
       controller.fieldStack.length should be(1)
-
+    }
+    "save and load the game" in {
+      var pl1 = Player("Tim")
+      val saveloadfield = PlayingField(List(("7","hearts"),("8","hearts"),("9","hearts")))
+      pl1 = pl1.setCardsOnHand(List(("10","spade"),("jack","spade"),("queen","spade")))
+      val saveloadtestcontroller = new Controller(stack, List(pl1), saveloadfield, 1)
+      saveloadtestcontroller.saveTo("Xml")
+      pl1 = pl1.setCardsOnHand(List(("9","spade"),("king","spade"),("queen","heart")))
+      saveloadtestcontroller.players = List(pl1)
+      saveloadtestcontroller.loadFrom("Xml")
+      saveloadtestcontroller.players.head.cardsOnHand should be(List(("10","spade"),("jack","spade"),("queen","spade")))
     }
   }
 }
