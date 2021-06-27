@@ -11,3 +11,5 @@ libraryDependencies += "org.scala-lang.modules" %% "scala-swing" % "3.0.0"
 
 libraryDependencies += "com.google.inject" % "guice" % "5.0.1"
 libraryDependencies += "net.codingwell" %% "scala-guice" % "5.0.1"
+
+coverageExcludedPackages := "de.htwg.se.schwimmen.aUI.GUI;"
