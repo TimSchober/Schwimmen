@@ -105,7 +105,7 @@ class TUISpec extends AnyWordSpec with Matchers{
       pl1 = pl1.setLife(0)
       tui = new TUI(new Controller(CardStack(), List(pl1, pl2), PlayingField(), 2))
       tui.endOfGameStats() should equal("Tim you're out" + "\nAyaz:    25.0 points    3 lives left" + "\nTim:    24.0 points    0 lives left"
-        + "\nTim, lost a Life\nstart next round with(nr)")
+        + "\nTim, lost a Life\nAyaz, Congratulations you've won the game:)")
     }
   }
 }

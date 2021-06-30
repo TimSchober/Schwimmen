@@ -48,7 +48,9 @@ class TUI(val controller: ControllerInterface) extends Reactor {
           case "nr" =>
             controller.nextRound()
             "next round"
-          case "q" => "input set to q"
+          case "q" =>
+            System.exit(0)
+            "input set to q"
           case "z" =>
             controller.undo()
             "undo"
@@ -129,13 +131,22 @@ class TUI(val controller: ControllerInterface) extends Reactor {
     for (pl <- res) if (pl.cardCount == res.last.cardCount) looseList = looseList.::(pl)
     controller.players = res.dropRight(looseList.size)
     for (pl <- looseList) {
-      if (pl.life - 1 == -1) builder.append(pl.name).append(" you're out") else
+      if (pl.life - 1 == -1) {
+        controller.playerAmount = controller.playerAmount - 1
+        builder.append(pl.name).append(" you're out")
+      } else
         controller.players = controller.players.::(pl.setLife(pl.life - 1))
     }
     for (pl <- res) builder.append(s"\n${pl.name}:    ${pl.cardCount} points    ${pl.life} lives left")
     builder.append("\n")
     for (pl <- looseList) builder.append(pl.name).append(", ")
-    builder.append("lost a Life").append("\nstart next round with(nr)")
+    builder.append("lost a Life").append("\n")
+    if (controller.playerAmount == 1) {
+      builder.append(controller.players.head.name).append(", Congratulations you've won the game:)")
+      System.exit(0)
+    } else {
+      builder.append("start next round with(nr)")
+    }
     builder.toString()
   }
 }
