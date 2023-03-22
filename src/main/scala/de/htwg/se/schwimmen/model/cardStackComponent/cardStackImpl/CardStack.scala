@@ -8,12 +8,12 @@ import scala.util.Random
 case class CardStack @Inject() (rndCardStack: List[(String, String)] = Nil) extends CardStackInterface{
 
   def setCardStack(): CardStack = {
-    var fullCardStack: List[(String, String)] = for {
+    val fullCardStack: List[(String, String)] = for {
       n <- List("7", "8", "9", "10", "jack", "queen", "king", "ace")
       c <- List("heart", "diamond", "spade", "club")
     } yield (n, c)
-    fullCardStack = Random.shuffle(fullCardStack)
-    copy(rndCardStack = fullCardStack)
+    val rndFullCardStack = Random.shuffle(fullCardStack)
+    copy(rndCardStack = rndFullCardStack)
   }
 
   def getThreeCards: List[(String, String)] = {
