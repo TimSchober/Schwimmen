@@ -9,15 +9,15 @@ class PlayingFieldSpec extends AnyWordSpec with Matchers {
     var field = PlayingField()
     var player = Player("Tim")
     "set the given cards" in {
-      val fieldli = List(("7","hearts"),("8","hearts"),("9","hearts"))
-      field = field.setCardsOnField(fieldli)
-      field.cardsOnField should equal(fieldli)
+      val fieldList = List(("7","hearts"),("8","hearts"),("9","hearts"))
+      field = field.setCardsOnField(fieldList)
+      field.cardsOnField should equal(fieldList)
     }
     "give back a list of cards on the field after player has swapped" in {
-      val playerli = List(("10","spade"),("jack","spade"),("queen","spade"))
-      val fieldli = List(("7","hearts"),("8","hearts"),("9","hearts"))
-      player = player.setCardsOnHand(playerli)
-      field = field.setCardsOnField(fieldli)
+      val playerList = List(("10","spade"),("jack","spade"),("queen","spade"))
+      val fieldList = List(("7","hearts"),("8","hearts"),("9","hearts"))
+      player = player.setCardsOnHand(playerList)
+      field = field.setCardsOnField(fieldList)
       field.swapCard(player, 0, 0) should equal(List(("10","spade"),("8","hearts"),("9","hearts")))
       field.swapCard(player, 0, 1) should equal(List(("7","hearts"),("10","spade"),("9","hearts")))
       field.swapCard(player, 0, 2) should equal(List(("7","hearts"),("8","hearts"),("10","spade")))

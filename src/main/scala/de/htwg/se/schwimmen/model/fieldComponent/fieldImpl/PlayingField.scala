@@ -8,9 +8,9 @@ case class PlayingField @Inject() (cardsOnField: List[(String, String)] = Nil) e
   override def toString: String = {
     val builder = new StringBuilder
     builder.append("These are the cards on the field:    ")
-    for (x <- cardsOnField) {
-      builder.append(x._1).append(" of ").append(x._2).append("s    ")
-    }
+    cardsOnField.foreach((x:(String, String)) =>
+      builder.append(x._1).append(" of ")
+        .append(x._2).append("s    "))
     builder.toString()
   }
 
