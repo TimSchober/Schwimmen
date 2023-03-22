@@ -36,9 +36,9 @@ case class Player @Inject() (name: String = "",
   override def toString: String = {
     val builder = new StringBuilder
     builder.append("These are the cards in your hand:    ")
-    for (x <- cardsOnHand) {
-      builder.append(x._1).append(" of ").append(x._2).append("s    ")
-    }
+    cardsOnHand.foreach((x: (String, String)) =>
+      builder.append(x._1).append(" of ")
+        .append(x._2).append("s    "))
     builder.append("        ").append(name).append(" has ").append(life).append(" lives left").toString()
   }
 
@@ -64,13 +64,35 @@ case class Player @Inject() (name: String = "",
   def setCardCount(threeCards: List[(String, String)]): Double = {
     val colourList = getColoursOfCards(threeCards)
     val valueList = getValuesOfCards(threeCards)
-    var countList = valueList
+    def threeEqualCards:Int = {
+      if (colourList.head.equals(colourList.last) && colourList.head.equals(colourList(1))) {
+        valueList.head + valueList(1) + valueList.last
+      } else {
+        0
+      }
+    }
+    def leftEqualCards:Int = {
+      if (colourList.head.equals(colourList(1))) {
+        valueList.head + valueList(1)
+      } else {
+        0
+      }
+    }
+    def rightEqualCards:Int = {
+      if (colourList.last.equals(colourList(1))) {
+        valueList.last + valueList(1)
+      } else {
+        0
+      }
+    }
+    def outerEqualCards:Int = {
+      if (colourList.head.equals(colourList.last)) {
+        valueList.head + valueList.last
+      } else {
+        0
+      }
+    }
     if (threeCards.head._1.equals(threeCards(1)._1) && threeCards.head._1.equals(threeCards.last._1)) return 30.5
-    if (colourList.head.equals(colourList.last) && colourList.head.equals(colourList(1)))
-      countList = countList.::(valueList.head + valueList(1) + valueList.last)
-    if (colourList.head.equals(colourList(1))) countList = countList.::(valueList.head + valueList(1))
-    if (colourList.head.equals(colourList.last)) countList = countList.::(valueList.head + valueList.last)
-    if (colourList.last.equals(colourList(1))) countList = countList.::(valueList.last + valueList(1))
-    countList.max
+    List(threeEqualCards, leftEqualCards, rightEqualCards, outerEqualCards).max
   }
 }
