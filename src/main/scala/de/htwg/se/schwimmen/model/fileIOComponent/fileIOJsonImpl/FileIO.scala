@@ -16,20 +16,19 @@ class FileIO extends FileIOInterface{
     val json: JsValue = Json.parse(source)
     var players: List[PlayerInterface] = Nil
     val size: Int = (json \ "size").get.toString().toInt
-    for (index <- 0 until size) {
-      val name: String = (json \\ "name")(index).as[String]
+    (0 to size) foreach {
       val cardsOnHand: List[(String, String)] =
-        List(((json \\ "cardsOnHandOneVal")(index).as[String], (json \\ "cardsOnHandOneCol")(index).as[String]),
-          ((json \\ "cardsOnHandTwoVal")(index).as[String], (json \\ "cardsOnHandTwoCol")(index).as[String]),
-          ((json \\ "cardsOnHandThreeVal")(index).as[String], (json \\ "cardsOnHandThreeCol")(index).as[String]))
-      val hasKnocked: Boolean = (json \\ "hasKnocked")(index).as[Boolean]
-      val life: Int = (json \\ "life")(index).as[Int]
+        List(((json \\ "cardsOnHandOneVal").toString(), (json \\ "cardsOnHandOneCol").toString()),
+          ((json \\ "cardsOnHandTwoVal").toString(), (json \\ "cardsOnHandTwoCol").toString()),
+          ((json \\ "cardsOnHandThreeVal").toString(), (json \\ "cardsOnHandThreeCol").toString()))
+
       var player = injector.instance[PlayerInterface]
-      player = player.setName(name)
+      player = player.setName((json \\ "name").toString())
       player = player.setCardsOnHand(cardsOnHand)
-      player = player.setHasKnocked(hasKnocked)
-      player = player.setLife(life)
+      player = player.setHasKnocked((json \\ "hasKnocked").toString().toBoolean)
+      player = player.setLife((json \\ "life").toString().toInt)
       players = players :+ player
+      players
     }
     players
   }
@@ -52,26 +51,23 @@ class FileIO extends FileIOInterface{
     pw.write(Json.prettyPrint(toJson(players, field)))
     pw.close()
   }
-
   def toJson(players: List[PlayerInterface], field: PlayingFieldInterface): JsObject = {
     Json.obj(
       "size" -> JsNumber(players.size),
       "players" -> Json.toJson(
-        for {
-          pl<-players
-        } yield {
+        players.map ( p =>
           Json.obj(
-            "name" -> Json.toJson(pl.name),
-            "cardsOnHandOneVal" -> Json.toJson(pl.cardsOnHand.head._1),
-            "cardsOnHandOneCol" -> Json.toJson(pl.cardsOnHand.head._2),
-            "cardsOnHandTwoVal" -> Json.toJson(pl.cardsOnHand(1)._1),
-            "cardsOnHandTwoCol" -> Json.toJson(pl.cardsOnHand(1)._2),
-            "cardsOnHandThreeVal" -> Json.toJson(pl.cardsOnHand.last._1),
-            "cardsOnHandThreeCol" -> Json.toJson(pl.cardsOnHand.last._2),
-            "hasKnocked" -> Json.toJson(pl.hasKnocked),
-            "life" -> Json.toJson(pl.life)
+            "name" -> Json.toJson(p.name),
+            "cardsOnHandOneVal" -> Json.toJson(p.cardsOnHand.head._1),
+            "cardsOnHandOneCol" -> Json.toJson(p.cardsOnHand.head._2),
+            "cardsOnHandTwoVal" -> Json.toJson(p.cardsOnHand(1)._1),
+            "cardsOnHandTwoCol" -> Json.toJson(p.cardsOnHand(1)._2),
+            "cardsOnHandThreeVal" -> Json.toJson(p.cardsOnHand.last._1),
+            "cardsOnHandThreeCol" -> Json.toJson(p.cardsOnHand.last._2),
+            "hasKnocked" -> Json.toJson(p.hasKnocked),
+            "life" -> Json.toJson(p.life)
           )
-        }
+        )
       ),
       "field" -> Json.obj(
         "cardsOnFieldOneVal" -> Json.toJson(field.cardsOnField.head._1),

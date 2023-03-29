@@ -42,14 +42,16 @@ class Controller @Inject() (
     fieldStack = Nil.::(field)
     playerStack = Nil
     var newPlayers: List[PlayerInterface] = Nil
-    for (pl <- players) {
-      var newPlayer:PlayerInterface = injector.instance[PlayerInterface]
+    players.foreach(
+      pl => {
+      var newPlayer: PlayerInterface = injector.instance[PlayerInterface]
       newPlayer = newPlayer.setName(pl.name)
       newPlayer = newPlayer.setLife(pl.life)
       newPlayer = newPlayer.setCardsOnHand(stack.getThreeCards)
       stack = stack.delThreeCards
       newPlayers = newPlayers :+ newPlayer
-    }
+      }
+    )
     players = newPlayers
     publish(new PlayerAdded)
   }

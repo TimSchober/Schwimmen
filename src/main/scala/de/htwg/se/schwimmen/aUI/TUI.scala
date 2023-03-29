@@ -128,18 +128,18 @@ class TUI(val controller: ControllerInterface) extends Reactor {
     val res = controller.players.sortBy(_.cardCount).reverse
     val builder = new StringBuilder
     var looseList:List[PlayerInterface] = Nil
-    for (pl <- res) if (pl.cardCount == res.last.cardCount) looseList = looseList.::(pl)
+    res foreach( pl => if (pl.cardCount == res.last.cardCount) looseList = looseList.::(pl))
     controller.players = res.dropRight(looseList.size)
-    for (pl <- looseList) {
+    looseList foreach { pl =>
       if (pl.life - 1 == -1) {
         controller.playerAmount = controller.playerAmount - 1
         builder.append(pl.name).append(" you're out")
       } else
         controller.players = controller.players.::(pl.setLife(pl.life - 1))
     }
-    for (pl <- res) builder.append(s"\n${pl.name}:    ${pl.cardCount} points    ${pl.life} lives left")
+    res.foreach(pl => builder.append(s"\n${pl.name}:    ${pl.cardCount} points    ${pl.life} lives left"))
     builder.append("\n")
-    for (pl <- looseList) builder.append(pl.name).append(", ")
+    looseList.foreach(pl => builder.append(pl.name).append(", "))
     builder.append("lost a Life").append("\n")
     if (controller.playerAmount == 1) {
       builder.append(controller.players.head.name).append(", Congratulations you've won the game:)")

@@ -15,7 +15,8 @@ class FileIO extends FileIOInterface{
     val file = scala.xml.XML.loadFile("field.xml")
     var players: List[PlayerInterface] = Nil
     val playersFromXml = (file \\ "player")
-    for (pl <- playersFromXml) {
+    playersFromXml.foreach {
+      pl => {
       val name: String = (pl \ "@name").text
       val cardsOnHand: List[(String, String)] =
         List(((pl \ "cardsOnHandOneVal").text, (pl \ "cardsOnHandOneCol").text),
@@ -29,6 +30,7 @@ class FileIO extends FileIOInterface{
       player = player.setHasKnocked(hasKnocked)
       player = player.setLife(life)
       players = players :+ player
+      }
     }
     players
   }
@@ -69,9 +71,7 @@ class FileIO extends FileIOInterface{
   def toXml(players: List[PlayerInterface], field: PlayingFieldInterface): Elem = {
     <field>
       {
-        for {
-          pl <- players
-        } yield playerToXml(pl)
+        players.foreach(pl => playerToXml(pl))
       }
       <cardsOnFieldOneVal>{field.cardsOnField.head._1}</cardsOnFieldOneVal>
       <cardsOnFieldOneCol>{field.cardsOnField.head._2}</cardsOnFieldOneCol>
