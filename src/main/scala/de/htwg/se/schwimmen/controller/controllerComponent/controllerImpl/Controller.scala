@@ -12,7 +12,7 @@ import net.codingwell.scalaguice.InjectorExtensions._
 
 import scala.swing.Publisher
 
-case class Controller @Inject() (
+class Controller @Inject() (
                   var stack: CardStackInterface,
                   var players: List[PlayerInterface],
                   var field: PlayingFieldInterface,
