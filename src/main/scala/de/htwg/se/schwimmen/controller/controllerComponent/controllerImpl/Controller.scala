@@ -2,7 +2,7 @@ package de.htwg.se.schwimmen.controller.controllerComponent.controllerImpl
 
 import com.google.inject.name.{Named, Names}
 import com.google.inject.{Guice, Inject, Injector}
-import scala.util.{Failure, Success}
+import scala.util.{Failure, Success, Try}
 import de.htwg.se.schwimmen.controller.controllerComponent._
 import de.htwg.se.schwimmen.model.cardStackComponent._
 import de.htwg.se.schwimmen.model.fieldComponent._
@@ -142,34 +142,35 @@ class Controller @Inject() (
 
   def saveTo(str:String): Unit = {
     val fileIO = injector.instance[FileIOInterface](Names.named(str))
-    fileIO.save(players, field) match {
+    Try {fileIO.save(players, field)} match {
       case Success(_) =>
         publish(new PlayerChanged)
       case Failure(e) =>
-        print("Failed")
+        print("Save Failed")
     }
 
   }
 
   def loadFrom(str: String): Unit = {
     val fileIO = injector.instance[FileIOInterface](Names.named(str))
-    field = fileIO.loadField match {
+    field = Try {fileIO.loadField} match {
       case Success(e) =>
         println("load Field Success")
         field
-      case Failure(exception) =>
+      case Failure(e) =>
         println("load Field Failed")
+        field
     }
-    players = fileIO.loadPlayers match {
+    players = Try {fileIO.loadPlayers} match {
       case Success(e) =>
         println("load Players Seucess")
         players
-      case Failure(exception) =>
+      case Failure(e) =>
         println("load Players Failed")
+        players
     }
 
-
-    playerAmount = players.size
+    playerAmount = players.length
     publish(new PlayerChanged)
   }
 }

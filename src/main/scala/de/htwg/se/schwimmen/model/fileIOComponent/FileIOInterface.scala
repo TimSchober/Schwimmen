@@ -6,8 +6,8 @@ import scala.util.Try
 
 trait FileIOInterface {
 
-  def loadPlayers: Try[List[PlayerInterface]]
-  def loadField: Try[PlayingFieldInterface]
-  def save(players: List[PlayerInterface], field: PlayingFieldInterface): Try[Unit]
+  def loadPlayers: List[PlayerInterface]
+  def loadField: PlayingFieldInterface
+  def save(players: List[PlayerInterface], field: PlayingFieldInterface): Unit
 
 }

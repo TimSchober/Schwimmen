@@ -8,6 +8,7 @@ import net.codingwell.scalaguice.InjectorExtensions.ScalaInjector
 import play.api.libs.json._
 
 import scala.io.Source
+import scala.util.Try
 
 class FileIO extends FileIOInterface{
   override def loadPlayers: List[PlayerInterface] = {
