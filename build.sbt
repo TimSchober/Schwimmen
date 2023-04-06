@@ -2,8 +2,7 @@ name := "Schwimmen"
 
 version := "0.1"
 
-scalaVersion := "3.0.0"
-crossScalaVersions ++= Seq("2.13.5", "3.0.0")
+scalaVersion := "3.2.2"
 
 libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.15"
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.15" % "test"

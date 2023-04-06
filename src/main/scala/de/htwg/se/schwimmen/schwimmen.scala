@@ -16,9 +16,10 @@ object schwimmen {
   controller.publish(new NewGame)
 
   def main(args: Array[String]): Unit = {
-    do {
+    while
+      (tui.input != "q")
+    do
       tui.input = readLine()
       tui.processInput()
-    } while (tui.input != "q")
   }
 }
