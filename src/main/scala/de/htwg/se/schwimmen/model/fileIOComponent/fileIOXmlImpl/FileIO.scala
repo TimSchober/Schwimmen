@@ -34,7 +34,6 @@ class FileIO extends FileIOInterface{
     }
     players
   }
-
   override def loadField: PlayingFieldInterface = {
     val injector: Injector = Guice.createInjector(new schwimmenModul)
     val file = scala.xml.XML.loadFile("field.xml")
@@ -57,7 +56,7 @@ class FileIO extends FileIOInterface{
   }
 
   def playerToXml(player: PlayerInterface): Elem = {
-    <player name={player.name}>
+    <player name={player.name.toString}>
       <cardsOnHandOneVal>{player.cardsOnHand.head._1}</cardsOnHandOneVal>
       <cardsOnHandOneCol>{player.cardsOnHand.head._2}</cardsOnHandOneCol>
       <cardsOnHandTwoVal>{player.cardsOnHand(1)._1}</cardsOnHandTwoVal>

@@ -45,7 +45,7 @@ class Controller @Inject() (
     var newPlayers: List[PlayerInterface] = Nil
     players.foreach(pl => {
       var newPlayer: PlayerInterface = injector.instance[PlayerInterface]
-      newPlayer = newPlayer.setName(pl.name)
+      newPlayer = newPlayer.setName(pl.name.toString)
       newPlayer = newPlayer.setLife(pl.life)
       newPlayer = newPlayer.setCardsOnHand(stack.getThreeCards)
       stack = stack.delThreeCards

@@ -31,7 +31,7 @@ class GUI(controller: ControllerInterface) extends Frame {
     contents += Button("hand(1)") {handIndex = 1}
     contents += Button("hand(2)") {handIndex = 2}
     contents += Button("hand(3)") {handIndex = 3}
-    contents += new Label(controller.players.head.name)
+    contents += new Label(controller.players.head.name.toString)
     val changeOneCardButton: Button = Button("ChangeOneCard") {
       controller.swapCards(handIndex - 1, fieldIndex - 1)
       controller.nextPlayer()

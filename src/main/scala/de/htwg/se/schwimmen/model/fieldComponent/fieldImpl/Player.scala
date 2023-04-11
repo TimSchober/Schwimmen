@@ -4,14 +4,19 @@ import com.google.inject.Inject
 import com.google.inject.name.Named
 import de.htwg.se.schwimmen.model.fieldComponent._
 
-case class Player @Inject() (name: String = "",
+case class Player @Inject() (name: Option[String] = None,
                   cardsOnHand: List[(String, String)] = Nil,
                   @Named("cardCount") cardCount: Double = 0.0,
                   @Named("hasKnocked") hasKnocked: Boolean = false,
                   @Named("life") life: Int = 3) extends PlayerInterface{
 
   def setName(nameString: String): Player = {
-    copy(name = nameString)
+    name match {
+      case Some(s) =>
+        copy(name = Some(name.toString))
+      case None =>
+        copy(name = Some(nameString))
+    }
   }
 
   def setCardsOnHand(threeCards: List[(String, String)]): Player = {
