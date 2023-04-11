@@ -1,13 +1,13 @@
-package de.htwg.se.schwimmen
+package de.htwg.se.schwimmen.model
 
 import com.google.inject.AbstractModule
 import com.google.inject.name.Names
-import de.htwg.se.schwimmen.controller.controllerComponent._
-import de.htwg.se.schwimmen.model.cardStackComponent._
+import de.htwg.se.schwimmen.cardStackComponent.fieldComponent.*
+import de.htwg.se.schwimmen.cardStackComponent.fieldComponent.fieldImpl.{Player, PlayingField}
+import de.htwg.se.schwimmen.cardStackComponent.fileIOComponent.*
+import de.htwg.se.schwimmen.controller.controllerComponent.*
+import de.htwg.se.schwimmen.model.cardStackComponent.*
 import de.htwg.se.schwimmen.model.cardStackComponent.cardStackImpl.CardStack
-import de.htwg.se.schwimmen.model.fieldComponent._
-import de.htwg.se.schwimmen.model.fieldComponent.fieldImpl.{Player, PlayingField}
-import de.htwg.se.schwimmen.model.fileIOComponent._
 import net.codingwell.scalaguice.ScalaModule
 
 class schwimmenModul extends  AbstractModule with ScalaModule {

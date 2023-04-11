@@ -3,8 +3,8 @@ package de.htwg.se.schwimmen.aUI
 import de.htwg.se.schwimmen.controller.controllerComponent.NewGame
 import de.htwg.se.schwimmen.controller.controllerComponent.controllerImpl.Controller
 import de.htwg.se.schwimmen.model.cardStackComponent.cardStackImpl.CardStack
-import de.htwg.se.schwimmen.model.fieldComponent._
-import de.htwg.se.schwimmen.model.fieldComponent.fieldImpl.{Player, PlayingField}
+import de.htwg.se.schwimmen.cardStackComponent.fieldComponent._
+import de.htwg.se.schwimmen.cardStackComponent.fieldComponent.fieldImpl.{Player, PlayingField}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 

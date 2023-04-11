@@ -1,6 +1,6 @@
-package de.htwg.se.schwimmen.model.fileIOComponent
+package de.htwg.se.schwimmen.cardStackComponent.fileIOComponent
 
-import de.htwg.se.schwimmen.model.fieldComponent.{PlayerInterface, PlayingFieldInterface}
+import de.htwg.se.schwimmen.cardStackComponent.fieldComponent.{PlayerInterface, PlayingFieldInterface}
 
 import scala.util.Try
 

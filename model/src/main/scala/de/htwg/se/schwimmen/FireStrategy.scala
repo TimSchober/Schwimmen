@@ -1,6 +1,8 @@
-package de.htwg.se.schwimmen.model
+package de.htwg.se.schwimmen
 
-import de.htwg.se.schwimmen.model.fieldComponent.PlayerInterface
+import de.htwg.se.schwimmen.cardStackComponent.Strategy
+import de.htwg.se.schwimmen.cardStackComponent.fieldComponent.PlayerInterface
+import de.htwg.se.schwimmen.model.Strategy
 
 class FireStrategy extends Strategy {
   override def checkStop(player: PlayerInterface): Boolean = {

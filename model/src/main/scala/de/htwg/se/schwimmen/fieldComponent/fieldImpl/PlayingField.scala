@@ -1,7 +1,7 @@
-package de.htwg.se.schwimmen.model.fieldComponent.fieldImpl
+package de.htwg.se.schwimmen.cardStackComponent.fieldComponent.fieldImpl
 
 import com.google.inject.Inject
-import de.htwg.se.schwimmen.model.fieldComponent._
+import de.htwg.se.schwimmen.cardStackComponent.fieldComponent._
 
 case class PlayingField @Inject() (cardsOnField: List[(String, String)] = Nil) extends PlayingFieldInterface{
 

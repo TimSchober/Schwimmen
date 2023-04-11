@@ -1,4 +1,4 @@
-package de.htwg.se.schwimmen.model.fieldComponent
+package de.htwg.se.schwimmen.cardStackComponent.fieldComponent
 
 trait PlayingFieldInterface {
   def cardsOnField: List[(String, String)]

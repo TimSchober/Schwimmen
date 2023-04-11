@@ -1,8 +1,8 @@
-package de.htwg.se.schwimmen.model.fieldComponent.fieldImpl
+package de.htwg.se.schwimmen.cardStackComponent.fieldComponent.fieldImpl
 
 import com.google.inject.Inject
 import com.google.inject.name.Named
-import de.htwg.se.schwimmen.model.fieldComponent._
+import de.htwg.se.schwimmen.cardStackComponent.fieldComponent._
 
 case class Player @Inject() (name: String = "",
                   cardsOnHand: List[(String, String)] = Nil,

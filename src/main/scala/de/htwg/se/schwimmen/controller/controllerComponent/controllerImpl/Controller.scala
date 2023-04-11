@@ -5,10 +5,10 @@ import com.google.inject.{Guice, Inject, Injector}
 import scala.util.{Failure, Success, Try}
 import de.htwg.se.schwimmen.controller.controllerComponent._
 import de.htwg.se.schwimmen.model.cardStackComponent._
-import de.htwg.se.schwimmen.model.fieldComponent._
-import de.htwg.se.schwimmen.model.fileIOComponent.FileIOInterface
+import de.htwg.se.schwimmen.cardStackComponent.fieldComponent._
+import de.htwg.se.schwimmen.cardStackComponent.fileIOComponent.FileIOInterface
+import de.htwg.se.schwimmen.model.schwimmenModul
 import de.htwg.se.schwimmen.util.UndoManager
-import de.htwg.se.schwimmen.schwimmenModul
 import net.codingwell.scalaguice.InjectorExtensions._
 
 import scala.swing.Publisher

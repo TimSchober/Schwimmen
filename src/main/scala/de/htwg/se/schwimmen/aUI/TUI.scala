@@ -1,8 +1,8 @@
 package de.htwg.se.schwimmen.aUI
 
+import de.htwg.se.schwimmen.EasyStrategy
 import de.htwg.se.schwimmen.controller.controllerComponent._
-import de.htwg.se.schwimmen.model.EasyStrategy
-import de.htwg.se.schwimmen.model.fieldComponent._
+import de.htwg.se.schwimmen.cardStackComponent.fieldComponent._
 
 import scala.util.{Failure, Success, Try}
 import scala.swing.Reactor

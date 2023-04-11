@@ -1,7 +1,7 @@
 package de.htwg.se.schwimmen.controller.controllerComponent
 
 import de.htwg.se.schwimmen.model.cardStackComponent.CardStackInterface
-import de.htwg.se.schwimmen.model.fieldComponent._
+import de.htwg.se.schwimmen.cardStackComponent.fieldComponent._
 
 import scala.swing.Publisher
 

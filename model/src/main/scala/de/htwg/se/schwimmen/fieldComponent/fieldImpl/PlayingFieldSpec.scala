@@ -1,4 +1,4 @@
-package de.htwg.se.schwimmen.model.fieldComponent.fieldImpl
+package de.htwg.se.schwimmen.cardStackComponent.fieldComponent.fieldImpl
 
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec

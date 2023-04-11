@@ -1,8 +1,8 @@
-package de.htwg.se.schwimmen.model.fileIOComponent.fileIOJsonImpl
+package de.htwg.se.schwimmen.cardStackComponent.fileIOComponent.fileIOJsonImpl
 
 import com.google.inject.{Guice, Injector}
-import de.htwg.se.schwimmen.model.fieldComponent.{PlayerInterface, PlayingFieldInterface}
-import de.htwg.se.schwimmen.model.fileIOComponent.FileIOInterface
+import de.htwg.se.schwimmen.cardStackComponent.fieldComponent.{PlayerInterface, PlayingFieldInterface}
+import de.htwg.se.schwimmen.cardStackComponent.fileIOComponent.FileIOInterface
 import de.htwg.se.schwimmen.schwimmenModul
 import net.codingwell.scalaguice.InjectorExtensions.ScalaInjector
 import play.api.libs.json._
