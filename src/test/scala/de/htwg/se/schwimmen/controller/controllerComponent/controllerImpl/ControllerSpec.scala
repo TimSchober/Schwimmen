@@ -1,7 +1,7 @@
 package de.htwg.se.schwimmen.controller.controllerComponent.controllerImpl
 
-import de.htwg.se.schwimmen.model.cardStackComponent.cardStackImpl.CardStack
-import de.htwg.se.schwimmen.model.fieldComponent.fieldImpl.{Player, PlayingField}
+import de.htwg.se.schwimmen.cardStackComponent.cardStackImpl.CardStack
+import de.htwg.se.schwimmen.fieldComponent.fieldImpl.{Player, PlayingField}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 

@@ -1,6 +1,6 @@
 package de.htwg.se.schwimmen.model
 
-import de.htwg.se.schwimmen.model.fieldComponent.fieldImpl.Player
+import de.htwg.se.schwimmen.fieldComponent.fieldImpl.Player
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 

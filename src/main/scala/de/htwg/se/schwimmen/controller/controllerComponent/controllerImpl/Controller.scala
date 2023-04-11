@@ -2,13 +2,15 @@ package de.htwg.se.schwimmen.controller.controllerComponent.controllerImpl
 
 import com.google.inject.name.{Named, Names}
 import com.google.inject.{Guice, Inject, Injector}
-import de.htwg.se.schwimmen.controller.controllerComponent._
-import de.htwg.se.schwimmen.model.cardStackComponent._
-import de.htwg.se.schwimmen.model.fieldComponent._
-import de.htwg.se.schwimmen.model.fileIOComponent.FileIOInterface
+import de.htwg.se.schwimmen.cardStackComponent.CardStackInterface
+import de.htwg.se.schwimmen.controller.controllerComponent.*
+import de.htwg.se.schwimmen.cardStackComponent.*
+import de.htwg.se.schwimmen.fieldComponent.{PlayerInterface, PlayingFieldInterface}
+import de.htwg.se.schwimmen.fileIOComponent.FileIOInterface
+import de.htwg.se.schwimmen.model.fieldComponent.*
 import de.htwg.se.schwimmen.util.UndoManager
 import de.htwg.se.schwimmen.schwimmenModul
-import net.codingwell.scalaguice.InjectorExtensions._
+import net.codingwell.scalaguice.InjectorExtensions.*
 
 import scala.swing.Publisher
 

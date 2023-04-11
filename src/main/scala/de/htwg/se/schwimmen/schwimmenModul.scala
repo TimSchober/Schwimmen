@@ -2,12 +2,16 @@ package de.htwg.se.schwimmen
 
 import com.google.inject.AbstractModule
 import com.google.inject.name.Names
-import de.htwg.se.schwimmen.controller.controllerComponent._
-import de.htwg.se.schwimmen.model.cardStackComponent._
-import de.htwg.se.schwimmen.model.cardStackComponent.cardStackImpl.CardStack
-import de.htwg.se.schwimmen.model.fieldComponent._
-import de.htwg.se.schwimmen.model.fieldComponent.fieldImpl.{Player, PlayingField}
-import de.htwg.se.schwimmen.model.fileIOComponent._
+import de.htwg.se.schwimmen.cardStackComponent.CardStackInterface
+import de.htwg.se.schwimmen.cardStackComponent.cardStackImpl.CardStack
+import de.htwg.se.schwimmen.controller.controllerComponent.*
+import de.htwg.se.schwimmen.fieldComponent.{PlayerInterface, PlayingFieldInterface}
+import de.htwg.se.schwimmen.fieldComponent.fieldImpl.{Player, PlayingField}
+import de.htwg.se.schwimmen.fileIOComponent.fileIOJsonImpl.FileIO
+import de.htwg.se.schwimmen.fileIOComponent.{FileIOInterface, fileIOXmlImpl}
+import de.htwg.se.schwimmen.model.cardStackComponent.*
+import de.htwg.se.schwimmen.model.fieldComponent.*
+import de.htwg.se.schwimmen.model.fileIOComponent.*
 import net.codingwell.scalaguice.ScalaModule
 
 class schwimmenModul extends  AbstractModule with ScalaModule {
@@ -27,6 +31,6 @@ class schwimmenModul extends  AbstractModule with ScalaModule {
     bind[List[(String, String)]].toInstance(List[(String, String)]())
 
     bind[FileIOInterface].annotatedWithName("Xml").to[fileIOXmlImpl.FileIO]
-    bind[FileIOInterface].annotatedWithName("Json").to[fileIOJsonImpl.FileIO]
+    bind[FileIOInterface].annotatedWithName("Json").to[FileIO]
   }
 }
