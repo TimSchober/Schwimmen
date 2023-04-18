@@ -10,8 +10,7 @@ lazy val commonSettings = Seq(
   coverageExcludedPackages := "de.htwg.se.schwimmen.aUI.GUI;" +
     "de.htwg.se.schwimmen.model.fileIOComponent.*;"
 )
-lazy val root = project
-  .in(file("."))
+lazy val root = (project in file("."))
   .dependsOn(cards, player, fileIO)
   .aggregate(cards, player, fileIO)
   .settings(
