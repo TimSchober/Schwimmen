@@ -10,7 +10,7 @@ class StrategySpec extends AnyWordSpec with Matchers {
     val easyStrat = new EasyStrategy
     val fireStrat = new FireStrategy
     "be true if a player has 31 points" in {
-      var pl = Player("Tim")
+      var pl = Player(Some("Tim"))
       pl = pl.setCardsOnHand(List(("jack", "heart"), ("king", "heart"), ("queen", "heart")))
       easyStrat.checkStop(pl) should be(false)
       fireStrat.checkStop(pl) should be(false)
@@ -19,7 +19,7 @@ class StrategySpec extends AnyWordSpec with Matchers {
       fireStrat.checkStop(pl) should be(true)
     }
     "have a different outcome weather player chooses easy or fire strat" in {
-      var pl = Player("Tim")
+      var pl = Player(Some("Tim"))
       pl = pl.setCardsOnHand(List(("ace", "heart"), ("ace", "spade"), ("ace", "diamond")))
       easyStrat.checkStop(pl) should be(false)
       fireStrat.checkStop(pl) should be(true)

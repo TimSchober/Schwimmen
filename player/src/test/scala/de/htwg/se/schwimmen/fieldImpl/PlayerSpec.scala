@@ -9,9 +9,13 @@ class PlayerSpec extends AnyWordSpec with Matchers {
   "A Player" should {
     val playerList = List(("10","spade"),("jack","spade"),("queen","spade"))
     val fieldList = List(("7","hearts"),("8","hearts"),("9","hearts"))
-    val player1 = Player("Tim")
+    val player1 = Player(Some("Tim"))
     "have a name" in {
-      player1.name should be("Tim")
+      val playerName = player1.name match {
+        case Some(s) => s
+        case None => ""
+      }
+      playerName should be("Tim")
     }
     "have a lifecount" in {
       player1.life should be(3)

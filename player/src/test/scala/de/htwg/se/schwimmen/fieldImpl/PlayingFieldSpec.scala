@@ -8,7 +8,7 @@ class PlayingFieldSpec extends AnyWordSpec with Matchers {
 
   "A PlayingField" should {
     var field = PlayingField()
-    var player = Player("Tim")
+    var player = Player(Some("Tim"))
     "set the given cards" in {
       val fieldList = List(("7","hearts"),("8","hearts"),("9","hearts"))
       field = field.setCardsOnField(fieldList)
