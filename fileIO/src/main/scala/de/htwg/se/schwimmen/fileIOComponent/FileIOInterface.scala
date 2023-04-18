@@ -1,6 +1,6 @@
 package de.htwg.se.schwimmen.fileIOComponent
 
-import de.htwg.se.schwimmen.model.fieldComponent.{PlayerInterface, PlayingFieldInterface}
+import de.htwg.se.schwimmen.fieldComponent.{PlayerInterface, PlayingFieldInterface}
 
 trait FileIOInterface {
 
