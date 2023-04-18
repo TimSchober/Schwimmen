@@ -44,3 +44,7 @@ project/.sbtserver
 
 # Application
 yourgame.log
+/null/
+/field.json
+/field.xml
+/.bsp/sbt.json
