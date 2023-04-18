@@ -7,7 +7,7 @@ import de.htwg.se.schwimmen.controller.controllerComponent.*
 import de.htwg.se.schwimmen.cardStackComponent.*
 import de.htwg.se.schwimmen.fieldComponent.{PlayerInterface, PlayingFieldInterface}
 import de.htwg.se.schwimmen.fileIOComponent.FileIOInterface
-import de.htwg.se.schwimmen.model.fieldComponent.*
+import de.htwg.se.schwimmen.fieldComponent.*
 import de.htwg.se.schwimmen.util.UndoManager
 import de.htwg.se.schwimmen.schwimmenModul
 import net.codingwell.scalaguice.InjectorExtensions.*
