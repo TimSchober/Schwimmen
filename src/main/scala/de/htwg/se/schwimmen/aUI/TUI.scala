@@ -117,7 +117,11 @@ class TUI(val controller: ControllerInterface) extends Reactor {
 
   def firstOutputString(): String = {
     if (controller.players.head.hasKnocked || strat.checkStop(controller.players.last)) return endOfGameStats()
-    s"\n${controller.players.head.name}, its your turn! " +
+    val playerName = controller.players.head.name match {
+      case Some(s) => s
+      case None => ""
+    }
+    s"\n${playerName}, its your turn! " +
       s"Do you want to change a card?(y/n) or all cards?(all) or knock?(k)"
   }
 
@@ -129,21 +133,41 @@ class TUI(val controller: ControllerInterface) extends Reactor {
     val res = controller.players.sortBy(_.cardCount).reverse
     val builder = new StringBuilder
     var looseList:List[PlayerInterface] = Nil
-    res foreach( pl => if (pl.cardCount == res.last.cardCount) looseList = looseList.::(pl))
+    res foreach(pl => if (pl.cardCount == res.last.cardCount) looseList = looseList.::(pl))
     controller.players = res.dropRight(looseList.size)
     looseList foreach { pl =>
       if (pl.life - 1 == -1) {
+        val playerName = pl.name match {
+          case Some(s) => s
+          case None => ""
+        }
         controller.playerAmount = controller.playerAmount - 1
-        builder.append(pl.name).append(" you're out")
+        builder.append(playerName).append(" you're out")
       } else
         controller.players = controller.players.::(pl.setLife(pl.life - 1))
     }
-    res.foreach(pl => builder.append(s"\n${pl.name}:    ${pl.cardCount} points    ${pl.life} lives left"))
+    res.foreach(pl => {
+      val playerName = pl.name match {
+        case Some(s) => s
+        case None => ""
+      }
+      builder.append(s"\n${playerName}:    ${pl.cardCount} points    ${pl.life} lives left")
+    })
     builder.append("\n")
-    looseList.foreach(pl => builder.append(pl.name).append(", "))
+    looseList.foreach(pl => {
+      val playerName = pl.name match {
+        case Some(s) => s
+        case None => ""
+      }
+      builder.append(playerName).append(", ")
+    })
     builder.append("lost a Life").append("\n")
     if (controller.playerAmount == 1) {
-      builder.append(controller.players.head.name).append(", Congratulations you've won the game:)")
+      val playerName = controller.players.head.name match {
+        case Some(s) => s
+        case None => ""
+      }
+      builder.append(playerName).append(", Congratulations you've won the game:)")
       System.exit(0)
     } else {
       builder.append("start next round with(nr)")

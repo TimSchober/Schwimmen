@@ -5,14 +5,20 @@ import com.google.inject.name.Named
 import de.htwg.se.schwimmen.fieldComponent.{PlayerInterface, PlayingFieldInterface}
 import de.htwg.se.schwimmen.fieldComponent.*
 
-case class Player @Inject() (name: String = "",
+case class Player @Inject() (name: Option[String] = None,
                   cardsOnHand: List[(String, String)] = Nil,
                   @Named("cardCount") cardCount: Double = 0.0,
                   @Named("hasKnocked") hasKnocked: Boolean = false,
                   @Named("life") life: Int = 3) extends PlayerInterface{
 
   def setName(nameString: String): Player = {
-    copy(name = nameString)
+    name match {
+      case Some(s) =>
+        copy(name = Some(s))
+      case None =>
+        copy(name = Some(nameString))
+    }
+
   }
 
   def setCardsOnHand(threeCards: List[(String, String)]): Player = {
@@ -36,11 +42,15 @@ case class Player @Inject() (name: String = "",
 
   override def toString: String = {
     val builder = new StringBuilder
+    val playerName = name match {
+      case Some(s) => s
+      case None => ""
+    }
     builder.append("These are the cards in your hand:    ")
     cardsOnHand.foreach((x: (String, String)) =>
       builder.append(x._1).append(" of ")
         .append(x._2).append("s    "))
-    builder.append("        ").append(name).append(" has ").append(life).append(" lives left").toString()
+    builder.append("        ").append(playerName).append(" has ").append(life).append(" lives left").toString()
   }
 
   def getColoursOfCards(threeCards: List[(String, String)]): List[String] = {

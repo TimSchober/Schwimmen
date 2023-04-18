@@ -57,7 +57,11 @@ class FileIO extends FileIOInterface{
   }
 
   def playerToXml(player: PlayerInterface): Elem = {
-    <player name={player.name}>
+    val playerName = player.name match {
+      case Some(s) => s
+      case None => ""
+    }
+    <player name={playerName}>
       <cardsOnHandOneVal>{player.cardsOnHand.head._1}</cardsOnHandOneVal>
       <cardsOnHandOneCol>{player.cardsOnHand.head._2}</cardsOnHandOneCol>
       <cardsOnHandTwoVal>{player.cardsOnHand(1)._1}</cardsOnHandTwoVal>

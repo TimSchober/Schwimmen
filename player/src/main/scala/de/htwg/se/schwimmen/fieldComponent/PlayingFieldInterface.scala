@@ -10,7 +10,7 @@ trait PlayingFieldInterface {
 }
 
 trait PlayerInterface {
-  def name: String
+  def name: Option[String]
   def cardsOnHand: List[(String, String)]
   def cardCount: Double
   def hasKnocked: Boolean
