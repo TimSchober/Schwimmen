@@ -2,8 +2,8 @@ package de.htwg.se.schwimmen.fileIOComponent.fileIOXmlImpl
 
 import com.google.inject.{Guice, Injector}
 import de.htwg.se.schwimmen.fileIOComponent.FileIOInterface
-import de.htwg.se.schwimmen.model.fieldComponent.{PlayerInterface, PlayingFieldInterface}
-import de.htwg.se.schwimmen.schwimmenModul
+import de.htwg.se.schwimmen.fieldComponent.{PlayerInterface, PlayingFieldInterface}
+import de.htwg.se.schwimmen.fileIOComponent.schwimmenModul
 import net.codingwell.scalaguice.InjectorExtensions.ScalaInjector
 
 import scala.xml.{Elem, PrettyPrinter}
