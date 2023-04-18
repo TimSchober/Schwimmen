@@ -27,6 +27,7 @@ class schwimmenModul extends  AbstractModule with ScalaModule {
     bind[PlayingFieldInterface].to[PlayingField]
     bind[PlayerInterface].to[Player]
 
+    bind[Option[String]].toInstance(None)
     bind[List[PlayerInterface]].toInstance(List[Player]())
     bind[List[(String, String)]].toInstance(List[(String, String)]())
 
