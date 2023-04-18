@@ -3,7 +3,7 @@ package de.htwg.se.schwimmen.aUI
 import de.htwg.se.schwimmen.controller.controllerComponent.*
 import de.htwg.se.schwimmen.fieldComponent.PlayerInterface
 import de.htwg.se.schwimmen.model.EasyStrategy
-import de.htwg.se.schwimmen.model.fieldComponent.*
+import de.htwg.se.schwimmen.fieldComponent.*
 
 import scala.util.{Failure, Success, Try}
 import scala.swing.Reactor
