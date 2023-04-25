@@ -22,7 +22,7 @@ import de.htwg.se.schwimmen.cardStackComponent.cardStackModul
   stack = stack.setCardStack()
 
   val route =
-    path("cardStack") {
+    path("cardStack" / "threeCards") {
       get {
         val threeCards: String = stack.getThreeCardsInJsonFormat
         stack = stack.delThreeCards
