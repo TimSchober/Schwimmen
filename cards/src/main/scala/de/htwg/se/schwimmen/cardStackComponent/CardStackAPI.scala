@@ -31,5 +31,6 @@ import de.htwg.se.schwimmen.cardStackComponent.cardStackModul
     }
 
   Http().newServerAt("127.0.0.1", 8080).bind(route)
+  println(s"Server now online. Please navigate to http://localhost:8080/cardStack\n")
 
 }
