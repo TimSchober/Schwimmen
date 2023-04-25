@@ -7,6 +7,12 @@ lazy val commonSettings = Seq(
   libraryDependencies += "com.typesafe.play" %% "play-json" % "2.10.0-RC7",
   libraryDependencies += "com.google.inject" % "guice" % "5.1.0",
   libraryDependencies += "net.codingwell" %% "scala-guice" % "5.1.1",
+  libraryDependencies ++= Seq(
+    "com.typesafe.akka" %% "akka-http" % "10.5.0",
+    "com.typesafe.akka" %% "akka-actor" % "2.8.0",
+    "com.typesafe.akka" %% "akka-http-spray-json" % "10.5.0",
+    "com.typesafe.akka" %% "akka-actor-typed" % "2.8.0"
+  ),
   coverageExcludedPackages := "de.htwg.se.schwimmen.aUI.GUI;" +
     "de.htwg.se.schwimmen.model.fileIOComponent.*;"
 )
