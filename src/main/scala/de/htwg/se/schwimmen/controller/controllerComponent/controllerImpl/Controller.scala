@@ -1,5 +1,10 @@
 package de.htwg.se.schwimmen.controller.controllerComponent.controllerImpl
 
+import akka.actor.typed.ActorSystem
+import akka.actor.typed.scaladsl.Behaviors
+import akka.http.scaladsl.Http
+import akka.http.scaladsl.model.{HttpMethods, HttpRequest, HttpResponse}
+import akka.http.scaladsl.unmarshalling.Unmarshal
 import com.google.inject.name.{Named, Names}
 import com.google.inject.{Guice, Inject, Injector}
 import de.htwg.se.schwimmen.cardStackComponent.CardStackInterface
@@ -11,8 +16,11 @@ import de.htwg.se.schwimmen.fieldComponent.*
 import de.htwg.se.schwimmen.util.UndoManager
 import de.htwg.se.schwimmen.schwimmenModul
 import net.codingwell.scalaguice.InjectorExtensions.*
+import play.api.libs.json.{JsValue, Json}
 
+import scala.concurrent.{ExecutionContextExecutor, Future}
 import scala.swing.Publisher
+import scala.util.{Failure, Success}
 
 class Controller @Inject() (
                   var stack: CardStackInterface,
@@ -56,29 +64,67 @@ class Controller @Inject() (
       stack = stack.delThreeCards
       newPlayers = newPlayers :+ newPlayer
     })
-//    for (pl <- players) {
-//      var newPlayer:PlayerInterface = injector.instance[PlayerInterface]
-//      newPlayer = newPlayer.setName(pl.name)
-//      newPlayer = newPlayer.setLife(pl.life)
-//      newPlayer = newPlayer.setCardsOnHand(stack.getThreeCards)
-//      stack = stack.delThreeCards
-//      newPlayers = newPlayers :+ newPlayer
-//    }
     players = newPlayers
     publish(new PlayerAdded)
   }
 
+  val PlayerServer = "http://localhost:8080/playersAndPlayingfield"
   def setPlayerAmount(plAm: Int): Unit = {
-    playerAmount = plAm
+    implicit val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "my-system")
+
+    val executionContext: ExecutionContextExecutor = system.executionContext
+
+    given ExecutionContextExecutor = executionContext
+
+    val responseFuture: Future[HttpResponse] = Http().singleRequest(HttpRequest(
+      method = HttpMethods.POST,
+      uri = PlayerServer + "players/playeramount",
+      entity = Json.obj(
+        "playerAmount" -> plAm
+      ).toString
+    ))
     publish(PlayerAmountChanged(plAm))
   }
 
+  val StackServer = "http://localhost:8080/cardStack"
   def addPlayer(name: String): Unit = {
-    var pl:PlayerInterface = injector.instance[PlayerInterface]
-    pl = pl.setName(name)
-    pl = pl.setCardsOnHand(stack.getThreeCards)
-    stack = stack.delThreeCards
-    players = players :+ pl
+    implicit val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "my-system")
+
+    val executionContext: ExecutionContextExecutor = system.executionContext
+
+    given ExecutionContextExecutor = executionContext
+
+    val responseFuture: Future[HttpResponse] = Http().singleRequest(HttpRequest(
+      method = HttpMethods.GET,
+      uri = PlayerServer + "/threeCards",
+      entity = Json.obj(
+        "playerAmount" -> ""
+      ).toString
+    ))
+    var response: JsValue = Json.parse("")
+    responseFuture.onComplete {
+      case Failure(_)
+      => sys.error("Failed getting Json")
+      case Success(value)
+      =>
+        Unmarshal(value.entity).to[String].onComplete {
+          case Failure(_) => sys.error("Failed unmarshalling")
+          case Success(value) =>
+            response = Json.parse(value)
+//            loadJson(json)
+//            notifyObservers
+        }
+    }
+    println(response.toString)
+
+    val responseFuture2: Future[HttpResponse] = Http().singleRequest(HttpRequest(
+      method = HttpMethods.POST,
+      uri = PlayerServer + "players/playeradd",
+      entity = Json.obj(
+        "name" -> ""
+      ).toString
+    ))
+
     publish(new PlayerAdded)
   }
 
