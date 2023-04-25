@@ -5,4 +5,5 @@ trait CardStackInterface {
   def rndCardStack: List[(String, String)]
   def getThreeCards: List[(String, String)]
   def delThreeCards: CardStackInterface
+  def getThreeCardsInJsonFormat: String
 }
