@@ -103,13 +103,17 @@ class TUI(val controller: ControllerInterface) extends Reactor {
       |""".stripMargin
   }
 
-  def statsString(pl: PlayerInterface): String = {
-    "\n" + controller.field.toString + "\n" + pl.toString + "\n"
+  def statsString(string: String): String = {
+    if (string.equals("head")) {
+      "\n" + controller.field.toString + "\n" + controller.players.head.toString + "\n"
+    } else {
+      "\n" + controller.field.toString + "\n" + controller.players.last.toString + "\n"
+    }
   }
 
   def typeYourNameString(): String = {
     if (controller.playerAmount <= controller.players.size) {
-      statsString(controller.players.head) + firstOutputString()
+      statsString("head") + firstOutputString()
     } else {
       s"\nPlayer ${controller.players.size + 1}, type your name:"
     }
@@ -126,7 +130,7 @@ class TUI(val controller: ControllerInterface) extends Reactor {
   }
 
   def nextPlayerString(): String = {
-    statsString(controller.players.last) + statsString(controller.players.head) + firstOutputString()
+    statsString("last") + statsString(controller.players.head) + firstOutputString()
   }
 
   def endOfGameStats(): String = {
