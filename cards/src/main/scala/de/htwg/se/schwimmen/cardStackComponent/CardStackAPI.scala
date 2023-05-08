@@ -12,8 +12,9 @@ import scala.concurrent.ExecutionContextExecutor
 import scala.io.StdIn
 import de.htwg.se.schwimmen.cardStackComponent.CardStackInterface
 import de.htwg.se.schwimmen.cardStackComponent.cardStackModul
+import play.api.libs.json.{JsObject, Json}
 
-@main def CardStackAPI() = {
+@main def CardStackAPI(): Unit = {
 
   implicit val actorSystem: ActorSystem[Nothing] = ActorSystem(Behaviors.empty, "CardStackAPI")
 
@@ -24,9 +25,12 @@ import de.htwg.se.schwimmen.cardStackComponent.cardStackModul
   val route =
     path("cardStack" / "threeCards") {
       get {
-        val threeCards: String = stack.getThreeCardsInJsonFormat
+        val threeCards: JsObject = stack.getThreeCardsInJsonFormat
         stack = stack.delThreeCards
-        complete(HttpEntity(ContentTypes.`application/json`, threeCards))
+        complete(HttpEntity(ContentTypes.`application/json`, Json.obj(
+          "success" -> true,
+          "data" -> threeCards
+        ).toString))
       }
     }
 
