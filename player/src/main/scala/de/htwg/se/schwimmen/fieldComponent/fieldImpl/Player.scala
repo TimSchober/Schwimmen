@@ -4,6 +4,7 @@ import com.google.inject.Inject
 import com.google.inject.name.Named
 import de.htwg.se.schwimmen.fieldComponent.{PlayerInterface, PlayingFieldInterface}
 import de.htwg.se.schwimmen.fieldComponent.*
+import play.api.libs.json.{JsObject, Json}
 
 case class Player @Inject() (name: Option[String] = None,
                   cardsOnHand: List[(String, String)] = Nil,
@@ -18,7 +19,6 @@ case class Player @Inject() (name: Option[String] = None,
       case None =>
         copy(name = Some(nameString))
     }
-
   }
 
   def setCardsOnHand(threeCards: List[(String, String)]): Player = {
@@ -51,6 +51,32 @@ case class Player @Inject() (name: Option[String] = None,
       builder.append(x._1).append(" of ")
         .append(x._2).append("s    "))
     builder.append("        ").append(playerName).append(" has ").append(life).append(" lives left").toString()
+  }
+  
+  def playerDataToJsonObject: JsObject = {
+    val playerName = name match {
+      case Some(s) => s
+      case None => ""
+    }
+    Json.obj(
+      "name" -> playerName,
+      "hasKnocked" -> hasKnocked,
+      "life" -> life,
+      "cardsOnHand" -> Json.obj(
+        "firstCard" -> Json.obj(
+          "Value" -> cardsOnHand.head._1,
+          "Color" -> cardsOnHand.head._2
+        ),
+        "secondCard" -> Json.obj(
+          "Value" -> cardsOnHand(1)._1,
+          "Color" -> cardsOnHand(1)._2
+        ),
+        "thirdCard" -> Json.obj(
+          "Value" -> cardsOnHand.last._1,
+          "Color" -> cardsOnHand.last._2
+        )
+      )
+    )
   }
 
   def getColoursOfCards(threeCards: List[(String, String)]): List[String] = {

@@ -1,5 +1,7 @@
 package de.htwg.se.schwimmen.fieldComponent
 
+import play.api.libs.json.JsObject
+
 trait PlayingFieldInterface {
   def cardsOnField: List[(String, String)]
 
@@ -7,6 +9,7 @@ trait PlayingFieldInterface {
   def swapCard(player: PlayerInterface, indexPlayer: Int, indexField: Int): List[(String, String)]
   def processPlayerAmount(amount: Int): Boolean
   def toString: String
+  def fieldDataToJsonObject: JsObject
 }
 
 trait PlayerInterface {
@@ -26,4 +29,5 @@ trait PlayerInterface {
   def getValue(value: String): Int
   def setCardCount(threeCards: List[(String, String)]): Double
   def toString: String
+  def playerDataToJsonObject: JsObject
 }
