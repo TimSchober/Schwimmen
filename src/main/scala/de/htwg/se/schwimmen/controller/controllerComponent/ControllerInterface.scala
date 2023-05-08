@@ -1,18 +1,20 @@
 package de.htwg.se.schwimmen.controller.controllerComponent
 
-import de.htwg.se.schwimmen.cardStackComponent.CardStackInterface
-import de.htwg.se.schwimmen.fieldComponent.{PlayerInterface, PlayingFieldInterface}
-import de.htwg.se.schwimmen.fieldComponent.*
+import play.api.libs.json.JsValue
 
 import scala.swing.Publisher
+import scala.swing.event.Event
 
 trait ControllerInterface extends Publisher{
-  var stack: CardStackInterface
-  var players: List[PlayerInterface]
-  var field: PlayingFieldInterface
   var playerAmount: Int
+  var playersize: Int
+  var lastPlayer: JsValue
+  var headPlayer: JsValue
+  var currentField: JsValue
 
+  def updateData(e: Event): Unit
   def createNewGame(): Unit
+  def setupField(): Unit
   def nextRound(): Unit
   def setPlayerAmount(plAm: Int): Unit
   def addPlayer(name: String): Unit
