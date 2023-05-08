@@ -3,7 +3,7 @@ package de.htwg.se.schwimmen.cardStackComponent.cardStackImpl
 import com.google.inject.Inject
 import de.htwg.se.schwimmen.cardStackComponent.CardStackInterface
 import de.htwg.se.schwimmen.cardStackComponent.*
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 
 import scala.util.Random
 
@@ -24,22 +24,22 @@ case class CardStack @Inject() (rndCardStack: List[(String, String)] = Nil) exte
     copy(rndCardStack.drop(3))
   }
 
-  def getThreeCardsInJsonFormat: String = {
+  def getThreeCardsInJsonFormat: JsObject = {
     val threeCardsList = rndCardStack.take(3)
-    val Jsonobject = Json.obj(
+    val JsonObject = Json.obj(
       "firstCard" -> Json.obj(
-        "Value" -> threeCardsList.head._1.toString,
-        "Color" -> threeCardsList.head._2.toString,
+        "Value" -> threeCardsList.head._1,
+        "Color" -> threeCardsList.head._2,
       ),
       "secondCard" -> Json.obj(
-        "Value" -> threeCardsList(1)._1.toString,
-        "Color" -> threeCardsList(1)._2.toString,
+        "Value" -> threeCardsList(1)._1,
+        "Color" -> threeCardsList(1)._2,
       ),
       "thirdCard" -> Json.obj(
-        "Value" -> threeCardsList.last._1.toString,
-        "Color" -> threeCardsList.last._2.toString,
+        "Value" -> threeCardsList.last._1,
+        "Color" -> threeCardsList.last._2,
       )
     )
-    Jsonobject.toString
+    JsonObject
   }
 }
