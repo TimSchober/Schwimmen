@@ -10,10 +10,9 @@ object schwimmen {
 
   val injector: Injector = Guice.createInjector(new schwimmenModul)
   val controller: ControllerInterface = injector.getInstance(classOf[ControllerInterface])
-  controller.createNewGame()
   val tui = new TUI(controller)
+  controller.createNewGame()
   val gui = new GUI(controller)
-  controller.publish(new NewGame)
 
   def main(args: Array[String]): Unit = {
     while
