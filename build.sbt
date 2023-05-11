@@ -1,4 +1,5 @@
 lazy val commonSettings = Seq(
+  fork := true,
   scalaVersion := "3.2.2",
   libraryDependencies += "org.scala-lang.modules" %% "scala-swing" % "3.0.0",
   libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.15",
