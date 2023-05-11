@@ -25,6 +25,11 @@ import scala.io.StdIn
 
   val route =
     concat(
+      path("test") {
+        get {
+          complete("OK")
+        }
+      },
       path("playersAndPlayingfield" / "reset") {
         get {
           playerAmount = 0
@@ -194,7 +199,7 @@ import scala.io.StdIn
       }
     )
 
-  Http().newServerAt("127.0.0.1", 8081).bind(route)
+  Http().newServerAt("0.0.0.0", 8081).bind(route)
   println(s"Server now online. Please navigate to http://localhost:8081/playersAndPlayingfield\n")
-
+  StdIn.readLine()
 }
