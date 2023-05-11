@@ -12,7 +12,7 @@ object schwimmen {
   val controller: ControllerInterface = injector.getInstance(classOf[ControllerInterface])
   val tui = new TUI(controller)
   controller.createNewGame()
-  val gui = new GUI(controller)
+  // val gui = new GUI(controller)
 
   def main(args: Array[String]): Unit = {
     while
