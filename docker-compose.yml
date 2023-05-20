@@ -3,7 +3,7 @@ services:
 
   cards:
     container_name: cards
-    image: c35146b06543
+    image: 656fa1670f44
     healthcheck:
       test: ["CMD-SHELL", "curl --fail http://localhost:8080/test || exit 1"] # http://localhost:8080
       interval: 30s
@@ -16,7 +16,7 @@ services:
 
   player:
     container_name: player
-    image: bf6eacd7287d
+    image: 7831e8ea04f0
     healthcheck:
       test: ["CMD-SHELL", "curl --fail http://localhost:8081/test || exit 1"]
       interval: 30s
@@ -26,8 +26,23 @@ services:
     ports:
       # <Port exposed> : < Port running inside container>
       - '8081:8081'
+  db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+    ports:
+      - '5432:5432'
+    volumes:
+      - db:/var/lib/postgresql11/data
+      - ./db/init-scripts.sql:/docker-entrypoint-initdb.d/scripts.sql
 
   Schwimmen:
     container_name: Schwimmen
-    image: 3fe96b68e00e
+    image: b9a792c49387
     restart: "no"
+
+volumes:
+  db:
+    driver: local
