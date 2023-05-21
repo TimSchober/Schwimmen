@@ -13,10 +13,18 @@ case class CardStack @Inject() (rndCardStack: List[(String, String)] = Nil) exte
     val num = List("7", "8", "9", "10", "jack", "queen", "king", "ace")
     val col = List("heart", "diamond", "spade", "club")
     val fullCardStack: List[(String, String)] = num.flatMap(n => col.map(x => (n, x)))
-    copy(rndCardStack = Random.shuffle(fullCardStack))
+    val randomCardStack = copy(rndCardStack = Random.shuffle(fullCardStack))
+    val id = 0
+    CardStackDAO.deletCard()
+    for (x <- randomCardStack.rndCardStack) {
+      CardStackDAO.insertCard(id + 1, x._1, x._2)
+    }
+
+    randomCardStack
   }
 
   def getThreeCards: List[(String, String)] = {
+
     rndCardStack.take(3)
   }
 
