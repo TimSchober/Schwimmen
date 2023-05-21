@@ -1,7 +1,7 @@
 package de.htwg.se.schwimmen.cardStackComponent.cardStackImpl
 
-case class Card(id: Long, cardValue: String, cardColor: String)
-object SlickTables {
+//case class Card(id: Long, cardValue: String, cardColor: String)
+object SlickCardTable {
   import slick.jdbc.PostgresProfile.api._
 
   class CardsTable(tag: Tag) extends Table[(Long, String, String)](tag, Some("cards"), "Card") {

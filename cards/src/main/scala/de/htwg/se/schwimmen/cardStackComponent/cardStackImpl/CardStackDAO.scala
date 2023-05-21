@@ -15,7 +15,7 @@ object PrivateExecutionContext {
 object CardStackDAO {
   import PrivateExecutionContext._
 
-  val cardTable = SlickTables.cardsTable
+  val cardTable = SlickCardTable.cardsTable
 
   def insertCard(cardId: Long, cardValue: String, cardColor: String) = {
 
@@ -39,7 +39,7 @@ object CardStackDAO {
   }
 
   def deletCard() = {
-    Connection.db.run(SlickTables.cardsTable.delete)
+    Connection.db.run(SlickCardTable.cardsTable.delete)
     Thread.sleep(5000)
   }
 
