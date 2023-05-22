@@ -23,6 +23,7 @@ object SlickPlayerTable {
       secondCardValue, secondCardColor,
       thirdCardValue, thirdCardColor)
   }
+  
   lazy val playersTable = TableQuery(PlayerTable(_))
 
 }

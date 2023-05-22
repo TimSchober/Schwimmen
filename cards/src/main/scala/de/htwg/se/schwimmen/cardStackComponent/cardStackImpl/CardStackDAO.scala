@@ -52,7 +52,6 @@ object CardStackDAO {
 
   def main(args: Array[String]) : Unit = {
     println(getThreeCards())
-    println(getThreeCards())
 
   }
 }
