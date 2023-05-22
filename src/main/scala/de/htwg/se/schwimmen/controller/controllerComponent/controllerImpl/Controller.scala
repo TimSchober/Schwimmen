@@ -18,8 +18,8 @@ import scala.util.{Failure, Success}
 
 class Controller @Inject() () extends ControllerInterface with Publisher {
 
-  val PlayerServer = "http://" + "host.docker.internal" + ":8081/playersAndPlayingfield" // localhost
-  val StackServer = "http://" + "host.docker.internal" + ":8080/cardStack"
+  val PlayerServer = "http://" + "localhost" + ":8081/playersAndPlayingfield" // localhost
+  val StackServer = "http://" + "localhost" + ":8080/cardStack"
 
   implicit val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "my-system")
 
