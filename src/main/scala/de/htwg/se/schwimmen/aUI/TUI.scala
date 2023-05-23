@@ -33,12 +33,18 @@ class TUI(val controller: ControllerInterface) extends Reactor {
         "illegal input"
       case Failure(e) =>
         input match {
+          case "save" =>
+            controller.saveTo("")
+            "saved"
           case "saveXml" =>
             controller.saveTo("Xml")
             "saved to Xml"
           case "saveJson" =>
             controller.saveTo("Json")
             "saved to Json"
+          case "load" =>
+            controller.loadFrom("")
+            "loaded"
           case "loadXml" =>
             controller.loadFrom("Xml")
             "loaded from Xml"

@@ -19,6 +19,7 @@ lazy val commonSettings = Seq(
   libraryDependencies += ("com.typesafe.slick" %% "slick" % "3.3.3").cross(CrossVersion.for3Use2_13),
   libraryDependencies += "org.postgresql" % "postgresql" % "42.3.4",
   libraryDependencies += ("com.typesafe.slick" %% "slick-hikaricp" % "3.3.3").cross(CrossVersion.for3Use2_13),
+  libraryDependencies += ("org.mongodb.scala" %% "mongo-scala-driver" % "4.3.0").cross(CrossVersion.for3Use2_13),
   libraryDependencies += ("com.github.tminglei" %% "slick-pg" % "0.20.3").cross(CrossVersion.for3Use2_13),
   coverageExcludedPackages := "de.htwg.se.schwimmen.aUI.GUI;" +
     "de.htwg.se.schwimmen.model.fileIOComponent.*;"
