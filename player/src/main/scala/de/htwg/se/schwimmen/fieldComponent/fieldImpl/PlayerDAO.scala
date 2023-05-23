@@ -22,114 +22,39 @@ object PlayerDAO {
   def insertPlayer(playerId: Long, name: String, life: Int, hasKnocked: String,
                    fCardValue: String, fCardColor: String,
                    sCardValue: String, sCardColor: String,
-                   tCardValue: String, tCardColor: String) = {
+                   tCardValue: String, tCardColor: String, turn: String) = {
     val tableEntry = playerTable += (playerId, name, life, hasKnocked,
                                       fCardValue, fCardColor,
                                       sCardValue, sCardColor,
-                                      tCardValue, tCardColor)
+                                      tCardValue, tCardColor, turn)
     val futureId: Future[Int] = Connection.db.run(tableEntry)
     futureId.onComplete {
       case Failure(exception) => println(s"InsertQuery failed, reason: $exception")
       case Success(newCardId) => println(s"Query was successful, new is id $newCardId")
     }
-    Thread.sleep(10000)
+    Thread.sleep(2000)
   }
 
-  def getFirstPlayer(): Seq[(Long, String, Int, String,
+  def getAllPlayers(): Seq[(Long, String, Int, String,
     String, String,
     String, String,
-    String, String)] = {
-
-    val minId = playerTable.map(_.id).min
-    val getCurrentPlayer = Connection.db.run(playerTable.filter(_.id >= minId).filter(_.id <= minId).result)
-    getCurrentPlayer.onComplete {
-      case Success(p) => println(s"Fetched get current player: $p")
-      case Failure(ex) => println(s"Fetching failed: $ex")
-    }
-    val result: Seq[(Long, String, Int, String,
-      String, String,
-      String, String,
-      String, String)] = Await.result(getCurrentPlayer, 5.seconds)
-
-    result
-  }
-
-  def getCurrentPlayer(name: String): Seq[(Long, String, Int, String,
-    String, String,
-    String, String,
-    String, String)] = {
-
-    val getCurrentPlayer = Connection.db.run(playerTable.filter(_.name like name).result)
-    getCurrentPlayer.onComplete {
-      case Success(p) => println(s"Fetched get current player: $p")
-      case Failure(ex) => println(s"Fetching failed: $ex")
-    }
-    val result: Seq[(Long, String, Int, String,
-      String, String,
-      String, String,
-      String, String)] = Await.result(getCurrentPlayer, 5.seconds)
-
-    result.toList
-  }
-
-  def getnextPlayer(name: String): Seq[(Long, String, Int, String,
-    String, String,
-    String, String,
-    String, String)] = {
-
-    val getCurrentPlayer = Connection.db.run(playerTable.filter(_.name like name).result)
-    getCurrentPlayer.onComplete {
-      case Success(p) => println(s"Fetched get current player: $p")
-      case Failure(ex) => println(s"Fetching failed: $ex")
-    }
-    val result: Seq[(Long, String, Int, String,
-      String, String,
-      String, String,
-      String, String)] = Await.result(getCurrentPlayer, 5.seconds)
-
-
-    val getCurrentPlayer11 = Connection.db.run(playerTable.filter(_.id > result.toList.head._1).result)
-    getCurrentPlayer11.onComplete {
-      case Success(p) => println(s"Fetched get current player: $p")
-      case Failure(ex) => println(s"Fetching failed: $ex")
-    }
-    val result11: Seq[(Long, String, Int, String,
-      String, String,
-      String, String,
-      String, String)] = Await.result(getCurrentPlayer11, 5.seconds)
-
-    if(result11.toList.nonEmpty) {
-
-      val getNextPlayer = Connection.db.run(playerTable.filter(_.id >= result.toList.head._1 + 1).filter(_.id <= result.toList.head._1 + 1).result)
-      getNextPlayer.onComplete {
-        case Success(p) => println(s"Fetched get current player: $p")
-        case Failure(ex) => println(s"Fetching failed: $ex")
-      }
-      val result1: Seq[(Long, String, Int, String,
-        String, String,
-        String, String,
-        String, String)] = Await.result(getNextPlayer, 5.seconds)
-
-      result1.toList
-    } else {
-      getFirstPlayer()
-    }
-
-  }
-
-  def getAllPlayers() = {
+    String, String, String)] = {
     val getAllCards = Connection.db.run(playerTable.result)
     getAllCards.onComplete {
       case Success(cards) => println(s"Fetched get all cards: $cards")
       case Failure(ex) => println(s"Fetching failed: $ex")
     }
-
-    Thread.sleep(10000)
+    val result: Seq[(Long, String, Int, String,
+      String, String,
+      String, String,
+      String, String, String)] = Await.result(getAllCards, 5.seconds)
+    Thread.sleep(2000)
+    result.toList
   }
 
   def deletePlayer(): Unit = {
-    Connection.db.run(SlickPlayerTable.playersTable.delete)
-    Thread.sleep(5000)
+    Connection.db.run(playerTable.delete)
+    Thread.sleep(2000)
   }
 
   def insertFieldCards(playingFieldId: Long,
@@ -142,27 +67,23 @@ object PlayerDAO {
       case Failure(exception) => println(s"InsertQuery failed, reason: $exception")
       case Success(newCardId) => println(s"Query was successful, new is id $newCardId")
     }
-    Thread.sleep(10000)
+    Thread.sleep(2000)
   }
 
   def getFieldCards(): Seq[(Long, String, String, String, String, String, String)] = {
-    val minId = playingFieldTable.map(_.id).min
-    val maxId = minId + 2L
-    val getThreeCards = Connection.db.run(playingFieldTable.filter(_.id >= minId).filter(_.id <= maxId).result)
+    val getThreeCards = Connection.db.run(playingFieldTable.result)
     getThreeCards.onComplete {
       case Success(cards) => println(s"Fetched get all cards: $cards")
       case Failure(ex) => println(s"Fetching failed: $ex")
     }
     val result: Seq[(Long, String, String, String, String, String, String)] = Await.result(getThreeCards, 5.seconds)
-
-    Connection.db.run(playingFieldTable.filter(_.id >= minId).filter(_.id <= maxId).delete)
-
+    Thread.sleep(2000)
     result.toList
   }
 
   def deletePlayingField(): Unit = {
     Connection.db.run(playingFieldTable.delete)
-    Thread.sleep(5000)
+    Thread.sleep(2000)
   }
 
 //  def main(args: Array[String]): Unit = {

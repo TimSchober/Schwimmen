@@ -6,7 +6,7 @@ object SlickPlayerTable {
   class PlayerTable(tag: Tag) extends Table[(
     Long, String, Int, String,
     String, String, String, 
-    String, String, String)](tag, Some("players"), "Player") {
+    String, String, String, String)](tag, Some("players"), "Player") {
 
     def id = column[Long]("player_id", O.PrimaryKey, O.AutoInc)
     def name = column[String]("player_name")
@@ -18,10 +18,11 @@ object SlickPlayerTable {
     def secondCardColor = column[String]("second_card_color")
     def thirdCardValue = column[String]("third_card_value")
     def thirdCardColor = column[String]("third_card_color")
+    def turn = column[String]("turn")
     override def * = (id, name, life, hasKnocked, 
       firstCardValue, firstCardColor,
       secondCardValue, secondCardColor,
-      thirdCardValue, thirdCardColor)
+      thirdCardValue, thirdCardColor, turn)
   }
 
   class PlayingFieldTable(tag: Tag) extends Table[(

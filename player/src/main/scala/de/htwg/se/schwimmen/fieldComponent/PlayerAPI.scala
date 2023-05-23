@@ -200,6 +200,8 @@ import scala.io.StdIn
       },
       path("playersAndPlayingfield" / "save") {
         get {
+          PlayerDAO.deletePlayer()
+          PlayerDAO.deletePlayingField()
           players.foreach(p => {
             val name = p.name match {
               case Some(s) => s
@@ -208,7 +210,8 @@ import scala.io.StdIn
             PlayerDAO.insertPlayer(0L, name, p.life, p.hasKnocked.toString,
               p.cardsOnHand.head._1, p.cardsOnHand.head._2,
               p.cardsOnHand(1)._1, p.cardsOnHand(1)._2,
-              p.cardsOnHand.last._1, p.cardsOnHand.last._2)
+              p.cardsOnHand.last._1, p.cardsOnHand.last._2,
+              (p == players.head).toString)
           })
           PlayerDAO.insertFieldCards(0L,
             field.cardsOnField.head._1, field.cardsOnField.head._2,
@@ -222,10 +225,30 @@ import scala.io.StdIn
       },
       path("playersAndPlayingfield" / "load") {
         get {
-
+          players = List()
+          val playersFromDB = PlayerDAO.getAllPlayers()
+          playersFromDB.foreach(p => {
+            val firstCard: (String, String) = (p._5, p._6)
+            val secondCard: (String, String) = (p._7, p._8)
+            val thirdCard: (String, String) = (p._9, p._10)
+            val list: List[(String, String)] = List(firstCard, secondCard, thirdCard)
+            val player = injector.getInstance(classOf[PlayerInterface])
+            val playerWithNameAndCards = player.setName(p._2).setLife(p._3).setHasKnocked(p._4.toBoolean).setCardsOnHand(list)
+            players = players :+ playerWithNameAndCards
+          })
+          val fieldFromDB = PlayerDAO.getFieldCards()
+          val firstCardF: (String, String) = (fieldFromDB.head._2, fieldFromDB.head._3)
+          val secondCardF: (String, String) = (fieldFromDB.head._4, fieldFromDB.head._5)
+          val thirdCardF: (String, String) = (fieldFromDB.head._6, fieldFromDB.head._7)
+          field = injector.getInstance(classOf[PlayingFieldInterface])
+          field = field.setCardsOnField(List(firstCardF, secondCardF, thirdCardF))
+          playerAmount = players.size
           complete(HttpEntity(ContentTypes.`application/json`, Json.obj(
             "success" -> true,
-            "reason" -> s"load"
+            "reason" -> s"load",
+            "data" -> Json.obj(
+              "playerAmount" -> playerAmount
+            )
           ).toString))
         }
       }

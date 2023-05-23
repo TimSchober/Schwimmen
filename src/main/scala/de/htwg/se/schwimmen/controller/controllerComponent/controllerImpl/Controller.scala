@@ -441,6 +441,9 @@ class Controller @Inject() () extends ControllerInterface with Publisher {
           case Success(value) =>
             val response = Json.parse(value)
             if ((response \ "success").get.toString.toBoolean) {
+              val plAm = (response \ "data" \ "playerAmount").get.toString.toInt
+              playerAmount = plAm
+              playersize = plAm
               updateData(new PlayerChanged)
             } else {
               println("load failed")
