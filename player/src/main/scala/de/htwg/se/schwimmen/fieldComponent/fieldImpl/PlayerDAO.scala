@@ -17,11 +17,13 @@ object PlayerDAO {
   import PrivateExecutionContext._
 
   val playerTable = SlickPlayerTable.playersTable
-  def insertPlayer(playerId: Long, name: String, life: Int, hsasKnocked: String,
+  val playingFieldTable = SlickPlayerTable.playingFieldTable
+
+  def insertPlayer(playerId: Long, name: String, life: Int, hasKnocked: String,
                    fCardValue: String, fCardColor: String,
                    sCardValue: String, sCardColor: String,
                    tCardValue: String, tCardColor: String) = {
-    val tableEntry = playerTable += (playerId, name, life, hsasKnocked,
+    val tableEntry = playerTable += (playerId, name, life, hasKnocked,
                                       fCardValue, fCardColor,
                                       sCardValue, sCardColor,
                                       tCardValue, tCardColor)
@@ -129,9 +131,41 @@ object PlayerDAO {
     Connection.db.run(SlickPlayerTable.playersTable.delete)
     Thread.sleep(5000)
   }
-  
 
-  def main(args: Array[String]): Unit = {
-    //deletePlayer()
+  def insertFieldCards(playingFieldId: Long,
+                       fCardValue: String, fCardColor: String,
+                       sCardValue: String, sCardColor: String,
+                       tCardValue: String, tCardColor: String): Unit = {
+    val tableEntry = playingFieldTable += (playingFieldId, fCardValue, fCardColor, sCardValue, sCardColor, tCardValue, tCardColor)
+    val futureId: Future[Int] = Connection.db.run(tableEntry)
+    futureId.onComplete {
+      case Failure(exception) => println(s"InsertQuery failed, reason: $exception")
+      case Success(newCardId) => println(s"Query was successful, new is id $newCardId")
+    }
+    Thread.sleep(10000)
   }
+
+  def getFieldCards(): Seq[(Long, String, String, String, String, String, String)] = {
+    val minId = playingFieldTable.map(_.id).min
+    val maxId = minId + 2L
+    val getThreeCards = Connection.db.run(playingFieldTable.filter(_.id >= minId).filter(_.id <= maxId).result)
+    getThreeCards.onComplete {
+      case Success(cards) => println(s"Fetched get all cards: $cards")
+      case Failure(ex) => println(s"Fetching failed: $ex")
+    }
+    val result: Seq[(Long, String, String, String, String, String, String)] = Await.result(getThreeCards, 5.seconds)
+
+    Connection.db.run(playingFieldTable.filter(_.id >= minId).filter(_.id <= maxId).delete)
+
+    result.toList
+  }
+
+  def deletePlayingField(): Unit = {
+    Connection.db.run(playingFieldTable.delete)
+    Thread.sleep(5000)
+  }
+
+//  def main(args: Array[String]): Unit = {
+//    //deletePlayer()
+//  }
 }

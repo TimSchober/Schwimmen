@@ -104,45 +104,55 @@ class TUI(val controller: ControllerInterface) extends Reactor {
 
   def statsString(string: String): String = {
     if (string.equals("head")) {
-      println("head:")
-      s"""These are the Cards on the field: \t
-         |${(controller.currentField \ "data" \ "cardsOnField" \ "firstCard" \ "Value").get.toString.replaceAll("\"", "")} of
-         |${(controller.currentField \ "data" \ "cardsOnField" \ "firstCard" \ "Color").get.toString.replaceAll("\"", "")}s,
-         |${(controller.currentField \ "data" \ "cardsOnField" \ "secondCard" \ "Value").get.toString.replaceAll("\"", "")} of
-         |${(controller.currentField \ "data" \ "cardsOnField" \ "secondCard" \ "Color").get.toString.replaceAll("\"", "")}s,
-         |${(controller.currentField \ "data" \ "cardsOnField" \ "thirdCard" \ "Value").get.toString.replaceAll("\"", "")} of
-         |${(controller.currentField \ "data" \ "cardsOnField" \ "thirdCard" \ "Color").get.toString.replaceAll("\"", "")}s\t
-         |These are the Cards on
-         |${(controller.headPlayer \ "data" \ "name").get.toString.replaceAll("\"", "")}s hand: \t
-         |${(controller.headPlayer \ "data" \ "cardsOnHand" \ "firstCard" \ "Value").get.toString.replaceAll("\"", "")} of
-         |${(controller.headPlayer \ "data" \ "cardsOnHand" \ "firstCard" \ "Color").get.toString.replaceAll("\"", "")}s,
-         |${(controller.headPlayer \ "data" \ "cardsOnHand" \ "secondCard" \ "Value").get.toString.replaceAll("\"", "")} of
-         |${(controller.headPlayer \ "data" \ "cardsOnHand" \ "secondCard" \ "Color").get.toString.replaceAll("\"", "")}s,
-         |${(controller.headPlayer \ "data" \ "cardsOnHand" \ "thirdCard" \ "Value").get.toString.replaceAll("\"", "")} of
-         |${(controller.headPlayer \ "data" \ "cardsOnHand" \ "thirdCard" \ "Color").get.toString.replaceAll("\"", "")}s\t
-         |${(controller.headPlayer \ "data" \ "name").get.toString.replaceAll("\"", "")} has
-         |${(controller.headPlayer \ "data" \ "life").get.toString.replaceAll("\"", "")} lifes left.\t
-         |""".stripMargin.linesIterator.mkString(" ").trim
+      if ((controller.currentField \ "success").get.toString.replaceAll("\"", "").toBoolean &&
+        (controller.headPlayer \ "success").get.toString.replaceAll("\"", "").toBoolean) {
+        println("head:")
+        s"""These are the Cards on the field: \t
+           |${(controller.currentField \ "data" \ "cardsOnField" \ "firstCard" \ "Value").get.toString.replaceAll("\"", "")} of
+           |${(controller.currentField \ "data" \ "cardsOnField" \ "firstCard" \ "Color").get.toString.replaceAll("\"", "")}s,
+           |${(controller.currentField \ "data" \ "cardsOnField" \ "secondCard" \ "Value").get.toString.replaceAll("\"", "")} of
+           |${(controller.currentField \ "data" \ "cardsOnField" \ "secondCard" \ "Color").get.toString.replaceAll("\"", "")}s,
+           |${(controller.currentField \ "data" \ "cardsOnField" \ "thirdCard" \ "Value").get.toString.replaceAll("\"", "")} of
+           |${(controller.currentField \ "data" \ "cardsOnField" \ "thirdCard" \ "Color").get.toString.replaceAll("\"", "")}s\t
+           |These are the Cards on
+           |${(controller.headPlayer \ "data" \ "name").get.toString.replaceAll("\"", "")}s hand: \t
+           |${(controller.headPlayer \ "data" \ "cardsOnHand" \ "firstCard" \ "Value").get.toString.replaceAll("\"", "")} of
+           |${(controller.headPlayer \ "data" \ "cardsOnHand" \ "firstCard" \ "Color").get.toString.replaceAll("\"", "")}s,
+           |${(controller.headPlayer \ "data" \ "cardsOnHand" \ "secondCard" \ "Value").get.toString.replaceAll("\"", "")} of
+           |${(controller.headPlayer \ "data" \ "cardsOnHand" \ "secondCard" \ "Color").get.toString.replaceAll("\"", "")}s,
+           |${(controller.headPlayer \ "data" \ "cardsOnHand" \ "thirdCard" \ "Value").get.toString.replaceAll("\"", "")} of
+           |${(controller.headPlayer \ "data" \ "cardsOnHand" \ "thirdCard" \ "Color").get.toString.replaceAll("\"", "")}s\t
+           |${(controller.headPlayer \ "data" \ "name").get.toString.replaceAll("\"", "")} has
+           |${(controller.headPlayer \ "data" \ "life").get.toString.replaceAll("\"", "")} lifes left.\t
+           |""".stripMargin.linesIterator.mkString(" ").trim
+      } else {
+        ""
+      }
     } else {
-      println("last:")
-      s"""These are the Cards on the field: \t
-         |${(controller.currentField \ "data" \ "cardsOnField" \ "firstCard" \ "Value").get.toString.replaceAll("\"", "")} of
-         |${(controller.currentField \ "data" \ "cardsOnField" \ "firstCard" \ "Color").get.toString.replaceAll("\"", "")}s,
-         |${(controller.currentField \ "data" \ "cardsOnField" \ "secondCard" \ "Value").get.toString.replaceAll("\"", "")} of
-         |${(controller.currentField \ "data" \ "cardsOnField" \ "secondCard" \ "Color").get.toString.replaceAll("\"", "")}s,
-         |${(controller.currentField \ "data" \ "cardsOnField" \ "thirdCard" \ "Value").get.toString.replaceAll("\"", "")} of
-         |${(controller.currentField \ "data" \ "cardsOnField" \ "thirdCard" \ "Color").get.toString.replaceAll("\"", "")}s\t
-         |These are the Cards on
-         |${(controller.lastPlayer \ "data" \ "name").get.toString.replaceAll("\"", "")}s hand: \t
-         |${(controller.lastPlayer \ "data" \ "cardsOnHand" \ "firstCard" \ "Value").get.toString.replaceAll("\"", "")} of
-         |${(controller.lastPlayer \ "data" \ "cardsOnHand" \ "firstCard" \ "Color").get.toString.replaceAll("\"", "")}s,
-         |${(controller.lastPlayer \ "data" \ "cardsOnHand" \ "secondCard" \ "Value").get.toString.replaceAll("\"", "")} of
-         |${(controller.lastPlayer \ "data" \ "cardsOnHand" \ "secondCard" \ "Color").get.toString.replaceAll("\"", "")}s,
-         |${(controller.lastPlayer \ "data" \ "cardsOnHand" \ "thirdCard" \ "Value").get.toString.replaceAll("\"", "")} of
-         |${(controller.lastPlayer \ "data" \ "cardsOnHand" \ "thirdCard" \ "Color").get.toString.replaceAll("\"", "")}s\t
-         |${(controller.lastPlayer \ "data" \ "name").get.toString.replaceAll("\"", "")} has
-         |${(controller.lastPlayer \ "data" \ "life").get.toString.replaceAll("\"", "")} lifes left.\t
-         |""".stripMargin.linesIterator.mkString(" ").trim
+      if ((controller.currentField \ "success").get.toString.replaceAll("\"", "").toBoolean &&
+        (controller.lastPlayer \ "success").get.toString.replaceAll("\"", "").toBoolean) {
+        println("last:")
+        s"""These are the Cards on the field: \t
+           |${(controller.currentField \ "data" \ "cardsOnField" \ "firstCard" \ "Value").get.toString.replaceAll("\"", "")} of
+           |${(controller.currentField \ "data" \ "cardsOnField" \ "firstCard" \ "Color").get.toString.replaceAll("\"", "")}s,
+           |${(controller.currentField \ "data" \ "cardsOnField" \ "secondCard" \ "Value").get.toString.replaceAll("\"", "")} of
+           |${(controller.currentField \ "data" \ "cardsOnField" \ "secondCard" \ "Color").get.toString.replaceAll("\"", "")}s,
+           |${(controller.currentField \ "data" \ "cardsOnField" \ "thirdCard" \ "Value").get.toString.replaceAll("\"", "")} of
+           |${(controller.currentField \ "data" \ "cardsOnField" \ "thirdCard" \ "Color").get.toString.replaceAll("\"", "")}s\t
+           |These are the Cards on
+           |${(controller.lastPlayer \ "data" \ "name").get.toString.replaceAll("\"", "")}s hand: \t
+           |${(controller.lastPlayer \ "data" \ "cardsOnHand" \ "firstCard" \ "Value").get.toString.replaceAll("\"", "")} of
+           |${(controller.lastPlayer \ "data" \ "cardsOnHand" \ "firstCard" \ "Color").get.toString.replaceAll("\"", "")}s,
+           |${(controller.lastPlayer \ "data" \ "cardsOnHand" \ "secondCard" \ "Value").get.toString.replaceAll("\"", "")} of
+           |${(controller.lastPlayer \ "data" \ "cardsOnHand" \ "secondCard" \ "Color").get.toString.replaceAll("\"", "")}s,
+           |${(controller.lastPlayer \ "data" \ "cardsOnHand" \ "thirdCard" \ "Value").get.toString.replaceAll("\"", "")} of
+           |${(controller.lastPlayer \ "data" \ "cardsOnHand" \ "thirdCard" \ "Color").get.toString.replaceAll("\"", "")}s\t
+           |${(controller.lastPlayer \ "data" \ "name").get.toString.replaceAll("\"", "")} has
+           |${(controller.lastPlayer \ "data" \ "life").get.toString.replaceAll("\"", "")} lifes left.\t
+           |""".stripMargin.linesIterator.mkString(" ").trim
+      } else {
+        ""
+      }
     }
   }
 

@@ -29,9 +29,9 @@ class Controller @Inject() () extends ControllerInterface with Publisher {
 
   var playersize: Int = 0
   var playerAmount: Int = 0
-  var lastPlayer: JsValue = Json.parse("{\"init\": false}")
-  var headPlayer: JsValue = Json.parse("{\"init\": false}")
-  var currentField: JsValue = Json.parse("{\"init\": false}")
+  var lastPlayer: JsValue = Json.parse("{\"success\": false}")
+  var headPlayer: JsValue = Json.parse("{\"success\": false}")
+  var currentField: JsValue = Json.parse("{\"success\": false}")
   def updateData(e: Event): Unit = {
     val responseFuture: Future[HttpResponse] = Http().singleRequest(HttpRequest(
       method = HttpMethods.GET,
@@ -402,11 +402,51 @@ class Controller @Inject() () extends ControllerInterface with Publisher {
   }
 
   def saveTo(str:String): Unit = {
+    val responseFuture: Future[HttpResponse] = Http().singleRequest(HttpRequest(
+      method = HttpMethods.GET,
+      uri = PlayerServer + "/save"
+    ))
+    responseFuture.onComplete {
+      case Failure(_)
+      => sys.error("Failed getting Json")
+      case Success(value)
+      =>
+        Unmarshal(value.entity).to[String].onComplete {
+          case Failure(_) => sys.error("Failed unmarshalling")
+          case Success(value) =>
+            val response = Json.parse(value)
+            if ((response \ "success").get.toString.toBoolean) {
+              updateData(new PlayerChanged)
+            } else {
+              println("save failed")
+            }
+        }
+    }
 //    val fileIO = injector.instance[FileIOInterface](Names.named(str))
 //    fileIO.save(players, field)
 //    publish(new PlayerChanged)
   }
   def loadFrom(str:String): Unit = {
+    val responseFuture: Future[HttpResponse] = Http().singleRequest(HttpRequest(
+      method = HttpMethods.GET,
+      uri = PlayerServer + "/load"
+    ))
+    responseFuture.onComplete {
+      case Failure(_)
+      => sys.error("Failed getting Json")
+      case Success(value)
+      =>
+        Unmarshal(value.entity).to[String].onComplete {
+          case Failure(_) => sys.error("Failed unmarshalling")
+          case Success(value) =>
+            val response = Json.parse(value)
+            if ((response \ "success").get.toString.toBoolean) {
+              updateData(new PlayerChanged)
+            } else {
+              println("load failed")
+            }
+        }
+    }
 //    val fileIO = injector.instance[FileIOInterface](Names.named(str))
 //    field = fileIO.loadField
 //    players = fileIO.loadPlayers

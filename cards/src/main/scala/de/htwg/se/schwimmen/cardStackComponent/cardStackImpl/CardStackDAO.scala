@@ -50,8 +50,8 @@ object CardStackDAO {
     Thread.sleep(5000)
   }
 
-  def main(args: Array[String]) : Unit = {
-    println(getThreeCards())
-
-  }
+//  def main(args: Array[String]) : Unit = {
+//    println(getThreeCards())
+//
+//  }
 }

@@ -5,7 +5,6 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.model._
 import akka.stream.ActorMaterializer
-import de.htwg.se.schwimmen.cardStackComponent.cardStackImpl.CardStackDAO
 
 //import akka.http.scaladsl.server.Directives.*
 //import akka.actor.typed.ActorSystem
@@ -40,21 +39,8 @@ object CardStackAPI {
       concat(
         path("cardStack" / "threeCards") {
           get {
-            val threeCardVonDB = CardStackDAO.getThreeCards()
-            val threeCards: JsObject = Json.obj(
-              "firstCard" -> Json.obj(
-                "Value" -> threeCardVonDB.head._2,
-                "Color" -> threeCardVonDB.head._3,
-              ),
-              "secondCard" -> Json.obj(
-                "Value" -> threeCardVonDB(1)._2,
-                "Color" -> threeCardVonDB(1)._3,
-              ),
-              "thirdCard" -> Json.obj(
-                "Value" -> threeCardVonDB.last._2,
-                "Color" -> threeCardVonDB.last._3,
-              )
-            )
+            val threeCards: JsObject = stack.getThreeCardsInJsonFormat
+            stack = stack.delThreeCards
             complete(HttpEntity(ContentTypes.`application/json`, Json.obj(
               "success" -> true,
               "data" -> threeCards
