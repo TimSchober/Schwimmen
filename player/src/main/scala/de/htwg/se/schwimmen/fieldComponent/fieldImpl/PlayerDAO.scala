@@ -32,6 +32,7 @@ object PlayerDAO {
       case Failure(exception) => println(s"InsertQuery failed, reason: $exception")
       case Success(newCardId) => println(s"Query was successful, new is id $newCardId")
     }
+    Thread.sleep(2000)
   }
 
   def getAllPlayers(): Seq[(Long, String, Int, String,
@@ -47,11 +48,13 @@ object PlayerDAO {
       String, String,
       String, String,
       String, String, String)] = Await.result(getAllCards, 5.seconds)
+    Thread.sleep(2000)
     result.toList
   }
 
   def deletePlayer(): Unit = {
     Connection.db.run(playerTable.delete)
+    Thread.sleep(2000)
   }
 
   def insertFieldCards(playingFieldId: Long,
@@ -64,6 +67,7 @@ object PlayerDAO {
       case Failure(exception) => println(s"InsertQuery failed, reason: $exception")
       case Success(newCardId) => println(s"Query was successful, new is id $newCardId")
     }
+    Thread.sleep(2000)
   }
 
   def getFieldCards(): Seq[(Long, String, String, String, String, String, String)] = {
@@ -73,11 +77,13 @@ object PlayerDAO {
       case Failure(ex) => println(s"Fetching failed: $ex")
     }
     val result: Seq[(Long, String, String, String, String, String, String)] = Await.result(getThreeCards, 5.seconds)
+    Thread.sleep(2000)
     result.toList
   }
 
   def deletePlayingField(): Unit = {
     Connection.db.run(playingFieldTable.delete)
+    Thread.sleep(2000)
   }
 
 //  def main(args: Array[String]): Unit = {
