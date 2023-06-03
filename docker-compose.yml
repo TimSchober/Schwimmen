@@ -3,7 +3,7 @@ services:
 
   cards:
     container_name: cards
-    image: 656fa1670f44
+    image: 5079b70bcf55
     healthcheck:
       test: ["CMD-SHELL", "curl --fail http://localhost:8080/test || exit 1"] # http://localhost:8080
       interval: 30s
@@ -16,7 +16,7 @@ services:
 
   player:
     container_name: player
-    image: 7831e8ea04f0
+    image: 102cc795e106
     healthcheck:
       test: ["CMD-SHELL", "curl --fail http://localhost:8081/test || exit 1"]
       interval: 30s
@@ -40,7 +40,7 @@ services:
 
   Schwimmen:
     container_name: Schwimmen
-    image: b9a792c49387
+    image: 60e8cef1cd3a
     restart: "no"
     stdin_open: true
     tty: true
