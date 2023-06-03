@@ -1,0 +1,17 @@
+{
+    "name": "Ayaz",
+    "cardsOnHand": {
+        "firstCard": {
+            "Value": "king",
+            "Color": "spade"
+        },
+        "secondCard": {
+            "Value": "queen",
+            "Color": "diamond"
+        },
+        "thirdCard": {
+            "Value": "jack",
+            "Color": "club"
+        }
+    }
+}
