@@ -1,11 +1,18 @@
 # Mac
 .DS_Store
 
+# Eclipse
+bin/
+.settings/
+.classpath
+
 # Intellij
 .idea/
+target/
 
 # Maven
 log/
+target/
 
 # Gradle
 .gradle/
@@ -17,10 +24,12 @@ pom.xml
 .history
 .lib/
 dist/*
+target/
 lib_managed/
 src_managed/
 project/boot/
 project/plugins/project/
+project/target/
 project/project/
 logs/
 project/.sbtserver
