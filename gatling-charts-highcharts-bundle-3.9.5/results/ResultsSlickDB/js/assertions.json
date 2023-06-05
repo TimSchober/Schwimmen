@@ -1,7 +1,7 @@
 {
-  "simulation": "test.RecordedSimulation",
-  "simulationId": "recordedsimulation-20230605173355435",
-  "start": 1685986436016,
+  "simulation": "test.NormalWalkthroughTest",
+  "simulationId": "normalwalkthroughtest-20230605193919005",
+  "start": 1685993959903,
   "description": "",
   "scenarios": ["RecordedSimulation"],
   "assertions": [
