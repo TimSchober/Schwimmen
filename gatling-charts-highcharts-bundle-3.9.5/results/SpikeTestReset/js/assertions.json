@@ -1,0 +1,10 @@
+{
+  "simulation": "test.SpikeTestReset",
+  "simulationId": "spiketestreset-20230606212003746",
+  "start": 1686086404431,
+  "description": "",
+  "scenarios": ["RecordedSimulation"],
+  "assertions": [
+
+  ]
+}

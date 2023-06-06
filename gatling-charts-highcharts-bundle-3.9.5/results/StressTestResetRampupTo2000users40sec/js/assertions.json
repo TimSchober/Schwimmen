@@ -1,0 +1,10 @@
+{
+  "simulation": "test.StressTestReset",
+  "simulationId": "stresstestreset-20230606203119017",
+  "start": 1686083479685,
+  "description": "",
+  "scenarios": ["RecordedSimulation"],
+  "assertions": [
+
+  ]
+}

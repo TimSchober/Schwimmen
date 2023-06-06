@@ -1,0 +1,10 @@
+{
+  "simulation": "test.LoadTestReset",
+  "simulationId": "loadtestreset-20230606203449536",
+  "start": 1686083690336,
+  "description": "",
+  "scenarios": ["RecordedSimulation"],
+  "assertions": [
+
+  ]
+}
