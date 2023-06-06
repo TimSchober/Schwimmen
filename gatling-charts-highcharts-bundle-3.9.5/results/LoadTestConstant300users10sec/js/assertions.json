@@ -1,7 +1,7 @@
 {
   "simulation": "test.LoadTest",
-  "simulationId": "loadtest-20230605175514579",
-  "start": 1685987715183,
+  "simulationId": "loadtest-20230606202141894",
+  "start": 1686082902607,
   "description": "",
   "scenarios": ["RecordedSimulation"],
   "assertions": [

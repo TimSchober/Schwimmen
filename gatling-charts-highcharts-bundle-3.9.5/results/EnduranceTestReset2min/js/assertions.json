@@ -1,0 +1,10 @@
+{
+  "simulation": "test.EnduranceTestReset",
+  "simulationId": "endurancetestreset-20230606210017734",
+  "start": 1686085218799,
+  "description": "",
+  "scenarios": ["RecordedSimulation"],
+  "assertions": [
+
+  ]
+}
