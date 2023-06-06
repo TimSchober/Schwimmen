@@ -1,6 +1,0 @@
-Speichert Scripts hier:
-C:\Users\tims1\Desktop\gatling-charts-highcharts-bundle-3.9.5\user-files\simulations\test
-Speichert Fertige Sachen hier:
-C:/Users/tims1/Desktop/gatling-charts-highcharts-bundle-3.9.5/results
-
-.. /[Simulation Name]/index.html

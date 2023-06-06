@@ -201,20 +201,20 @@ import scala.io.StdIn
       },
       path("playersAndPlayingfield" / "save") {
         get {
-          PlayerDAO.deletePlayer()
-          PlayerDAO.deletePlayingField()
+          PlayerDAOmongoDB.deletePlayer()
+          PlayerDAOmongoDB.deletePlayingField()
           players.foreach(p => {
             val name = p.name match {
               case Some(s) => s
               case None => ""
             }
-            PlayerDAO.insertPlayer(0L, name, p.life, p.hasKnocked.toString,
+            PlayerDAOmongoDB.insertPlayer(0L, name, p.life, p.hasKnocked.toString,
               p.cardsOnHand.head._1, p.cardsOnHand.head._2,
               p.cardsOnHand(1)._1, p.cardsOnHand(1)._2,
               p.cardsOnHand.last._1, p.cardsOnHand.last._2,
               (p == players.head).toString)
           })
-          PlayerDAO.insertFieldCards(0L,
+          PlayerDAOmongoDB.insertFieldCards(0L,
             field.cardsOnField.head._1, field.cardsOnField.head._2,
             field.cardsOnField(1)._1, field.cardsOnField(1)._2,
             field.cardsOnField.last._1, field.cardsOnField.last._2)
@@ -227,7 +227,7 @@ import scala.io.StdIn
       path("playersAndPlayingfield" / "load") {
         get {
           players = List()
-          val playersFromDB = PlayerDAO.getAllPlayers()
+          val playersFromDB = PlayerDAOmongoDB.getAllPlayers()
           playersFromDB.foreach(p => {
             val firstCard: (String, String) = (p._5, p._6)
             val secondCard: (String, String) = (p._7, p._8)
@@ -237,7 +237,7 @@ import scala.io.StdIn
             val playerWithNameAndCards = player.setName(p._2).setLife(p._3).setHasKnocked(p._4.toBoolean).setCardsOnHand(list)
             players = players :+ playerWithNameAndCards
           })
-          val fieldFromDB = PlayerDAO.getFieldCards()
+          val fieldFromDB = PlayerDAOmongoDB.getFieldCards()
           val firstCardF: (String, String) = (fieldFromDB.head._2, fieldFromDB.head._3)
           val secondCardF: (String, String) = (fieldFromDB.head._4, fieldFromDB.head._5)
           val thirdCardF: (String, String) = (fieldFromDB.head._6, fieldFromDB.head._7)
