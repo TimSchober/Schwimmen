@@ -48,3 +48,8 @@ yourgame.log
 /field.json
 /field.xml
 /.bsp/sbt.json
+/gatling-charts-highcharts-bundle-3.9.5/conf/
+/gatling-charts-highcharts-bundle-3.9.5/lib/
+/gatling-charts-highcharts-bundle-3.9.5/Gatling.txt
+/gatling-charts-highcharts-bundle-3.9.5/java_pid8840.hprof
+/gatling-charts-highcharts-bundle-3.9.5/LICENSE
