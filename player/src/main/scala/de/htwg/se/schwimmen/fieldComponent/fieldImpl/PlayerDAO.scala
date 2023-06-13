@@ -22,7 +22,7 @@ object PlayerDAO {
   def insertPlayer(playerId: Long, name: String, life: Int, hasKnocked: String,
                    fCardValue: String, fCardColor: String,
                    sCardValue: String, sCardColor: String,
-                   tCardValue: String, tCardColor: String, turn: String) = {
+                   tCardValue: String, tCardColor: String, turn: String): Int = {
     val tableEntry = playerTable += (playerId, name, life, hasKnocked,
                                       fCardValue, fCardColor,
                                       sCardValue, sCardColor,
@@ -35,7 +35,7 @@ object PlayerDAO {
     Await.result(futureId, 5.seconds)
   }
 
-  def getAllPlayers(): Seq[(Long, String, Int, String,
+  def getAllPlayers: Seq[(Long, String, Int, String,
     String, String,
     String, String,
     String, String, String)] = {
@@ -68,7 +68,7 @@ object PlayerDAO {
     Await.result(futureId, 5.seconds)
   }
 
-  def getFieldCards(): Seq[(Long, String, String, String, String, String, String)] = {
+  def getFieldCards: Seq[(Long, String, String, String, String, String, String)] = {
     val getThreeCards = Connection.db.run(playingFieldTable.result)
     getThreeCards.onComplete {
       case Success(cards) => println(s"Fetched get all cards: $cards")
@@ -81,8 +81,4 @@ object PlayerDAO {
   def deletePlayingField(): Unit = {
     Await.result(Connection.db.run(playingFieldTable.delete), 5.seconds)
   }
-
-//  def main(args: Array[String]): Unit = {
-//    //deletePlayer()
-//  }
 }

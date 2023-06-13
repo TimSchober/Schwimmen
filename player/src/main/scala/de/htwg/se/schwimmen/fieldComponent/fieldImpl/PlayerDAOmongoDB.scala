@@ -197,7 +197,7 @@ object PlayerDAOmongoDB {
     mongoClient.close()
   }
 
-  def main(args: Array[String]): Unit = {
+//  def main(args: Array[String]): Unit = {
 //    insertPlayer(0L, "Ayaz", 3, "false",
 //      "king", "heart",
 //      "king", "spade",
@@ -208,5 +208,5 @@ object PlayerDAOmongoDB {
 //    deletePlayer()
 //    deletePlayingField()
 //    println(getAllPlayers())
-  }
+//  }
 }
